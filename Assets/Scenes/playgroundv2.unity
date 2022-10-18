@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 115769815}
   - component: {fileID: 115769814}
   - component: {fileID: 115769813}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -705,7 +705,7 @@ GameObject:
   - component: {fileID: 152743933}
   - component: {fileID: 152743932}
   - component: {fileID: 152743931}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1499,6 +1499,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 9089954442271560965, guid: 65552f22ec2208e438a86795d629c9a3, type: 3}
@@ -1550,6 +1551,7 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 65552f22ec2208e438a86795d629c9a3, type: 3}
 --- !u!1 &522516656
 GameObject:
@@ -1563,7 +1565,7 @@ GameObject:
   - component: {fileID: 522516659}
   - component: {fileID: 522516658}
   - component: {fileID: 522516657}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1917,7 +1919,7 @@ GameObject:
   - component: {fileID: 608732359}
   - component: {fileID: 608732358}
   - component: {fileID: 608732357}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2014,7 +2016,7 @@ GameObject:
   - component: {fileID: 688935311}
   - component: {fileID: 688935310}
   - component: {fileID: 688935309}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2746,7 +2748,7 @@ GameObject:
   - component: {fileID: 1004032708}
   - component: {fileID: 1004032707}
   - component: {fileID: 1004032706}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: stairs (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2964,7 +2966,7 @@ GameObject:
   - component: {fileID: 1047669406}
   - component: {fileID: 1047669405}
   - component: {fileID: 1047669404}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3205,7 +3207,7 @@ GameObject:
   - component: {fileID: 1195720420}
   - component: {fileID: 1195720419}
   - component: {fileID: 1195720418}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3302,7 +3304,7 @@ GameObject:
   - component: {fileID: 1204607099}
   - component: {fileID: 1204607098}
   - component: {fileID: 1204607097}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3573,6 +3575,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
@@ -3652,6 +3655,7 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
 --- !u!1 &1268788504
 GameObject:
@@ -4522,7 +4526,7 @@ GameObject:
   - component: {fileID: 1472071823}
   - component: {fileID: 1472071822}
   - component: {fileID: 1472071821}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5543,7 +5547,7 @@ GameObject:
   - component: {fileID: 1749355762}
   - component: {fileID: 1749355761}
   - component: {fileID: 1749355760}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5640,7 +5644,7 @@ GameObject:
   - component: {fileID: 1762934920}
   - component: {fileID: 1762934919}
   - component: {fileID: 1762934918}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6402,7 +6406,7 @@ GameObject:
   - component: {fileID: 1965645236}
   - component: {fileID: 1965645235}
   - component: {fileID: 1965645234}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6763,7 +6767,7 @@ GameObject:
   - component: {fileID: 2089388034}
   - component: {fileID: 2089388033}
   - component: {fileID: 2089388032}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7193,7 +7197,7 @@ GameObject:
   - component: {fileID: 4173572477524770725}
   - component: {fileID: 2166078896496511855}
   - component: {fileID: 4173572477524770726}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7430,7 +7434,7 @@ GameObject:
   - component: {fileID: 665620096377875531}
   - component: {fileID: 3445442105241834630}
   - component: {fileID: 3445442105241834631}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7548,7 +7552,7 @@ GameObject:
   - component: {fileID: 1318506355198078689}
   - component: {fileID: 3792079467313550892}
   - component: {fileID: 3792079467313550893}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7776,7 +7780,7 @@ GameObject:
   - component: {fileID: 2140801284800229516}
   - component: {fileID: 4276675586180270145}
   - component: {fileID: 4276675586180270146}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8228,7 +8232,7 @@ GameObject:
   - component: {fileID: 8864449265348392038}
   - component: {fileID: 6692400645950980268}
   - component: {fileID: 8864449265348392039}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8571,7 +8575,7 @@ GameObject:
   - component: {fileID: 7864213066610167195}
   - component: {fileID: 5388481464920193361}
   - component: {fileID: 7864213066610167196}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9053,7 +9057,7 @@ GameObject:
   - component: {fileID: 8343310639909041539}
   - component: {fileID: 6135325967337917774}
   - component: {fileID: 8343310639909041540}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}

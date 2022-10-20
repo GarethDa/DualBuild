@@ -192,6 +192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1083343765270828404}
+  - component: {fileID: 5251905566374595759}
   m_Layer: 8
   m_Name: Feet
   m_TagString: Untagged
@@ -357,7 +358,6 @@ GameObject:
   - component: {fileID: 1083343765661007601}
   - component: {fileID: 1083343765661007604}
   - component: {fileID: 1083343765661007607}
-  - component: {fileID: 1083343765661007606}
   m_Layer: 8
   m_Name: Eyes
   m_TagString: Player

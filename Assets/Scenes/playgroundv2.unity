@@ -400,7 +400,7 @@ Transform:
   - {fileID: 215501100}
   - {fileID: 1603706586}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &115769811
 GameObject:
@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 115769815}
   - component: {fileID: 115769814}
   - component: {fileID: 115769813}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -691,7 +691,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: -53.18, z: 0}
 --- !u!1 &152743929
 GameObject:
@@ -705,7 +705,7 @@ GameObject:
   - component: {fileID: 152743933}
   - component: {fileID: 152743932}
   - component: {fileID: 152743931}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -833,7 +833,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &158365054
 MonoBehaviour:
@@ -1627,7 +1627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9089954442271561214, guid: 65552f22ec2208e438a86795d629c9a3, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9089954442271561214, guid: 65552f22ec2208e438a86795d629c9a3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1923,7 +1923,7 @@ GameObject:
   - component: {fileID: 522516659}
   - component: {fileID: 522516658}
   - component: {fileID: 522516657}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2263,7 +2263,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: -89.135, y: 0, z: -35.924}
 --- !u!1 &608732355
 GameObject:
@@ -2277,7 +2277,7 @@ GameObject:
   - component: {fileID: 608732359}
   - component: {fileID: 608732358}
   - component: {fileID: 608732357}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2513,7 +2513,7 @@ GameObject:
   - component: {fileID: 688935311}
   - component: {fileID: 688935310}
   - component: {fileID: 688935309}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3092,7 +3092,7 @@ Transform:
   - {fileID: 2043521495}
   - {fileID: 1931531783}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &823319311
 GameObject:
@@ -3189,7 +3189,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &940310399
 GameObject:
@@ -3317,7 +3317,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 18.111, y: 0, z: 0}
 --- !u!1 &1004032704
 GameObject:
@@ -3331,7 +3331,7 @@ GameObject:
   - component: {fileID: 1004032708}
   - component: {fileID: 1004032707}
   - component: {fileID: 1004032706}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: stairs (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3549,7 +3549,7 @@ GameObject:
   - component: {fileID: 1047669406}
   - component: {fileID: 1047669405}
   - component: {fileID: 1047669404}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3731,6 +3731,53 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1071925493}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1125224053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1125224055}
+  - component: {fileID: 1125224054}
+  m_Layer: 0
+  m_Name: PachinkoBallDispenser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1125224054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125224053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98b48facc3d33142baab20af1602f8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: 0
+  arrow: {fileID: 1997798319}
+--- !u!4 &1125224055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125224053}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.82, y: 1.13, z: 0.14}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1997798323}
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1195720416
 GameObject:
   m_ObjectHideFlags: 0
@@ -3743,7 +3790,7 @@ GameObject:
   - component: {fileID: 1195720420}
   - component: {fileID: 1195720419}
   - component: {fileID: 1195720418}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3840,7 +3887,7 @@ GameObject:
   - component: {fileID: 1204607099}
   - component: {fileID: 1204607098}
   - component: {fileID: 1204607097}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4106,6 +4153,93 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1243342055}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1245144411
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.21
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.21
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.21
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 49.39454
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 120.23803
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_Name
+      value: beat
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: c8d80525e57f41846ad1e0f66e4219d7, type: 3}
 --- !u!1 &1268788504
 GameObject:
   m_ObjectHideFlags: 0
@@ -5056,7 +5190,7 @@ Transform:
   - {fileID: 1423518872}
   - {fileID: 1429190656}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1456261677
 GameObject:
@@ -5153,7 +5287,7 @@ GameObject:
   - component: {fileID: 1472071823}
   - component: {fileID: 1472071822}
   - component: {fileID: 1472071821}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5654,7 +5788,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1621266131
 GameObject:
@@ -6174,7 +6308,7 @@ GameObject:
   - component: {fileID: 1749355762}
   - component: {fileID: 1749355761}
   - component: {fileID: 1749355760}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6271,7 +6405,7 @@ GameObject:
   - component: {fileID: 1762934920}
   - component: {fileID: 1762934919}
   - component: {fileID: 1762934918}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6605,7 +6739,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1899315378
 GameObject:
@@ -6617,6 +6751,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1899315380}
   - component: {fileID: 1899315379}
+  - component: {fileID: 1899315381}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -6701,6 +6836,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1899315381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899315378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!1 &1899748521
 GameObject:
   m_ObjectHideFlags: 0
@@ -7043,7 +7198,7 @@ GameObject:
   - component: {fileID: 1965645236}
   - component: {fileID: 1965645235}
   - component: {fileID: 1965645234}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7306,7 +7461,7 @@ GameObject:
   - component: {fileID: 2089388034}
   - component: {fileID: 2089388033}
   - component: {fileID: 2089388032}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7839,7 +7994,7 @@ GameObject:
   - component: {fileID: 4173572477524770725}
   - component: {fileID: 2166078896496511855}
   - component: {fileID: 4173572477524770726}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8076,7 +8231,7 @@ GameObject:
   - component: {fileID: 665620096377875531}
   - component: {fileID: 3445442105241834630}
   - component: {fileID: 3445442105241834631}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8194,7 +8349,7 @@ GameObject:
   - component: {fileID: 1318506355198078689}
   - component: {fileID: 3792079467313550892}
   - component: {fileID: 3792079467313550893}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8422,7 +8577,7 @@ GameObject:
   - component: {fileID: 2140801284800229516}
   - component: {fileID: 4276675586180270145}
   - component: {fileID: 4276675586180270146}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8874,7 +9029,7 @@ GameObject:
   - component: {fileID: 8864449265348392038}
   - component: {fileID: 6692400645950980268}
   - component: {fileID: 8864449265348392039}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9217,7 +9372,7 @@ GameObject:
   - component: {fileID: 7864213066610167195}
   - component: {fileID: 5388481464920193361}
   - component: {fileID: 7864213066610167196}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9699,7 +9854,7 @@ GameObject:
   - component: {fileID: 8343310639909041539}
   - component: {fileID: 6135325967337917774}
   - component: {fileID: 8343310639909041540}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}

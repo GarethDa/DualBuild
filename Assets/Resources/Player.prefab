@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1083343764844370058}
   - component: {fileID: 1083343764844370053}
   - component: {fileID: 1083343764844370052}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Zoomed Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1083343764891013159}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: PlayerObj
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1083343765244980059}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Orientation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,8 +192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1083343765270828404}
-  - component: {fileID: 5251905566374595759}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +239,7 @@ GameObject:
   - component: {fileID: 1083343765445174908}
   - component: {fileID: 1083343765445174907}
   - component: {fileID: 1083343765445174910}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Virtual Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +357,8 @@ GameObject:
   - component: {fileID: 1083343765661007601}
   - component: {fileID: 1083343765661007604}
   - component: {fileID: 1083343765661007607}
-  m_Layer: 7
+  - component: {fileID: 1083343765661007606}
+  m_Layer: 8
   m_Name: Eyes
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -442,7 +442,7 @@ GameObject:
   - component: {fileID: 1083343764689345803}
   - component: {fileID: 1083343764689345801}
   - component: {fileID: 1083343764689345800}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Main Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +558,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1083343766147741785}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Camera Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -590,7 +590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1083343764708209317}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Follow Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 1083343766286661468}
   - component: {fileID: 1083343766286661467}
   - component: {fileID: 1083343766286661470}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -775,7 +775,7 @@ GameObject:
   - component: {fileID: 1083343766382152138}
   - component: {fileID: 1083343766382152133}
   - component: {fileID: 1083343766382152132}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Body
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -873,7 +873,7 @@ GameObject:
   - component: {fileID: 1083343766551376229}
   - component: {fileID: 1083343766551376228}
   - component: {fileID: 1083343766551376231}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1030,7 +1030,7 @@ GameObject:
   - component: {fileID: 5327131741349005861}
   - component: {fileID: 1910484435898432756}
   - component: {fileID: 8360810863972604655}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}

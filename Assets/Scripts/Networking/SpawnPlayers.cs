@@ -23,7 +23,7 @@ public class SpawnPlayers : MonoBehaviour
     {
         Vector3 randomPosition = transform.position;
         GameObject myPlayer = (GameObject)PhotonNetwork.Instantiate(playerPrefab.name, randomPosition, Quaternion.identity);
-
+        myPlayer.transform.SetParent(GameManager.instance.playerManager.transform);//please dont remove this
         //ENABLED SO THAT EACH CLIENT HAS THEIR OWN VERSION
         myPlayer.GetComponent<TpMovement>().enabled = true;
         myPlayer.GetComponent<PlayerInput>().enabled = true;

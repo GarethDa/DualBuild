@@ -173,7 +173,7 @@ public class RoundManager : MonoBehaviour
 
     public void loadLevel(int number)
     {
-        Debug.Log(number);
+        //Debug.Log(number);
         GameObject level = Instantiate(Resources.Load<GameObject>("Levels/" + number.ToString()));
         level.transform.SetParent(GameManager.instance.levelManager.transform);
         level.transform.position = level.transform.parent.transform.position + level.transform.position;

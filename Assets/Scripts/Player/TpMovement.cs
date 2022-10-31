@@ -62,13 +62,15 @@ public class TpMovement : MonoBehaviour
     private void FixedUpdate()
     {
         //if you control THAT character
-        if (view.IsMine)        {
-            isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
-
-            RotatePlayer();
-            MovePlayer();
-            AddHorizontalDrag();
+        /*        if (view.IsMine)        {
+        this is where photon stuff goes if put back in
         }
+        */
+        isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
+
+        RotatePlayer();
+        MovePlayer();
+        AddHorizontalDrag();
         /*
         else
         {

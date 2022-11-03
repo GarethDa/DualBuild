@@ -17,7 +17,7 @@ public class BallBehaviour : MonoBehaviour
     {
         //Find the player camera and player objects
         playerCam = GameObject.Find("Main Camera");
-        playerObject = GameObject.Find("Player(Clone)");
+        playerObject = GameObject.Find("Player");
         //playerModel = GameObject.Find("PlayerObj");
     }
 

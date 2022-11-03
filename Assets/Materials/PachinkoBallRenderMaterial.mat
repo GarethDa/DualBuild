@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PachinkoBallRenderMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: d8a19e84789d4d2448b600c78fe146eb, type: 3}
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,7 +30,8 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -123,7 +124,7 @@ Material:
     - _ReceiveShadows: 1
     - _Shadow_Blend: 0
     - _Shadow_Size: -0.3
-    - _Smoothness: 0.5
+    - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -133,9 +134,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Base_Color: {r: 0.7686275, g: 0.7686275, b: 0.7686275, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.13122918, g: 0.05918476, b: 0.3584906, a: 1}
+    - _Base_Color: {r: 0.19579369, g: 0.08962265, b: 0.3584906, a: 0}
+    - _Color: {r: 0.13122918, g: 0.05918476, b: 0.3584906, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Shadow_Color: {r: 0.4509804, g: 0.4509804, b: 0.4509804, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

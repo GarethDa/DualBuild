@@ -1026,7 +1026,6 @@ GameObject:
   - component: {fileID: 3332405909751510435}
   - component: {fileID: 3332405909751510434}
   - component: {fileID: 3332405909751510461}
-  - component: {fileID: 3332405909751510459}
   - component: {fileID: 5327131741349005861}
   - component: {fileID: 1910484435898432756}
   - component: {fileID: 8360810863972604655}
@@ -1156,36 +1155,6 @@ MonoBehaviour:
   playerObj: {fileID: 1083343764891013159}
   zoomCam: {fileID: 1083343764844370058}
   throwForce: 1500
---- !u!114 &3332405909751510459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3332405909751510458}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 5fe38157de135d642b72399d3890c389, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 1083343764689345803}
 --- !u!114 &5327131741349005861
 MonoBehaviour:
   m_ObjectHideFlags: 0

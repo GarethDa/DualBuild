@@ -22,6 +22,8 @@ public class CharacterAiming : MonoBehaviour
 
     GameObject heldProjectile = null;
 
+    //UserInput inputAction;
+
     private void OnEnable()
     {
     }
@@ -29,6 +31,13 @@ public class CharacterAiming : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //inputAction = InputController.controller.inputAction;
+
+        //inputAction.Player.Aim.performed += cntxt => OnAim();
+        //inputAction.Player.Aim.canceled += cntxt => OnAim();
+
+        //inputAction.Player.Fire.performed += cntxt => OnFire();
+
         //Lock the cursor, make it invisible
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -55,13 +64,13 @@ public class CharacterAiming : MonoBehaviour
     }
 
 	//Aiming is a value type, not a button type, meaning it can sense when aim is being held down and released
-	void OnAim()
+	public void OnAim(InputAction.CallbackContext cntxt)
 	{
         //If the player was aiming, stop; if the player wasn't aiming, start
         isAiming = !isAiming;
 
         //If the player is aiming, prioritize the zoomed in camera and enable to reticle
-        if (isAiming)
+        if (cntxt.performed)
         {
             zoomCam.Priority += 10;
 
@@ -69,7 +78,7 @@ public class CharacterAiming : MonoBehaviour
         }
 
         //If the player isn't aiming, prioritize the zoomed out camera and disable the reticle
-        else
+        else if (cntxt.canceled)
         {
             zoomCam.Priority -= 10;
 
@@ -77,7 +86,7 @@ public class CharacterAiming : MonoBehaviour
         }
 	}
 
-    void OnFire()
+    public void OnFire()
     {
         //If the player is holding a projectile, then go through the steps to throw it
         if (holdingProjectile)

@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 115769815}
   - component: {fileID: 115769814}
   - component: {fileID: 115769813}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -705,7 +705,7 @@ GameObject:
   - component: {fileID: 152743933}
   - component: {fileID: 152743932}
   - component: {fileID: 152743931}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -992,7 +992,7 @@ GameObject:
   - component: {fileID: 203077217}
   - component: {fileID: 203077219}
   - component: {fileID: 203077218}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1259,7 +1259,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 215501100}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pokertable (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1285,6 +1285,44 @@ Transform:
   m_Father: {fileID: 83249479}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &228083908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1083343765841487865, guid: 44d348a00f26f714dbde79039840a081, type: 3}
+  m_PrefabInstance: {fileID: 1268450008}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &228083910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228083908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 1
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &236347091
 GameObject:
   m_ObjectHideFlags: 0
@@ -2238,7 +2276,7 @@ GameObject:
   - component: {fileID: 608732359}
   - component: {fileID: 608732358}
   - component: {fileID: 608732357}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2335,7 +2373,7 @@ GameObject:
   - component: {fileID: 688935311}
   - component: {fileID: 688935310}
   - component: {fileID: 688935309}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2659,7 +2697,7 @@ GameObject:
   - component: {fileID: 791736593}
   - component: {fileID: 791736595}
   - component: {fileID: 791736594}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2747,7 +2785,7 @@ GameObject:
   - component: {fileID: 820794098}
   - component: {fileID: 820794100}
   - component: {fileID: 820794099}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3392,7 +3430,7 @@ GameObject:
   - component: {fileID: 1047669406}
   - component: {fileID: 1047669405}
   - component: {fileID: 1047669404}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3644,7 +3682,7 @@ GameObject:
   - component: {fileID: 1195720420}
   - component: {fileID: 1195720419}
   - component: {fileID: 1195720418}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3741,7 +3779,7 @@ GameObject:
   - component: {fileID: 1204607099}
   - component: {fileID: 1204607098}
   - component: {fileID: 1204607097}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4029,7 +4067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1083343764844370055, guid: 44d348a00f26f714dbde79039840a081, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.5499945
+      value: 1.5212412
       objectReference: {fileID: 0}
     - target: {fileID: 1083343764844370055, guid: 44d348a00f26f714dbde79039840a081, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4285,7 +4323,7 @@ GameObject:
   - component: {fileID: 1329839013}
   - component: {fileID: 1329839015}
   - component: {fileID: 1329839014}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5067,7 +5105,7 @@ GameObject:
   - component: {fileID: 1472071823}
   - component: {fileID: 1472071822}
   - component: {fileID: 1472071821}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5446,7 +5484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1603706586}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pokertable (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5700,7 +5738,7 @@ GameObject:
   - component: {fileID: 1669491354}
   - component: {fileID: 1669491356}
   - component: {fileID: 1669491355}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6088,7 +6126,7 @@ GameObject:
   - component: {fileID: 1749355762}
   - component: {fileID: 1749355761}
   - component: {fileID: 1749355760}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6293,7 +6331,7 @@ GameObject:
   - component: {fileID: 1762934920}
   - component: {fileID: 1762934919}
   - component: {fileID: 1762934918}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7132,7 +7170,7 @@ GameObject:
   - component: {fileID: 1965645236}
   - component: {fileID: 1965645235}
   - component: {fileID: 1965645234}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7471,7 +7509,7 @@ GameObject:
   - component: {fileID: 2089388034}
   - component: {fileID: 2089388033}
   - component: {fileID: 2089388032}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7567,7 +7605,7 @@ GameObject:
   - component: {fileID: 2107196894}
   - component: {fileID: 2107196896}
   - component: {fileID: 2107196895}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7824,7 +7862,7 @@ GameObject:
   - component: {fileID: 3445045871746154904}
   - component: {fileID: 5425440947359581016}
   - component: {fileID: 1183717460541815795}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7840,7 +7878,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1095386122332089706}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pokertable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7901,7 +7939,7 @@ GameObject:
   - component: {fileID: 4173572477524770725}
   - component: {fileID: 2166078896496511855}
   - component: {fileID: 4173572477524770726}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: slots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8138,7 +8176,7 @@ GameObject:
   - component: {fileID: 665620096377875531}
   - component: {fileID: 3445442105241834630}
   - component: {fileID: 3445442105241834631}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8315,7 +8353,7 @@ GameObject:
   - component: {fileID: 1318506355198078689}
   - component: {fileID: 3792079467313550892}
   - component: {fileID: 3792079467313550893}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8348,7 +8386,7 @@ GameObject:
   - component: {fileID: 4271141333631655263}
   - component: {fileID: 6900199992195768223}
   - component: {fileID: 352422460664375092}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8524,7 +8562,7 @@ GameObject:
   - component: {fileID: 3800973831112278834}
   - component: {fileID: 5781371449354863090}
   - component: {fileID: 801059891394279769}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8543,7 +8581,7 @@ GameObject:
   - component: {fileID: 2140801284800229516}
   - component: {fileID: 4276675586180270145}
   - component: {fileID: 4276675586180270146}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8584,7 +8622,7 @@ GameObject:
   - component: {fileID: 2788147758483250477}
   - component: {fileID: 8575867097742308986}
   - component: {fileID: 7258715788723787386}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8817,7 +8855,7 @@ GameObject:
   - component: {fileID: 6089881719866216624}
   - component: {fileID: 4810199758833988292}
   - component: {fileID: 7731190825117547614}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8920,7 +8958,7 @@ GameObject:
   - component: {fileID: 3347931583883528568}
   - component: {fileID: 4050114925510339340}
   - component: {fileID: 1278758656406906262}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8961,7 +8999,7 @@ GameObject:
   - component: {fileID: 5246058195671472162}
   - component: {fileID: 1837286194205406069}
   - component: {fileID: 774865642834809717}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8995,7 +9033,7 @@ GameObject:
   - component: {fileID: 8864449265348392038}
   - component: {fileID: 6692400645950980268}
   - component: {fileID: 8864449265348392039}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pachinko
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9097,7 +9135,7 @@ GameObject:
   - component: {fileID: 5130831171380102735}
   - component: {fileID: 1623191326873693464}
   - component: {fileID: 376334054331010328}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9319,7 +9357,7 @@ GameObject:
   - component: {fileID: 6648677252890821861}
   - component: {fileID: 1006058161449660338}
   - component: {fileID: 2182423568687796146}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9398,7 +9436,7 @@ GameObject:
   - component: {fileID: 4251213982875063743}
   - component: {fileID: 3223874258296666059}
   - component: {fileID: 375618080314210641}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9503,7 +9541,7 @@ GameObject:
   - component: {fileID: 3820945231905000402}
   - component: {fileID: 2541263192719813030}
   - component: {fileID: 779007566738695996}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9645,7 +9683,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7977763380290254344}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pokertable (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9661,7 +9699,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7011915918360668261}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pokertable (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9820,7 +9858,7 @@ GameObject:
   - component: {fileID: 8343310639909041539}
   - component: {fileID: 6135325967337917774}
   - component: {fileID: 8343310639909041540}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cube.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9913,7 +9951,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8486526618088125602}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pokertable (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9931,7 +9969,7 @@ GameObject:
   - component: {fileID: 6141475951221807184}
   - component: {fileID: 3584492478353316496}
   - component: {fileID: 7681115540251779643}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}

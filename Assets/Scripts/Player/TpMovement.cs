@@ -10,8 +10,10 @@ public class TpMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] [Range(3.0f, 20.0f)] private float jumpForce = 10.0f;
     [SerializeField] [Range(5.0f, 30.0f)] private float rotSpeed = 10.0f;
-	[SerializeField] [Range(1.0f, 1000.0f)] private float maxSpeed = 100.0f;
+	[SerializeField] [Range(1.0f, 500.0f)] private float maxSpeed = 100.0f;
     [SerializeField] [Range(0.01f, 1f)] private float dragVariable = 1.0f;
+    [SerializeField] [Range(1.0f, 100.0f)] private float jumpGravity = 9.8f;
+    [SerializeField] [Range(1.0f, 4.0f)] private float fallMultiplier = 1.0f;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask floorMask;
@@ -34,6 +36,8 @@ public class TpMovement : MonoBehaviour
     PhotonView view;
 
     bool isGrounded;
+    bool lastFrameGrounded = true;
+    bool justSwapped = false;
 
     RaycastHit rayHit;
 
@@ -68,9 +72,33 @@ public class TpMovement : MonoBehaviour
         */
         isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
 
-        RotatePlayer();
-        MovePlayer();
-        AddHorizontalDrag();
+            if (isGrounded && !lastFrameGrounded) justSwapped = true;
+
+            RotatePlayer();
+            MovePlayer();
+            AddHorizontalDrag();
+
+            lastFrameGrounded = isGrounded;
+            justSwapped = false;
+        }
+
+        
+
+        Debug.Log(Mathf.Sqrt(Mathf.Pow(rBody.velocity.x, 2) + Mathf.Pow(rBody.velocity.z, 2)));
+        
+        /*
+        if (!isGrounded)
+        {
+            Physics.gravity = new Vector3(0f, -9.8f, 0f);
+        }
+
+        else Physics.gravity = new Vector3(0f, -jumpGravity, 0f);
+        */
+        if (rBody.velocity.y < 0)
+        {
+            rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
+        }
+
         /*
         else
         {
@@ -102,6 +130,16 @@ public class TpMovement : MonoBehaviour
 
         rBody.AddForce(moveDir.normalized * maxSpeed, ForceMode.Force);
 
+        if (!isGrounded)
+        {
+            rBody.AddForce(new Vector3(0f, -jumpGravity, 0f), ForceMode.Force);
+        }
+
+        if (justSwapped)
+        {
+            rBody.velocity = new Vector3(rBody.velocity.x, 0f, rBody.velocity.z);
+        }
+
         //This code is for keeping the player on a ramp while they are doing down it.
         //Raycast downwards to see what the player is standing on.
         if (Physics.Raycast(feetTransform.position, -transform.up, out rayHit, 0.1f))
@@ -109,7 +147,7 @@ public class TpMovement : MonoBehaviour
             //Create a quaternion that holds the rotation from up to along the ramp
             Quaternion groundRot = Quaternion.FromToRotation(Vector3.up, rayHit.normal);
 
-            //Create a new velocity by multiplying the roation quaternion with the current velocity
+            //Create a new velocity by multiplying the rotation quaternion with the current velocity
             Vector3 newVelocity = groundRot * rBody.velocity;
 
             //If the y component of the velocity is less than 0, meaning the player is going down a ramp,
@@ -122,13 +160,15 @@ public class TpMovement : MonoBehaviour
 	private void AddHorizontalDrag()
 	{
         //The lower the drag variable, the lower the drag
-        float dragForce = Mathf.Pow(Mathf.Sqrt(rBody.velocity.x * rBody.velocity.x + rBody.velocity.z * rBody.velocity.z), 2) * Mathf.Pow(dragVariable, 3); 
+        float dragForce = Mathf.Pow(Mathf.Sqrt(rBody.velocity.x * rBody.velocity.x + rBody.velocity.z * rBody.velocity.z), 2) * Mathf.Pow(dragVariable, 4);
 
         //Multiply the drag force by the current velocity (x and z) and make it negative to find the drag vector
         Vector3 dragVec = dragForce * -new Vector3(rBody.velocity.x, 0f, rBody.velocity.z);
 
         //Add the drag to the current velocity
         rBody.velocity = rBody.velocity + dragVec;
+
+        //rBody.velocity = new Vector3(rBody.velocity.x * (1 - Time.deltaTime * dragForce), rBody.velocity.y, rBody.velocity.z * (1 - Time.deltaTime * dragForce));
     }
 
     //New input system

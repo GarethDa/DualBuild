@@ -32,7 +32,7 @@ public class PowerUpScript : MonoBehaviour
         initialJumpForce = playerObject.GetComponent<TpMovement>().GetJumpForce();
     }
 
-    void OnPowerUp()
+    public void OnPowerUp()
     {
         //in the future this should probably be part of a game manager, but for now it's on the player//
         //there should probably also be an observer to check when the player actually uses their boosted ablility and then resets

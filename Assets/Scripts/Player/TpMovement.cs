@@ -80,7 +80,7 @@ public class TpMovement : MonoBehaviour
 
             lastFrameGrounded = isGrounded;
             justSwapped = false;
-        }
+        
 
         
 

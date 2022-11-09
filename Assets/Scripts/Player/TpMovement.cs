@@ -26,6 +26,7 @@ public class TpMovement : MonoBehaviour
     [Header("Camera")]
 	[SerializeField] private Camera playerCam;
 
+    Vector2 moveInput;
     float horizontalInput;
     float verticalInput;
 
@@ -43,9 +44,20 @@ public class TpMovement : MonoBehaviour
 
     bool editing = false;
 
+    //UserInput inputAction;
+
     // Start is called before the first frame update
     void Start()
     {
+        //inputAction = InputController.controller.inputAction;
+
+        //inputAction.Player.Move.performed += cntxt => moveInput = cntxt.ReadValue<Vector2>();
+        //inputAction.Player.Move.canceled += cntxt => moveInput = Vector2.zero;
+
+        //inputAction.Player.Jump.performed += cntxt => OnJump();
+
+        //inputAction.Player.EnableUI.performed += cntxt => OnEnableUI();
+
         rBody = GetComponent<Rigidbody>();
        
         //Freeze the rotation of the rigid body, ensuring it doesn't fall over
@@ -172,16 +184,16 @@ public class TpMovement : MonoBehaviour
     }
 
     //New input system
-	void OnMove(InputValue playerInput)
+	public void OnMove(InputAction.CallbackContext cntxt)
 	{
-		Vector2 playerMovement = playerInput.Get<Vector2>();
+		Vector2 playerMovement = cntxt.ReadValue<Vector2>();
 
 		horizontalInput = playerMovement.x;
 		verticalInput = playerMovement.y;
 	}
 
     //New input system
-    void OnJump()
+    public void OnJump()
     {
         if (isGrounded) rBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }

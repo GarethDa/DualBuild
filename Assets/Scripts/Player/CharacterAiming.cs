@@ -66,15 +66,14 @@ public class CharacterAiming : MonoBehaviour
 	//Aiming is a value type, not a button type, meaning it can sense when aim is being held down and released
 	public void OnAim(InputAction.CallbackContext cntxt)
 	{
-        //If the player was aiming, stop; if the player wasn't aiming, start
-        isAiming = !isAiming;
-
         //If the player is aiming, prioritize the zoomed in camera and enable to reticle
         if (cntxt.performed)
         {
             zoomCam.Priority += 10;
 
             reticle.enabled = true;
+
+            isAiming = true;
         }
 
         //If the player isn't aiming, prioritize the zoomed out camera and disable the reticle
@@ -83,6 +82,8 @@ public class CharacterAiming : MonoBehaviour
             zoomCam.Priority -= 10;
 
             reticle.enabled = false;
+
+            isAiming = false;
         }
 	}
 

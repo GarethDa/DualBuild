@@ -10,10 +10,11 @@ public class TpMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] [Range(3.0f, 20.0f)] private float jumpForce = 10.0f;
     [SerializeField] [Range(5.0f, 30.0f)] private float rotSpeed = 10.0f;
-	[SerializeField] [Range(1.0f, 500.0f)] private float maxSpeed = 100.0f;
+	[SerializeField] [Range(5.0f, 50.0f)] private float maxSpeed = 20.0f;
     [SerializeField] [Range(0.01f, 1f)] private float dragVariable = 1.0f;
     [SerializeField] [Range(1.0f, 100.0f)] private float jumpGravity = 9.8f;
     [SerializeField] [Range(1.0f, 4.0f)] private float fallMultiplier = 1.0f;
+    [SerializeField] [Range(0f, 10.0f)] private float groundDrag = 1.0f;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask floorMask;
@@ -81,42 +82,38 @@ public class TpMovement : MonoBehaviour
         /*        if (view.IsMine)        {
         this is where photon stuff goes if put back in
         }
-        */
-        isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
-
-            if (isGrounded && !lastFrameGrounded) justSwapped = true;
-
-            RotatePlayer();
-            MovePlayer();
-            AddHorizontalDrag();
-
-            lastFrameGrounded = isGrounded;
-            justSwapped = false;
         
-
-        
-
-        Debug.Log(Mathf.Sqrt(Mathf.Pow(rBody.velocity.x, 2) + Mathf.Pow(rBody.velocity.z, 2)));
-        
-        /*
-        if (!isGrounded)
-        {
-            Physics.gravity = new Vector3(0f, -9.8f, 0f);
-        }
-
-        else Physics.gravity = new Vector3(0f, -jumpGravity, 0f);
-        */
-        if (rBody.velocity.y < 0)
-        {
-            rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
-        }
-
-        /*
         else
         {
             GetComponent<TpMovement>().enabled = false;
         }
         */
+
+        isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
+
+        if (isGrounded) rBody.drag = groundDrag;
+
+        else rBody.drag = 0f;
+
+        if (isGrounded && !lastFrameGrounded) justSwapped = true;
+
+        RotatePlayer();
+        MovePlayer();
+        LimitSpeed();
+        //AddHorizontalDrag();
+
+        lastFrameGrounded = isGrounded;
+        justSwapped = false;
+        
+        //Debug.Log(Mathf.Sqrt(Mathf.Pow(rBody.velocity.x, 2) + Mathf.Pow(rBody.velocity.z, 2)));
+        
+        if (rBody.velocity.y < 0)
+        {
+            rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
+        }
+
+        Debug.Log(new Vector3(rBody.velocity.x, 0f, rBody.velocity.z).magnitude);
+
     }
 
     //For rotating the player object when the player inputs a direction
@@ -140,7 +137,7 @@ public class TpMovement : MonoBehaviour
         //Calculate direction
         moveDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        rBody.AddForce(moveDir.normalized * maxSpeed, ForceMode.Force);
+        rBody.AddForce(moveDir.normalized * maxSpeed * 5f, ForceMode.Force);
 
         if (!isGrounded)
         {
@@ -165,6 +162,17 @@ public class TpMovement : MonoBehaviour
             //If the y component of the velocity is less than 0, meaning the player is going down a ramp,
             //then set the velocity to the new velocity
             if (newVelocity.y < 0) rBody.velocity = newVelocity;
+        }
+    }
+
+    private void LimitSpeed()
+    {
+        Vector3 currentSpd = new Vector3(rBody.velocity.x, 0f, rBody.velocity.z);
+
+        if (currentSpd.magnitude > maxSpeed)
+        {
+            Vector3 newSpd = currentSpd.normalized * maxSpeed;
+            rBody.velocity = new Vector3(newSpd.x, rBody.velocity.y, newSpd.z);
         }
     }
 

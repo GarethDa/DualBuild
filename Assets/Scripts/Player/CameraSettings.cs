@@ -12,6 +12,7 @@ public class CameraSettings : MonoBehaviour
     [Header("Sensitivities")]
     [SerializeField] [Range(10f, 1000f)] float zoomedOutSensitivity = 300f;
     [SerializeField] [Range(10f, 1000f)] float zoomedInSensitivity = 300f;
+    [SerializeField] [Range(1f, 3f)] float verticalSensitivityDivisor = 1f;
 
     [Header("Invert Aim")]
     [SerializeField] bool zoomedOutXInvert = false;
@@ -32,12 +33,12 @@ public class CameraSettings : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = zoomedOutSensitivity;
+        zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = zoomedOutSensitivity / verticalSensitivityDivisor;
         zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = zoomedOutSensitivity;
         zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_InvertInput = zoomedOutXInvert;
         zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_InvertInput = zoomedOutYInvert;
 
-        zoomInCam.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = zoomedInSensitivity;
+        zoomInCam.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = zoomedInSensitivity / verticalSensitivityDivisor;
         zoomInCam.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = zoomedInSensitivity;
         zoomInCam.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_InvertInput = zoomedInXInvert;
         zoomInCam.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_InvertInput = zoomedInYInvert;

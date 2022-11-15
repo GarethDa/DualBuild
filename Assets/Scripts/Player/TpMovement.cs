@@ -11,7 +11,7 @@ public class TpMovement : MonoBehaviour
     [SerializeField] [Range(3.0f, 20.0f)] private float jumpForce = 10.0f;
     [SerializeField] [Range(5.0f, 30.0f)] private float rotSpeed = 10.0f;
 	[SerializeField] [Range(5.0f, 50.0f)] private float maxSpeed = 20.0f;
-    [SerializeField] [Range(0.01f, 1f)] private float dragVariable = 1.0f;
+    private float dragVariable = 1.0f;
     [SerializeField] [Range(1.0f, 100.0f)] private float jumpGravity = 9.8f;
     [SerializeField] [Range(1.0f, 4.0f)] private float fallMultiplier = 1.0f;
     [SerializeField] [Range(0f, 10.0f)] private float groundDrag = 1.0f;
@@ -176,7 +176,7 @@ public class TpMovement : MonoBehaviour
         }
     }
 
-    //For removing slipperiness
+    //For removing slipperiness (OLD, DON'T USE)
 	private void AddHorizontalDrag()
 	{
         //The lower the drag variable, the lower the drag

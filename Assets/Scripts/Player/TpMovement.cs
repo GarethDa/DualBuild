@@ -50,15 +50,6 @@ public class TpMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //inputAction = InputController.controller.inputAction;
-
-        //inputAction.Player.Move.performed += cntxt => moveInput = cntxt.ReadValue<Vector2>();
-        //inputAction.Player.Move.canceled += cntxt => moveInput = Vector2.zero;
-
-        //inputAction.Player.Jump.performed += cntxt => OnJump();
-
-        //inputAction.Player.EnableUI.performed += cntxt => OnEnableUI();
-
         rBody = GetComponent<Rigidbody>();
        
         //Freeze the rotation of the rigid body, ensuring it doesn't fall over
@@ -223,6 +214,7 @@ public class TpMovement : MonoBehaviour
         return isGrounded;
     }
 
+    /*
     void OnEnableUI()
     {
         GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled = !GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled;
@@ -238,5 +230,25 @@ public class TpMovement : MonoBehaviour
         else Cursor.lockState = CursorLockMode.Locked;
 
         //spawnerUI.enabled = !spawnerUI.enabled;
+    }
+    */
+
+    public void OnEditorPause()
+    {
+        editing = !editing;
+
+        if (editing)
+        {
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
+        else
+        {
+            Time.timeScale = 1f;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 }

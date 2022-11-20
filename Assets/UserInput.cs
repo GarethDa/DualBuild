@@ -98,6 +98,24 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EditorPause"",
+                    ""type"": ""Button"",
+                    ""id"": ""9848d9df-0fe6-4eb3-a0a0-b27171ca129b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""bab3b6b3-fe40-4d53-94a7-0d2a094cad03"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -384,6 +402,28 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""EnableUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7aa8457-26f2-4f46-a504-1d77ada4fa09"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditorPause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4e83a0f-843a-4abb-9b64-177454f7b140"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -979,6 +1019,8 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_PowerUp = m_Player.FindAction("PowerUp", throwIfNotFound: true);
         m_Player_EnableUI = m_Player.FindAction("EnableUI", throwIfNotFound: true);
+        m_Player_EditorPause = m_Player.FindAction("EditorPause", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1058,6 +1100,8 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_PowerUp;
     private readonly InputAction m_Player_EnableUI;
+    private readonly InputAction m_Player_EditorPause;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @UserInput m_Wrapper;
@@ -1070,6 +1114,8 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputAction @PowerUp => m_Wrapper.m_Player_PowerUp;
         public InputAction @EnableUI => m_Wrapper.m_Player_EnableUI;
+        public InputAction @EditorPause => m_Wrapper.m_Player_EditorPause;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1103,6 +1149,12 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @EnableUI.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnableUI;
                 @EnableUI.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnableUI;
                 @EnableUI.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnableUI;
+                @EditorPause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEditorPause;
+                @EditorPause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEditorPause;
+                @EditorPause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEditorPause;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1131,6 +1183,12 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @EnableUI.started += instance.OnEnableUI;
                 @EnableUI.performed += instance.OnEnableUI;
                 @EnableUI.canceled += instance.OnEnableUI;
+                @EditorPause.started += instance.OnEditorPause;
+                @EditorPause.performed += instance.OnEditorPause;
+                @EditorPause.canceled += instance.OnEditorPause;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -1295,6 +1353,8 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnPowerUp(InputAction.CallbackContext context);
         void OnEnableUI(InputAction.CallbackContext context);
+        void OnEditorPause(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

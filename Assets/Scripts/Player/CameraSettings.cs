@@ -10,8 +10,8 @@ public class CameraSettings : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera zoomInCam;
 
     [Header("Sensitivities")]
-    [SerializeField] [Range(10f, 1000f)] float zoomedOutSensitivity = 300f;
-    [SerializeField] [Range(10f, 1000f)] float zoomedInSensitivity = 300f;
+    [SerializeField] [Range(10f, 1000f)] float zoomedOutSensitivity = 250f;
+    [SerializeField] [Range(10f, 1000f)] float zoomedInSensitivity = 150f;
     [SerializeField] [Range(1f, 3f)] float verticalSensitivityDivisor = 1f;
 
     [Header("Invert Aim")]
@@ -33,6 +33,9 @@ public class CameraSettings : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        zoomedOutSensitivity = StateVariables.zoomedOutSens;
+        zoomedInSensitivity = StateVariables.zoomedInSens;
+
         zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = zoomedOutSensitivity / verticalSensitivityDivisor;
         zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = zoomedOutSensitivity;
         zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_InvertInput = zoomedOutXInvert;

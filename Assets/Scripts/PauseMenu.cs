@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour
+public class PauseMenu : MonoBehaviour
 {
     //A struct which holds a reference to an input action and the button which will rebind it
     [Serializable]
@@ -18,8 +18,7 @@ public class MainMenu : MonoBehaviour
     }
 
     [Header("Scene/Screen switching")]
-    [SerializeField] private string lobbyLevel;
-    [SerializeField] private GameObject settingsScreen;
+    [SerializeField] private GameObject pauseScreen;
 
     [Header("Control rebinding")]
     [SerializeField] private List<InputInfoStruct> inputInfoList;
@@ -27,7 +26,7 @@ public class MainMenu : MonoBehaviour
     [Header("Sliders")]
     [SerializeField] private Slider zoomedInSensitivity;
     [SerializeField] private Slider zoomedOutSensitivity;
-    
+
     //[SerializeField] private PlayerInput pInput;
     //A list of texts which display the current binding of each action
     private List<TMP_Text> bindingTexts = new List<TMP_Text>();
@@ -39,6 +38,8 @@ public class MainMenu : MonoBehaviour
     private List<GameObject> waitingTextObjects = new List<GameObject>();
 
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
+
+    bool paused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -61,25 +62,22 @@ public class MainMenu : MonoBehaviour
         StateVariables.zoomedOutSens = zoomedOutSensitivity.value;
     }
 
-    public void StartGame()
+    public void OnPause()
     {
-        SceneManager.LoadScene(lobbyLevel);
-    }
+        paused = !paused;
+        pauseScreen.SetActive(paused);
 
-    public void OpenOptions()
-    {
-        settingsScreen.SetActive(true);
-    }
+        if (paused)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
 
-    public void CloseOptions()
-    {
-        settingsScreen.SetActive(false);
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-        Debug.Log("Game Quit");
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     public void StartRebinding(int index)
@@ -96,7 +94,7 @@ public class MainMenu : MonoBehaviour
     {
         int bindingIndex = inputInfoList[index].actionReference.action.GetBindingIndexForControl(inputInfoList[index].actionReference.action.controls[0]);
 
-        bindingTexts[index].text = InputControlPath.ToHumanReadableString(inputInfoList[index].actionReference.action.bindings[bindingIndex].effectivePath, 
+        bindingTexts[index].text = InputControlPath.ToHumanReadableString(inputInfoList[index].actionReference.action.bindings[bindingIndex].effectivePath,
             InputControlPath.HumanReadableStringOptions.OmitDevice);
 
         rebindingOperation.Dispose();

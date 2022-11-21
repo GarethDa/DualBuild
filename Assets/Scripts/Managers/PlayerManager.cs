@@ -22,10 +22,10 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void playerDied()
+    public void playerDied(GameObject p)
     {
         playersDied++;
-        EventManager.onPlayerFell?.Invoke(null, System.EventArgs.Empty);
+        EventManager.onPlayerFell?.Invoke(null, new PlayerArgs(p));
         checkLastOneStanding();
     }
 

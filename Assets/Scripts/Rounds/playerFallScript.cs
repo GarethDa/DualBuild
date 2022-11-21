@@ -17,12 +17,14 @@ public class playerFallScript : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.layer == 7)
+        if(collision.gameObject.tag.Equals("Player"))
         {
             //its a player
+            Debug.Log("COLLISION");
             //playerDied();
-            EventManager.onPlayerFell?.Invoke(null, System.EventArgs.Empty);
-
+            EventManager.onPlayerFell?.Invoke(null, new PlayerArgs(collision.gameObject));
+            //PlayerManager.instance.playerfell(collision.gameObject);
+           // Debug.Log("FELL");
         }
     }
 

@@ -29,7 +29,7 @@ public class ParticleManager : MonoBehaviour
 
     public void PlayEffect(Vector3 position, int index)
     {
-        transform.position = position;
+        childSystems[index].transform.position = position;
         childSystems[index].Play();
     }
 }

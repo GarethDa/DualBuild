@@ -103,7 +103,7 @@ public class TpMovement : MonoBehaviour
             rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
         }
 
-        Debug.Log(new Vector3(rBody.velocity.x, 0f, rBody.velocity.z).magnitude);
+        //Debug.Log(new Vector3(rBody.velocity.x, 0f, rBody.velocity.z).magnitude);
 
     }
 
@@ -192,9 +192,16 @@ public class TpMovement : MonoBehaviour
 	}
 
     //New input system
-    public void OnJump()
+    public void OnJump(InputAction.CallbackContext cntxt)
     {
-        if (isGrounded) rBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        if (cntxt.performed)
+        {
+            if (isGrounded)
+            {
+                rBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                ParticleManager.instance.PlayEffect(transform.position, 0);
+            }
+        }
     }
 
     //For setting the jump force

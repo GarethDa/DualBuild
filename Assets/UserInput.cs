@@ -60,8 +60,8 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""id"": ""b63d1e92-1621-4bc1-b9c7-d8d4af319bfa"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""MouseLook"",
@@ -74,12 +74,12 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Aim"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""adf60a5d-c4eb-4acd-85c7-48bf1f7e3e91"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""PowerUp"",

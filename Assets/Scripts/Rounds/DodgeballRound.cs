@@ -38,5 +38,7 @@ public class DodgeballRound : Round
     {
         EventManager.onPlayerFell -= playerFell;
         EventManager.onOffAirHideEvent?.Invoke(null, System.EventArgs.Empty);
+        EventManager.onTenSecondsBeforeRoundEndEvent -= onTenSecondsBefore;
+
     }
 }

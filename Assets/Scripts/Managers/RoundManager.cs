@@ -16,6 +16,8 @@ public class RoundManager : MonoBehaviour
     public Transform levelLocation;//where to spawn players when a round starts
     public GameObject deathLocation;//where players go when they die (AKA purgatory)
 
+    public int deadPlayers = 0;
+    public int totalPlayers = 1;
 
     private void Awake()//singleton
     {
@@ -42,10 +44,24 @@ public class RoundManager : MonoBehaviour
         nextRounds.Add(r);
     }
 
+    public void onDeath(object sender, PlayerArgs e)
+    {
+        deadPlayers++;
+        
+            if (deadPlayers >= totalPlayers - 1)
+            {
+            endRound();
+            
+            }
+       
+        
+    }
+
     public void startRound()
-    {   
+    {
+        Debug.Log("$-------------");
         currentRoundSeconds = 0;//reset time of rounds
- 
+        
         int toLoad = 0;
         int roundSeconds = 0;
         foreach(Round r in nextRounds)
@@ -58,11 +74,13 @@ public class RoundManager : MonoBehaviour
 
         if (nextRoundsHaveIntermission())//if next round is intermission, go to intermission
         {
+            Debug.Log("$START HAS INTERMISSION");
             sendPlayersToIntermission();
-            
+           
         }
         else
         {
+            Debug.Log("$START HAS NO INTERMISSION");
             loadLevel(toLoad);//load the level needed
             sendPlayersToLevel();
         }
@@ -76,6 +94,7 @@ public class RoundManager : MonoBehaviour
         nextRounds.Clear();
 
         //subscribe to events
+        EventManager.onPlayerDeath += onDeath;
         EventManager.onSecondTickEvent += secondTick;//subscribe to the second ticking event
         EventManager.onRoundStart?.Invoke(null, System.EventArgs.Empty);//invoke the round start event for other scripts
     }
@@ -83,8 +102,10 @@ public class RoundManager : MonoBehaviour
     public void endRound()
     {
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
+        EventManager.onPlayerDeath -= onDeath;
         EventManager.onRoundEnd?.Invoke(null, System.EventArgs.Empty);
-
+        
+        deadPlayers = 0;
         //remove children from the levelManager (destroys the level that was spawned in)
         for (int i = 0; i < GameManager.instance.levelManager.transform.childCount; i++) {
             if (GameManager.instance.levelManager.transform.GetChild(i).gameObject.tag.Equals("LevelPersistent"))
@@ -105,12 +126,14 @@ public class RoundManager : MonoBehaviour
         if (!currentRoundsHaveIntermission())
         {
             currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
+            Debug.Log("$END ROUND HAS NO INTERMISSION");
             addRound(new Intermission());
             startRound();
         }
         else
         {//start rounds
             currentRounds.Clear();
+            Debug.Log("$END ROUND INTERMISSION");
             generateNextRoundLevels();
             startRound();
         }
@@ -202,12 +225,13 @@ public class RoundManager : MonoBehaviour
 
     protected void sendPlayersToLevel()
     {
+        Debug.Log("$SEND TO LEVEL");
         sendPlayersToLocation(levelLocation.position);
     }
 
     protected void sendPlayersToIntermission()
     {
-        
+        Debug.Log("$SEND TO INTERMISSION");
         sendPlayersToLocation(intermissionLocation.position);
     }
 

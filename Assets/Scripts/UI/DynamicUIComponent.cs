@@ -8,6 +8,8 @@ public class DynamicUIComponent : MonoBehaviour
     Transform startingPos = null;
     float T = 0f;
     float secondsToMove = -1f;
+   
+    
     // Start is called before the first frame update
     void Start()
     {

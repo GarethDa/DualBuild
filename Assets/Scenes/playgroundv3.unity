@@ -809,6 +809,7 @@ GameObject:
   - component: {fileID: 158365054}
   - component: {fileID: 158365055}
   - component: {fileID: 158365056}
+  - component: {fileID: 158365057}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -901,6 +902,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d838eb3232a305e4fb7da449614c516f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &158365057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158365050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f66fde0d9854f9042992478d6b9d6e2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectPools:
+  - objectName: WhiteParticles
+    objectPrefab: {fileID: 829957015955438721, guid: afe2fb54cada1a34a96230a8a1aeb8c4, type: 3}
+    size: 3
 --- !u!1 &201890634
 GameObject:
   m_ObjectHideFlags: 0

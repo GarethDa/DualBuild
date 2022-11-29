@@ -54,7 +54,7 @@ public class ObjectPool : MonoBehaviour
         
     }
 
-    public void SpawnFromPool(string poolName, Vector3 position, bool overMax)
+    public GameObject SpawnFromPool(string poolName, Vector3 position, bool overMax)
     {
         //Grab the object pool of name poolName
         Queue<GameObject> objectPool; 
@@ -80,6 +80,9 @@ public class ObjectPool : MonoBehaviour
         {
             //Dequeue the object at the front
             GameObject spawnedObject = objectPool.Dequeue();
+            //Make sure to add the original object we grabbed back to the pool
+            objectPool.Enqueue(spawnedObject);
+
 
             //If the object isn't active, activate it and set its position to the input position
             if (!spawnedObject.activeInHierarchy)
@@ -91,6 +94,7 @@ public class ObjectPool : MonoBehaviour
                 {
                     spawnedObject.GetComponent<Rigidbody>().velocity = new Vector3();
                 }
+                return spawnedObject;
             }
 
             //Else, the object at the front is active
@@ -117,7 +121,8 @@ public class ObjectPool : MonoBehaviour
                         //Add the object back to the pool and break, since we found what we needed
                         objectPool.Enqueue(tempObj);
                         objectUsed = true;
-                        break;
+
+                        return tempObj;
                     }
 
                     //Make sure to add each object back to the pool after looking at it
@@ -144,12 +149,12 @@ public class ObjectPool : MonoBehaviour
 
                         //Add the object to the pool
                         objectPool.Enqueue(obj);
+                        return obj;
                     }
                 }
             }
 
-            //Make sure to add the original object we grabbed back to the pool
-            objectPool.Enqueue(spawnedObject);
         }
+        return null;
     }
 }

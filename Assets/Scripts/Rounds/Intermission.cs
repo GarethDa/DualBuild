@@ -9,7 +9,7 @@ public class Intermission : Round
     public Intermission()
     {
         type = roundType.INTERMISSION;
-        roundTime = 15;
+        roundTime = 3;
         hasMap = true;
     }
 
@@ -19,6 +19,7 @@ public class Intermission : Round
 
         EventManager.onOnAirHideEvent?.Invoke(null, System.EventArgs.Empty);
         EventManager.onTenSecondsBeforeRoundEndEvent -= onTenSecondsBefore;
+        playerFallScript.instance.resetFallenPlayers();
     }
 
     public override void onTenSecondsBefore(object sender, System.EventArgs e)

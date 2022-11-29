@@ -27,7 +27,7 @@ public class BumperRound : Round
     {
         //do nothing for now
         e.player.transform.position = GameManager.instance.deathZone.transform.position;
-        EventManager.onPlayerDeath?.Invoke(sender, e);
+       // EventManager.onPlayerDeath?.Invoke(sender, e);
     }
 
     public override void unload()

@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (playersDied == GameManager.instance.playersConnected - 1)
         {
-            RoundManager.instance.endRound();
+            RoundManager.instance.endRound("playersConnected = 1");
         }
     }
 

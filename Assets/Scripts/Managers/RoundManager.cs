@@ -47,12 +47,12 @@ public class RoundManager : MonoBehaviour
     public void onDeath(object sender, PlayerArgs e)
     {
         deadPlayers++;
-        
-            if (deadPlayers >= totalPlayers - 1)
+        Debug.Log("$ONDEWATH" + deadPlayers.ToString() + " " + (totalPlayers - 1).ToString());
+            if (deadPlayers > totalPlayers - 1)
             {
-            endRound();
-            
-            }
+            endRound("All players died");
+            deadPlayers = 0;
+        }
        
         
     }
@@ -61,7 +61,8 @@ public class RoundManager : MonoBehaviour
     {
         Debug.Log("$-------------");
         currentRoundSeconds = 0;//reset time of rounds
-        
+        currentRoundSecondsElapsed = 0;
+        deadPlayers = 0;
         int toLoad = 0;
         int roundSeconds = 0;
         foreach(Round r in nextRounds)
@@ -81,12 +82,12 @@ public class RoundManager : MonoBehaviour
         else
         {
             Debug.Log("$START HAS NO INTERMISSION");
-            loadLevel(toLoad);//load the level needed
+            loadLevel(12);//load the level needed
             sendPlayersToLevel();
         }
         
        //reset lists for next round
-        currentRoundSecondsElapsed = 0;
+        
         currentRoundSeconds = roundSeconds;
         updateScreenClock();
         roundSeconds = 0;
@@ -94,18 +95,20 @@ public class RoundManager : MonoBehaviour
         nextRounds.Clear();
 
         //subscribe to events
-        EventManager.onPlayerDeath += onDeath;
+        EventManager.onPlayerFell += onDeath;
         EventManager.onSecondTickEvent += secondTick;//subscribe to the second ticking event
         EventManager.onRoundStart?.Invoke(null, System.EventArgs.Empty);//invoke the round start event for other scripts
+        
     }
 
-    public void endRound()
+    public void endRound( string why)
     {
+        Debug.Log("$WHY: " + why);
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
-        EventManager.onPlayerDeath -= onDeath;
+        EventManager.onPlayerFell -= onDeath;
         EventManager.onRoundEnd?.Invoke(null, System.EventArgs.Empty);
         
-        deadPlayers = 0;
+        //deadPlayers = 0;
         //remove children from the levelManager (destroys the level that was spawned in)
         for (int i = 0; i < GameManager.instance.levelManager.transform.childCount; i++) {
             if (GameManager.instance.levelManager.transform.GetChild(i).gameObject.tag.Equals("LevelPersistent"))
@@ -247,7 +250,7 @@ public class RoundManager : MonoBehaviour
     {
         currentRoundSecondsElapsed++;
         updateScreenClock();
-
+        
         //Debug.Log("SEC LEFT " +( currentRoundSeconds - currentRoundSecondsElapsed).ToString());
         if(currentRoundSeconds - currentRoundSecondsElapsed == 10)
         {
@@ -256,12 +259,12 @@ public class RoundManager : MonoBehaviour
         EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
         if (currentRoundSecondsElapsed == currentRoundSeconds)
         {
-            endRound();
+            endRound("Time's up!");
         }
        
     }
-    
 
+   
     void updateScreenClock()//function to update the clock
     {
         int counter = currentRoundSeconds - currentRoundSecondsElapsed ;

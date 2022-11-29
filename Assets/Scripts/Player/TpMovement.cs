@@ -44,6 +44,10 @@ public class TpMovement : MonoBehaviour
 
     bool editing = false;
 
+    private bool isRunning;
+
+    private Animator animator;
+
     //UserInput inputAction;
 
     // Start is called before the first frame update
@@ -66,6 +70,8 @@ public class TpMovement : MonoBehaviour
         //Photon component attached to player
         view = GetComponent<PhotonView>();
 
+        animator = GetComponent<Animator>();
+
         GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled = false;
     }
 
@@ -83,8 +89,9 @@ public class TpMovement : MonoBehaviour
         }
         */
         isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
+        animator.SetBool("isGrounded", isGrounded);
 
-            if (isGrounded && !lastFrameGrounded) justSwapped = true;
+        if (isGrounded && !lastFrameGrounded) justSwapped = true;
 
             RotatePlayer();
             MovePlayer();
@@ -190,7 +197,13 @@ public class TpMovement : MonoBehaviour
 
 		horizontalInput = playerMovement.x;
 		verticalInput = playerMovement.y;
-	}
+        //animation stuff
+
+        isRunning = ((horizontalInput != 0) || (verticalInput != 0)) ? true : false;
+        animator.SetBool("isRunning", isRunning);
+
+
+    }
 
     //New input system
     public void OnJump()

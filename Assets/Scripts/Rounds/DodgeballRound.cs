@@ -7,7 +7,7 @@ public class DodgeballRound : Round
     public DodgeballRound()
     {
         hasMap = false;
-        roundTime = 60;
+        roundTime = 20;
         mapPrefabName = "Dodgeball";
         type = roundType.DODGEBALL;
     }

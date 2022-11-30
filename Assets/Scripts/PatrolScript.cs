@@ -165,6 +165,8 @@ public class PatrolScript : MonoBehaviour
         //If the object is returning and has traversed the entire spline one way (distance = time * velocity)
         else if (returning && (splineAnimator.elapsedTime * splineAnimator.maxSpeed) >= returnDistance)
         {
+            Debug.Log("Done returning");
+
             //Reset the speed back to initial
             splineAnimator.maxSpeed = initialSpeed;
 
@@ -186,7 +188,7 @@ public class PatrolScript : MonoBehaviour
             returning = false;
 
             //Change the object to blue, the colour for normal spline traversal
-            gameObject.GetComponent<Renderer>().material.color = blueColour;
+            //gameObject.GetComponent<Renderer>().material.color = blueColour;
         }
 
         //Else, update the timer
@@ -227,7 +229,7 @@ public class PatrolScript : MonoBehaviour
             //spline.Spline.EditType = SplineType.Linear;
 
             //Change the colour to red, the tracking colour
-            gameObject.GetComponent<Renderer>().material.color = redColour;
+            //gameObject.GetComponent<Renderer>().material.color = redColour;
 
             //transform.parent.GetComponent<SplineAnimate>().maxSpeed = 3f;
         }
@@ -256,7 +258,7 @@ public class PatrolScript : MonoBehaviour
                 splineAnimator.elapsedTime = timeRatio * splineAnimator.duration;
             }
 
-            Debug.Log("Hit Player");
+            //Debug.Log("Hit Player");
 
             //If the object is tracking a player, we want it to start returning
             if (trackingPlayer)
@@ -290,10 +292,12 @@ public class PatrolScript : MonoBehaviour
                 returning = true;
 
                 //Set the colour to yellow, the returning colour
-                gameObject.GetComponent<Renderer>().material.color = yellowColour;
+                //gameObject.GetComponent<Renderer>().material.color = yellowColour;
 
                 //Calculate the distance that the object needs to traverse in order to be back to the beginning of the original spline
                 returnDistance = Vector3.Distance(spline.Spline.ToArray()[0].Position, spline.Spline.ToArray()[1].Position);
+
+                Debug.Log(returnDistance);
             }
             
         }

@@ -7,7 +7,7 @@ public class BumperRound : Round
     public BumperRound()
     {
         hasMap = false;
-        roundTime = 60;
+        roundTime = 10;
         mapPrefabName = "Spinner";
         type = roundType.BUMPER;
     }

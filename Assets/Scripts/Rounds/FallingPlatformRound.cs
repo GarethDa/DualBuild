@@ -7,7 +7,7 @@ public class FallingPlatformRound : Round
     public FallingPlatformRound()
     {
         hasMap = true;
-        roundTime = 60;
+        roundTime = 15;
         mapPrefabName = "FallingPlatforms";
         type = roundType.FALLING_PLATFORMS;
     }

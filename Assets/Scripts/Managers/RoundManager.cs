@@ -8,9 +8,9 @@ public class RoundManager : MonoBehaviour
     public static RoundManager instance;
     List<Round> nextRounds = new List<Round>();
     List<Round> currentRounds = new List<Round>();
-    int nextRoundSeconds = 0;
-    int currentRoundSeconds = 0;
-    int currentRoundSecondsElapsed = 0;
+    public int nextRoundSeconds = 0;
+    public int currentRoundSeconds = 0;
+    public int currentRoundSecondsElapsed = 0;
     float deltaSecond = 0;
 
     public TextMeshProUGUI clockObject;

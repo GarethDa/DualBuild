@@ -6,10 +6,12 @@ public class ParticleManager : MonoBehaviour
 {
     public static ParticleManager instance;
     ParticleSystem[] childSystems;
+    ObjectPool PoolInstance;
 
     // Start is called before the first frame update
     void Start()
     {
+        PoolInstance = ObjectPool.poolManager;
         childSystems = GetComponentsInChildren<ParticleSystem>();
     }
 
@@ -27,9 +29,12 @@ public class ParticleManager : MonoBehaviour
         
     }
 
-    public void PlayEffect(Vector3 position, int index)
+    public void PlayEffect(Vector3 position)
     {
-        transform.position = position;
-        childSystems[index].Play();
+        PoolInstance.SpawnFromPool("WhiteParticles", position, true).GetComponent<ParticleSystem>().Play();
+
+        //childSystems[index].transform.position = position;
+        //childSystems[index].Play();
+        //childSystems[index].is
     }
 }

@@ -9,7 +9,7 @@ public class RoundManager : MonoBehaviour
     List<Round> nextRounds = new List<Round>();//rounds that are being played
     List<Round> currentRounds = new List<Round>();//rounds that get queued for next time
     int currentRoundSeconds = 0;//seconds the current round should last
-    int currentRoundSecondsElapsed = 0;//current elapsed time
+    public int currentRoundSecondsElapsed = 0;//current elapsed time
 
     public TextMeshProUGUI clockObject;//clock text on canvas
     public Transform intermissionLocation;//where to spawn players for intermission

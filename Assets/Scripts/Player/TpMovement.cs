@@ -8,7 +8,7 @@ using Cinemachine;
 public class TpMovement : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] [Range(3.0f, 20.0f)] private float jumpForce = 10.0f;
+    [SerializeField] [Range(3.0f, 40.0f)] private float jumpForce = 20.0f;
     [SerializeField] [Range(5.0f, 30.0f)] private float rotSpeed = 10.0f;
 	[SerializeField] [Range(5.0f, 50.0f)] private float maxSpeed = 20.0f;
     private float dragVariable = 1.0f;
@@ -89,7 +89,7 @@ public class TpMovement : MonoBehaviour
         isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
         animator.SetBool("isGrounded", isGrounded);
 
-        if (isGrounded && !lastFrameGrounded) justSwapped = true;
+        if (isGrounded) rBody.drag = groundDrag;
 
         else rBody.drag = 0f;
 

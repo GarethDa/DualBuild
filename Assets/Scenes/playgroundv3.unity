@@ -1711,9 +1711,13 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.22626269
       objectReference: {fileID: 0}
+    - target: {fileID: 8411294830436386869, guid: 3415d1180644190429b4abce5ecf839b, type: 3}
+      propertyPath: m_Lens.m_SensorSize.x
+      value: 2.2507677
+      objectReference: {fileID: 0}
     - target: {fileID: 8411294830436386872, guid: 3415d1180644190429b4abce5ecf839b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.3337917
+      value: 1.6886559
       objectReference: {fileID: 0}
     - target: {fileID: 8411294830436386872, guid: 3415d1180644190429b4abce5ecf839b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1746,6 +1750,10 @@ PrefabInstance:
     - target: {fileID: 8411294830900885184, guid: 3415d1180644190429b4abce5ecf839b, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.22626269
+      objectReference: {fileID: 0}
+    - target: {fileID: 8411294830900885187, guid: 3415d1180644190429b4abce5ecf839b, type: 3}
+      propertyPath: m_Lens.m_SensorSize.x
+      value: 2.2507677
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -10349,7 +10357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d831236507d25f143b8d8ced3a62d7f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookAt: {fileID: 0}
+  lookAt: {fileID: 746982217}
 --- !u!33 &4173572477524770725
 MeshFilter:
   m_ObjectHideFlags: 0

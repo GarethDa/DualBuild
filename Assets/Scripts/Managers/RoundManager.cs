@@ -5,21 +5,21 @@ using TMPro;
 
 public class RoundManager : MonoBehaviour
 {
-    public static RoundManager instance;
-    List<Round> nextRounds = new List<Round>();
-    List<Round> currentRounds = new List<Round>();
-    public int nextRoundSeconds = 0;
-    public int currentRoundSeconds = 0;
-    public int currentRoundSecondsElapsed = 0;
-    float deltaSecond = 0;
+    public static RoundManager instance = null;//singleton
+    List<Round> nextRounds = new List<Round>();//rounds that are being played
+    List<Round> currentRounds = new List<Round>();//rounds that get queued for next time
+    int currentRoundSeconds = 0;//seconds the current round should last
+    int currentRoundSecondsElapsed = 0;//current elapsed time
 
-    public TextMeshProUGUI clockObject;
-    public Transform intermissionLocation;
-    public Transform levelLocation;
+    public TextMeshProUGUI clockObject;//clock text on canvas
+    public Transform intermissionLocation;//where to spawn players for intermission
+    public Transform levelLocation;//where to spawn players when a round starts
+    public GameObject deathLocation;//where players go when they die (AKA purgatory)
 
-    
+    public int deadPlayers = 0;
+    public int totalPlayers = 1;
 
-    private void Awake()
+    private void Awake()//singleton
     {
         if(instance != null)
         {
@@ -33,8 +33,10 @@ public class RoundManager : MonoBehaviour
 
     private void Start()
     {
+        //temporarily starting with an intermission for testing purposes
         addRound(new Intermission());
         startRound();
+        
     }
 
     public void addRound(Round r)
@@ -42,58 +44,74 @@ public class RoundManager : MonoBehaviour
         nextRounds.Add(r);
     }
 
+    public void onDeath(object sender, PlayerArgs e)
+    {
+        deadPlayers++;
+        Debug.Log("$ONDEWATH" + deadPlayers.ToString() + " " + (totalPlayers - 1).ToString());
+            if (deadPlayers > totalPlayers - 1)
+            {
+            endRound("All players died");
+            deadPlayers = 0;
+        }
+       
+        
+    }
+
     public void startRound()
     {
-        
-        currentRoundSeconds = 0;
-        
-        
-       
+        Debug.Log("$-------------");
+        currentRoundSeconds = 0;//reset time of rounds
+        currentRoundSecondsElapsed = 0;
+        deadPlayers = 0;
         int toLoad = 0;
+        int roundSeconds = 0;
         foreach(Round r in nextRounds)
         {
-           // Debug.Log(r);
-           // Debug.Log("toLoad before " + toLoad);
             r.load();
             toLoad += (int)r.getType();
-           // Debug.Log("toLoad after " + toLoad);
-            nextRoundSeconds += r.getRoundTime();
+            roundSeconds += r.getRoundTime();
             currentRounds.Add(r);
         }
 
-        //Debug.Log("toLoad " + toLoad);
-
-
-        if (nextRoundsHaveIntermission())
+        if (nextRoundsHaveIntermission())//if next round is intermission, go to intermission
         {
+            Debug.Log("$START HAS INTERMISSION");
             sendPlayersToIntermission();
-            
+           
         }
         else
         {
-            loadLevel(toLoad);
+            Debug.Log("$START HAS NO INTERMISSION");
+            loadLevel(12);//load the level needed
             sendPlayersToLevel();
         }
         
-       
-        currentRoundSecondsElapsed = 0;
-        currentRoundSeconds = nextRoundSeconds;
+       //reset lists for next round
+        
+        currentRoundSeconds = roundSeconds;
         updateScreenClock();
-        nextRoundSeconds = 0;
+        roundSeconds = 0;
         
         nextRounds.Clear();
+
+        //subscribe to events
+        EventManager.onPlayerFell += onDeath;
+        EventManager.onSecondTickEvent += secondTick;//subscribe to the second ticking event
+        EventManager.onRoundStart?.Invoke(null, System.EventArgs.Empty);//invoke the round start event for other scripts
         
-        EventManager.onSecondTickEvent += secondTick;
-        EventManager.onRoundStart?.Invoke(null, System.EventArgs.Empty);
     }
 
-    public void endRound()
+    public void endRound( string why)
     {
-        EventManager.onSecondTickEvent -= secondTick;
+        Debug.Log("$WHY: " + why);
+        EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
+        EventManager.onPlayerFell -= onDeath;
         EventManager.onRoundEnd?.Invoke(null, System.EventArgs.Empty);
-
+        
+        //deadPlayers = 0;
+        //remove children from the levelManager (destroys the level that was spawned in)
         for (int i = 0; i < GameManager.instance.levelManager.transform.childCount; i++) {
-            if (GameManager.instance.levelManager.transform.GetChild(i).gameObject.name.Equals("FallTrigger"))
+            if (GameManager.instance.levelManager.transform.GetChild(i).gameObject.tag.Equals("LevelPersistent"))
             {
                 continue;
             }
@@ -101,22 +119,24 @@ public class RoundManager : MonoBehaviour
         
         }
 
+        //unload rounds
         foreach (Round r in currentRounds)
         {
             r.unload();
         }
         
-
+        //check if its intermission
         if (!currentRoundsHaveIntermission())
         {
-
             currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
+            Debug.Log("$END ROUND HAS NO INTERMISSION");
             addRound(new Intermission());
             startRound();
         }
         else
-        {
+        {//start rounds
             currentRounds.Clear();
+            Debug.Log("$END ROUND INTERMISSION");
             generateNextRoundLevels();
             startRound();
         }
@@ -125,10 +145,10 @@ public class RoundManager : MonoBehaviour
     private void generateNextRoundLevels()
     {
         List<roundType> playingRounds = new List<roundType>();
-        int levelsPerRound = 2;
-       
         List<roundType> possibleRounds = new List<roundType>();
-        foreach(roundType r in System.Enum.GetValues(typeof(roundType)))
+        int levelsPerRound = 2;
+           
+        foreach(roundType r in System.Enum.GetValues(typeof(roundType)))//make a list of all roundTypes
         {
             if(r == roundType.NONE || r == roundType.INTERMISSION)
             {
@@ -136,19 +156,16 @@ public class RoundManager : MonoBehaviour
             }
             possibleRounds.Add(r);
         }
-        for (int i = 0; i < levelsPerRound; i++)
+        for (int i = 0; i < levelsPerRound; i++)//pop a random element into a new list levelsPerRound amount of times
         {
 
-
-
-            int randomIndex = Random.Range(0, possibleRounds.Count);
-
-           
+            int randomIndex = Random.Range(0, possibleRounds.Count);       
             playingRounds.Add(possibleRounds[randomIndex]);
             possibleRounds.RemoveAt(randomIndex);
         }
 
-       
+        
+       //queue rounds
         foreach (roundType r in playingRounds)
         {
             
@@ -172,14 +189,13 @@ public class RoundManager : MonoBehaviour
     }
 
     public void loadLevel(int number)
-    {
-        //Debug.Log(number);
+    {//instantiate from resources/load
         GameObject level = Instantiate(Resources.Load<GameObject>("Levels/" + number.ToString()));
         level.transform.SetParent(GameManager.instance.levelManager.transform);
         level.transform.position = level.transform.parent.transform.position + level.transform.position;
     }
 
-    protected bool nextRoundsHaveIntermission()
+    protected bool nextRoundsHaveIntermission()//check next rounds for an intermission round
     {
         bool hasIntermission = false;
         
@@ -194,7 +210,7 @@ public class RoundManager : MonoBehaviour
 
         return hasIntermission;
     }
-    protected bool currentRoundsHaveIntermission()
+    protected bool currentRoundsHaveIntermission()//check current rounds for an intermission round
     {
         bool hasIntermission = false;
 
@@ -212,37 +228,44 @@ public class RoundManager : MonoBehaviour
 
     protected void sendPlayersToLevel()
     {
+        Debug.Log("$SEND TO LEVEL");
         sendPlayersToLocation(levelLocation.position);
     }
 
     protected void sendPlayersToIntermission()
     {
-        
+        Debug.Log("$SEND TO INTERMISSION");
         sendPlayersToLocation(intermissionLocation.position);
     }
 
     protected void sendPlayersToLocation(Vector3 teleportLocation)
     {
-       // Debug.Log(GameManager.instance);
         for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
         {
             Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
             GameManager.instance.playerManager.transform.GetChild(i).transform.position = teleportLocation + offset;
         }
     }
-    public void secondTick(object sender, System.EventArgs e)
+    public void secondTick(object sender, System.EventArgs e)//called every second
     {
         currentRoundSecondsElapsed++;
         updateScreenClock();
+        
+        //Debug.Log("SEC LEFT " +( currentRoundSeconds - currentRoundSecondsElapsed).ToString());
+        if(currentRoundSeconds - currentRoundSecondsElapsed == 10)
+        {
+            EventManager.onTenSecondsBeforeRoundEndEvent?.Invoke(null, System.EventArgs.Empty);
+        }
+        EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
         if (currentRoundSecondsElapsed == currentRoundSeconds)
         {
-            endRound();
+            endRound("Time's up!");
         }
        
     }
-    
 
-    void updateScreenClock()
+   
+    void updateScreenClock()//function to update the clock
     {
         int counter = currentRoundSeconds - currentRoundSecondsElapsed ;
         int minutes = 0;

@@ -17,7 +17,7 @@ public abstract class Round
 
     public void load()
     {
-        setWinCondition();
+        Load();
         
        
 
@@ -34,9 +34,11 @@ public abstract class Round
     {
         return roundTime;
     }
-    protected abstract void setWinCondition();//time running out will always be a win condition for all remaining players
+    protected abstract void Load();//time running out will always be a win condition for all remaining players
 
     public abstract void unload();
+
+    public abstract void onTenSecondsBefore(object sender, System.EventArgs e);
 
   
     

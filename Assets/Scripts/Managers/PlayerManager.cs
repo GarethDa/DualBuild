@@ -18,14 +18,14 @@ public class PlayerManager : MonoBehaviour
     {
         if (playersDied == GameManager.instance.playersConnected - 1)
         {
-            RoundManager.instance.endRound();
+            RoundManager.instance.endRound("playersConnected = 1");
         }
     }
 
-    public void playerDied()
+    public void playerDied(GameObject p)
     {
         playersDied++;
-        EventManager.onPlayerFell?.Invoke(null, System.EventArgs.Empty);
+        EventManager.onPlayerFell?.Invoke(null, new PlayerArgs(p));
         checkLastOneStanding();
     }
 

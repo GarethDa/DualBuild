@@ -36,8 +36,7 @@ public class ObjectRespawnManager : MonoBehaviour
     void Update()
     {
         spawnTimer += Time.deltaTime;
-
-        if (spawnTimer >= 7.0f )
+        /*
         {
             Profiler.BeginSample("Pooling");
             poolInstance.SpawnFromPool("Dodgeball", spawnPoints[0].transform.position, false);
@@ -49,7 +48,7 @@ public class ObjectRespawnManager : MonoBehaviour
 
             Profiler.EndSample();
         }
-        
+        */
     }
 
     private void OnTriggerEnter(Collider other)
@@ -87,9 +86,10 @@ public class ObjectRespawnManager : MonoBehaviour
         }
         */
 
-        other.gameObject.SetActive(false);
+        //other.gameObject.SetActive(false);
 
-        /*
+        
+        {
         Profiler.BeginSample("Ball instantiate");
         GameObject obj = Instantiate(other.gameObject);
 
@@ -101,7 +101,7 @@ public class ObjectRespawnManager : MonoBehaviour
         spawnPoints.RemoveAt(0);
 
         Profiler.EndSample();
-        */
+        }
     }
 
     /*

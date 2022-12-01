@@ -2660,6 +2660,9 @@ MonoBehaviour:
   - objectName: WhiteParticles
     objectPrefab: {fileID: 829957015955438721, guid: afe2fb54cada1a34a96230a8a1aeb8c4, type: 3}
     size: 3
+  - objectName: RedParticles
+    objectPrefab: {fileID: 1248238104559788133, guid: 0988cb4e9f175bf47ba719295ac7c714, type: 3}
+    size: 3
 --- !u!114 &158365058
 MonoBehaviour:
   m_ObjectHideFlags: 0

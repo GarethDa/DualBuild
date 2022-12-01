@@ -9,10 +9,10 @@ public class BumperScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision!");
+        //Debug.Log("Collision!");
         if(collision.transform.tag != ignoreTag && collision.transform.tag == "Player")
         {
-            Debug.Log("BOOM!");
+            //Debug.Log("BOOM!");
             Rigidbody otherRB = collision.rigidbody;
             otherRB.AddExplosionForce(bounceForce, collision.contacts[0].point, 5);
         }

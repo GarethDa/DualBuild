@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class cameraDroneController : MonoBehaviour
+public class endGameSceneUI : MonoBehaviour
 {
-    public Transform lookAt;
+    public string mainMenuSceneName;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +15,12 @@ public class cameraDroneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(lookAt.position);
+        
+    }
 
+    public void onMainMenuClick()
+    {
+
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class RoundManager : MonoBehaviour
 
     public int deadPlayers = 0;
     public int totalPlayers = 1;
+    int gameRoundsCompleted = 0;
+    public string gameEndSceneName;
 
     private void Awake()//singleton
     {
@@ -26,7 +29,7 @@ public class RoundManager : MonoBehaviour
             return;
         }
         instance = this;
-
+        gameRoundsCompleted = 0;
         
         
     }
@@ -47,7 +50,7 @@ public class RoundManager : MonoBehaviour
     public void onDeath(object sender, PlayerArgs e)
     {
         deadPlayers++;
-        Debug.Log("$ONDEWATH" + deadPlayers.ToString() + " " + (totalPlayers - 1).ToString());
+        //Debug.log("$ONDEWATH" + deadPlayers.ToString() + " " + (totalPlayers - 1).ToString());
             if (deadPlayers > totalPlayers - 1)
             {
             endRound("All players died");
@@ -59,7 +62,14 @@ public class RoundManager : MonoBehaviour
 
     public void startRound()
     {
-        Debug.Log("$-------------");
+        if(gameRoundsCompleted == 4)
+        {
+            //switch scene
+            gameRoundsCompleted = 0;
+            SceneManager.LoadScene(gameEndSceneName);
+            return;
+        }
+        //Debug.log("$-------------");
         currentRoundSeconds = 0;//reset time of rounds
         currentRoundSecondsElapsed = 0;
         deadPlayers = 0;
@@ -75,14 +85,14 @@ public class RoundManager : MonoBehaviour
 
         if (nextRoundsHaveIntermission())//if next round is intermission, go to intermission
         {
-            Debug.Log("$START HAS INTERMISSION");
+            //Debug.log("$START HAS INTERMISSION");
             sendPlayersToIntermission();
            
         }
         else
         {
-            Debug.Log("$START HAS NO INTERMISSION");
-            loadLevel(12);//load the level needed
+            //Debug.log("$START HAS NO INTERMISSION");
+            loadLevel(toLoad);//load the level needed
             sendPlayersToLevel();
         }
         
@@ -103,7 +113,8 @@ public class RoundManager : MonoBehaviour
 
     public void endRound( string why)
     {
-        Debug.Log("$WHY: " + why);
+        
+        //Debug.log("$WHY: " + why);
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
         EventManager.onPlayerFell -= onDeath;
         EventManager.onRoundEnd?.Invoke(null, System.EventArgs.Empty);
@@ -129,14 +140,15 @@ public class RoundManager : MonoBehaviour
         if (!currentRoundsHaveIntermission())
         {
             currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
-            Debug.Log("$END ROUND HAS NO INTERMISSION");
+            //Debug.log("$END ROUND HAS NO INTERMISSION");
+            gameRoundsCompleted++;
             addRound(new Intermission());
             startRound();
         }
         else
         {//start rounds
             currentRounds.Clear();
-            Debug.Log("$END ROUND INTERMISSION");
+            //Debug.log("$END ROUND INTERMISSION");
             generateNextRoundLevels();
             startRound();
         }
@@ -228,13 +240,13 @@ public class RoundManager : MonoBehaviour
 
     protected void sendPlayersToLevel()
     {
-        Debug.Log("$SEND TO LEVEL");
+        //Debug.log("$SEND TO LEVEL");
         sendPlayersToLocation(levelLocation.position);
     }
 
     protected void sendPlayersToIntermission()
     {
-        Debug.Log("$SEND TO INTERMISSION");
+        //Debug.log("$SEND TO INTERMISSION");
         sendPlayersToLocation(intermissionLocation.position);
     }
 
@@ -251,7 +263,7 @@ public class RoundManager : MonoBehaviour
         currentRoundSecondsElapsed++;
         updateScreenClock();
         
-        //Debug.Log("SEC LEFT " +( currentRoundSeconds - currentRoundSecondsElapsed).ToString());
+        ////Debug.log("SEC LEFT " +( currentRoundSeconds - currentRoundSecondsElapsed).ToString());
         if(currentRoundSeconds - currentRoundSecondsElapsed == 10)
         {
             EventManager.onTenSecondsBeforeRoundEndEvent?.Invoke(null, System.EventArgs.Empty);

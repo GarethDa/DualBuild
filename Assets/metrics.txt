@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 Player has jumped this many times: 0
 Current round duration: 24
+=======
+Player has jumped this many times: 6
+Current round duration: 9
+>>>>>>> MarkBranch3
 Previous round durations: 
 Average round time: 0

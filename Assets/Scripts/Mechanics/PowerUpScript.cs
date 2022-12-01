@@ -21,8 +21,8 @@ public class PowerUpScript : MonoBehaviour
     public float powerUpDuration = 3f; //total duration of ability in seconds
     private float currentPowerUpDuration = 0f; //internal clock for powerup duration
 
-    enum powerUpList { None, SuperJump, SlowFall}
-    [SerializeField] powerUpList selectedPowerUp;
+    
+    [SerializeField] public powerUpList selectedPowerUp;
 
     // Start is called before the first frame update
     void Start()
@@ -100,7 +100,9 @@ public class PowerUpScript : MonoBehaviour
                 playerGrounded = true;
             }
             Debug.Log("Powerup done");
-            //selectedPowerUp = powerUpList.None; //"Consume" powerup when done
+            selectedPowerUp = powerUpList.None; //"Consume" powerup when done
         }
     }
 }
+
+public enum powerUpList { None, SuperJump, SlowFall }

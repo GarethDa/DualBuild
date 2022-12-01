@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d6a57ae5c68ab140ba574c6210b659b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyLevel: playgroundv3
+  lobbyLevel: playgroundv4
   settingsScreen: {fileID: 2025071393}
   inputInfoList:
   - actionReference: {fileID: -1037505224642318564, guid: 5fe38157de135d642b72399d3890c389, type: 3}

@@ -903,6 +903,7 @@ MonoBehaviour:
   deathLocation: {fileID: 274955338}
   deadPlayers: 0
   totalPlayers: 1
+  gameEndSceneName: EndGame
 --- !u!114 &158365054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1568,6 +1569,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4218163339387787275, guid: 3415d1180644190429b4abce5ecf839b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6164643919393318147, guid: 3415d1180644190429b4abce5ecf839b, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -1744,7 +1749,8 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.22626269
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4218163339387787275, guid: 3415d1180644190429b4abce5ecf839b, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 3415d1180644190429b4abce5ecf839b, type: 3}
 --- !u!1 &236347091

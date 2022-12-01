@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class RoundManager : MonoBehaviour
 
     public int deadPlayers = 0;
     public int totalPlayers = 1;
+    int gameRoundsCompleted = 0;
+    public string gameEndSceneName;
 
     private void Awake()//singleton
     {
@@ -26,7 +29,7 @@ public class RoundManager : MonoBehaviour
             return;
         }
         instance = this;
-
+        gameRoundsCompleted = 0;
         
         
     }
@@ -59,6 +62,13 @@ public class RoundManager : MonoBehaviour
 
     public void startRound()
     {
+        if(gameRoundsCompleted == 4)
+        {
+            //switch scene
+            gameRoundsCompleted = 0;
+            SceneManager.LoadScene(gameEndSceneName);
+            return;
+        }
         //Debug.log("$-------------");
         currentRoundSeconds = 0;//reset time of rounds
         currentRoundSecondsElapsed = 0;
@@ -103,6 +113,7 @@ public class RoundManager : MonoBehaviour
 
     public void endRound( string why)
     {
+        
         //Debug.log("$WHY: " + why);
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
         EventManager.onPlayerFell -= onDeath;
@@ -130,6 +141,7 @@ public class RoundManager : MonoBehaviour
         {
             currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
             //Debug.log("$END ROUND HAS NO INTERMISSION");
+            gameRoundsCompleted++;
             addRound(new Intermission());
             startRound();
         }

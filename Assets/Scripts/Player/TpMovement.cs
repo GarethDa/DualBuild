@@ -212,7 +212,7 @@ public class TpMovement : MonoBehaviour
             if (isGrounded)
             {
                 rBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                ParticleManager.instance.PlayEffect(transform.position);
+                ParticleManager.instance.PlayEffect(transform.position, "WhiteParticles");
             }
         }
     }

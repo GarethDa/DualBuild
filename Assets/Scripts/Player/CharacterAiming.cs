@@ -75,7 +75,7 @@ public class CharacterAiming : MonoBehaviour
 
             isAiming = true;
 
-            ParticleManager.instance.PlayEffect(transform.position);
+            ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
         }
 
         //If the player isn't aiming, prioritize the zoomed out camera and disable the reticle

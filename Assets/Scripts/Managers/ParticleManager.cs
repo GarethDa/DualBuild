@@ -5,14 +5,12 @@ using UnityEngine;
 public class ParticleManager : MonoBehaviour
 {
     public static ParticleManager instance;
-    ParticleSystem[] childSystems;
     ObjectPool PoolInstance;
 
     // Start is called before the first frame update
     void Start()
     {
         PoolInstance = ObjectPool.poolManager;
-        childSystems = GetComponentsInChildren<ParticleSystem>();
     }
 
     void Awake()
@@ -29,12 +27,9 @@ public class ParticleManager : MonoBehaviour
         
     }
 
-    public void PlayEffect(Vector3 position)
+    public void PlayEffect(Vector3 position, string particleName)
     {
-        PoolInstance.SpawnFromPool("WhiteParticles", position, true).GetComponent<ParticleSystem>().Play();
+        PoolInstance.SpawnFromPool(particleName, position, true).GetComponent<ParticleSystem>().Play();
 
-        //childSystems[index].transform.position = position;
-        //childSystems[index].Play();
-        //childSystems[index].is
     }
 }

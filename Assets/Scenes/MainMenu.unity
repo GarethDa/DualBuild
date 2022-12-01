@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   singleplayer: playgroundv3
-  multiplayer: LoadingScreen
+  multiplayer: Lobby
   settingsScreen: {fileID: 2025071393}
   inputInfoList:
   - actionReference: {fileID: -1037505224642318564, guid: 5fe38157de135d642b72399d3890c389, type: 3}

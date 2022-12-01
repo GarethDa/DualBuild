@@ -4,26 +4,47 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 
-public class SpawnPlayers : MonoBehaviour
+public class SpawnPlayers : MonoBehaviourPun
 {
     public GameObject playerPrefab;
+    public float spawnTime = 1;
+    
+    public static SpawnPlayers INSTANCE;
 
-    public float minX;
-    public float maxX;
-    public float minZ;
-    public float maxZ;
-   
-
-    private void Start()
+    void Awake()
     {
-        SpawnMyPlayer();
+        if (INSTANCE == null)
+        {
+            INSTANCE = this;
+        }
+    }
+
+    void Start()
+    {
+        
+    }
+
+    void Update()
+    {
+        if (NetworkTimer.time < 0)
+            return;
+
+        NetworkTimer.time += Time.deltaTime;
+
+        Debug.Log("NETWORK TIMER");
+        if (NetworkTimer.time >= spawnTime)
+        {
+            SpawnMyPlayer();
+        }
     }
 
     void SpawnMyPlayer()
     {
-        Vector3 randomPosition = transform.position;
-        GameObject myPlayer = (GameObject)PhotonNetwork.Instantiate(playerPrefab.name, randomPosition, Quaternion.identity);
+        Debug.Log("SPAWNING PLAYER");
+        Vector3 Pos = transform.position;
+        GameObject myPlayer = PhotonNetwork.Instantiate(playerPrefab.name, Pos, Quaternion.identity);
         myPlayer.transform.SetParent(GameManager.instance.playerManager.transform);//please dont remove this
+
         //ENABLED SO THAT EACH CLIENT HAS THEIR OWN VERSION
         myPlayer.GetComponent<TpMovement>().enabled = true;
         myPlayer.GetComponent<PlayerInput>().enabled = true;
@@ -32,5 +53,8 @@ public class SpawnPlayers : MonoBehaviour
         myPlayer.transform.Find("Camera Holder").gameObject.SetActive(true);
         myPlayer.transform.Find("Zoomed Camera").gameObject.SetActive(true);
         myPlayer.transform.Find("Virtual Camera").gameObject.SetActive(true);
+
+        NetworkTimer.time = -1;
     }
+
 }

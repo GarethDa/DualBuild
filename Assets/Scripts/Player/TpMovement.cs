@@ -55,12 +55,12 @@ public class TpMovement : MonoBehaviour
     void Start()
     {
         rBody = GetComponent<Rigidbody>();
-       
-        //Freeze the rotation of the rigid body, ensuring it doesn't fall over
-        rBody.freezeRotation = true;
 
         //Photon component attached to player
         view = GetComponent<PhotonView>();
+
+        //Freeze the rotation of the rigid body, ensuring it doesn't fall over
+        rBody.freezeRotation = true;
 
         animator = GetComponent<Animator>();
 
@@ -70,46 +70,40 @@ public class TpMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!view.IsMine)
+            return;
     }
 
     private void FixedUpdate()
     {
-        //if you control THAT character
-        /*        if (view.IsMine)        {
-        this is where photon stuff goes if put back in
+        if (view.IsMine)
+        {
+            RotatePlayer();
+            MovePlayer();
+            LimitSpeed();
+            //AddHorizontalDrag();
+
+            isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
+            animator.SetBool("isGrounded", isGrounded);
+
+            if (isGrounded) rBody.drag = groundDrag;
+
+            else rBody.drag = 0f;
+
+            if (isGrounded && !lastFrameGrounded) justSwapped = true;
+
+            lastFrameGrounded = isGrounded;
+            justSwapped = false;
+
+            //Debug.Log(Mathf.Sqrt(Mathf.Pow(rBody.velocity.x, 2) + Mathf.Pow(rBody.velocity.z, 2)));
+
+            if (rBody.velocity.y < 0)
+            {
+                rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
+            }
         }
-        
         else
-        {
-            GetComponent<TpMovement>().enabled = false;
-        }
-        */
-
-        isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
-        animator.SetBool("isGrounded", isGrounded);
-
-        if (isGrounded) rBody.drag = groundDrag;
-
-        else rBody.drag = 0f;
-
-        if (isGrounded && !lastFrameGrounded) justSwapped = true;
-
-        RotatePlayer();
-        MovePlayer();
-        LimitSpeed();
-        //AddHorizontalDrag();
-
-        lastFrameGrounded = isGrounded;
-        justSwapped = false;
-        
-        //Debug.Log(Mathf.Sqrt(Mathf.Pow(rBody.velocity.x, 2) + Mathf.Pow(rBody.velocity.z, 2)));
-        
-        if (rBody.velocity.y < 0)
-        {
-            rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
-        }
-
+            return;
         //Debug.Log(new Vector3(rBody.velocity.x, 0f, rBody.velocity.z).magnitude);
 
     }

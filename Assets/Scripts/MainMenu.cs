@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class MainMenu : MonoBehaviour
 {
@@ -70,8 +71,6 @@ public class MainMenu : MonoBehaviour
     public void StartMultiplayer()
     {
         SceneManager.LoadScene(multiplayer);
-
-
     }
 
     public void OpenOptions()

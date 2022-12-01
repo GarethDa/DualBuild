@@ -24,6 +24,7 @@ public class CreateAndJoin : MonoBehaviourPunCallbacks
     {
         //Change this depending on game level scene
         PhotonNetwork.LoadLevel("playgroundv3");
+        NetworkTimer.time = 0;
     }
 
 }

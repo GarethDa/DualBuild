@@ -49,6 +49,11 @@ public class PauseMenu : MonoBehaviour
             bindingTexts.Add(inputInfoList[i].actionButton.transform.Find("ControlText").GetComponent<TMP_Text>());
             rebindTextObjects.Add(inputInfoList[i].actionButton.transform.Find("ControlText").gameObject);
             waitingTextObjects.Add(inputInfoList[i].actionButton.transform.Find("InputText").gameObject);
+
+            int bindingIndex = inputInfoList[i].actionReference.action.GetBindingIndexForControl(inputInfoList[i].actionReference.action.controls[0]);
+
+            bindingTexts[bindingTexts.Count - 1].text = InputControlPath.ToHumanReadableString(inputInfoList[i].actionReference.action.bindings[bindingIndex].effectivePath,
+                InputControlPath.HumanReadableStringOptions.OmitDevice);
         }
 
         zoomedInSensitivity.value = StateVariables.zoomedInSens;
@@ -86,6 +91,8 @@ public class PauseMenu : MonoBehaviour
         rebindTextObjects[index].SetActive(false);
         waitingTextObjects[index].SetActive(true);
 
+        inputInfoList[index].actionReference.action.Disable();
+
         rebindingOperation = inputInfoList[index].actionReference.action.PerformInteractiveRebinding()
             .OnMatchWaitForAnother(0.1f).OnComplete(operation => RebindComplete(index)).Start();
     }
@@ -98,6 +105,8 @@ public class PauseMenu : MonoBehaviour
             InputControlPath.HumanReadableStringOptions.OmitDevice);
 
         rebindingOperation.Dispose();
+
+        inputInfoList[index].actionReference.action.Enable();
 
         rebindTextObjects[index].SetActive(true);
         waitingTextObjects[index].SetActive(false);

@@ -10,8 +10,8 @@ public class TpMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] [Range(3.0f, 40.0f)] private float jumpForce = 20.0f;
     [SerializeField] [Range(5.0f, 30.0f)] private float rotSpeed = 10.0f;
-	[SerializeField] [Range(5.0f, 50.0f)] private float maxSpeed = 20.0f;
-    private float dragVariable = 1.0f;
+	[SerializeField] [Range(5.0f, 50.0f)] private float moveSpeed = 20.0f;
+    //private float dragVariable = 1.0f;
     [SerializeField] [Range(1.0f, 100.0f)] private float jumpGravity = 9.8f;
     [SerializeField] [Range(1.0f, 4.0f)] private float fallMultiplier = 1.0f;
     [SerializeField] [Range(0f, 10.0f)] private float groundDrag = 1.0f;
@@ -65,6 +65,8 @@ public class TpMovement : MonoBehaviour
         animator = GetComponent<Animator>();
 
         GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled = false;
+
+        rBody.drag = 0f;
     }
 
     // Update is called once per frame
@@ -91,7 +93,10 @@ public class TpMovement : MonoBehaviour
 
         if (isGrounded) rBody.drag = groundDrag;
 
-        else rBody.drag = 0f;
+        else
+        {
+            rBody.drag = 0f;
+        }
 
         if (isGrounded && !lastFrameGrounded) justSwapped = true;
 
@@ -135,7 +140,7 @@ public class TpMovement : MonoBehaviour
         //Calculate direction
         moveDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        rBody.AddForce(moveDir.normalized * maxSpeed * 5f, ForceMode.Force);
+        rBody.AddForce(moveDir.normalized * moveSpeed * 5f, ForceMode.Force);
 
         if (!isGrounded)
         {
@@ -167,9 +172,9 @@ public class TpMovement : MonoBehaviour
     {
         Vector3 currentSpd = new Vector3(rBody.velocity.x, 0f, rBody.velocity.z);
 
-        if (currentSpd.magnitude > maxSpeed)
+        if (currentSpd.magnitude > moveSpeed)
         {
-            Vector3 newSpd = currentSpd.normalized * maxSpeed;
+            Vector3 newSpd = currentSpd.normalized * moveSpeed;
             rBody.velocity = new Vector3(newSpd.x, rBody.velocity.y, newSpd.z);
         }
     }
@@ -177,31 +182,51 @@ public class TpMovement : MonoBehaviour
     //For removing slipperiness (OLD, DON'T USE)
 	private void AddHorizontalDrag()
 	{
-        //The lower the drag variable, the lower the drag
-        float dragForce = Mathf.Pow(Mathf.Sqrt(rBody.velocity.x * rBody.velocity.x + rBody.velocity.z * rBody.velocity.z), 2) * Mathf.Pow(dragVariable, 4);
+        Vector3 horizontalVel = new Vector3(rBody.velocity.x, 0f, rBody.velocity.z);
+        Vector3 dragForce = -groundDrag * horizontalVel * horizontalVel.magnitude;
 
-        //Multiply the drag force by the current velocity (x and z) and make it negative to find the drag vector
-        Vector3 dragVec = dragForce * -new Vector3(rBody.velocity.x, 0f, rBody.velocity.z);
-
-        //Add the drag to the current velocity
-        rBody.velocity = rBody.velocity + dragVec;
-
-        //rBody.velocity = new Vector3(rBody.velocity.x * (1 - Time.deltaTime * dragForce), rBody.velocity.y, rBody.velocity.z * (1 - Time.deltaTime * dragForce));
+        rBody.AddForce(dragForce, ForceMode.Force);
     }
 
     //New input system
-	public void OnMove(InputAction.CallbackContext cntxt)
+    public void OnMove(InputAction.CallbackContext cntxt)
 	{
-		Vector2 playerMovement = cntxt.ReadValue<Vector2>();
+        //Vector2 playerMovement = cntxt.ReadValue<Vector2>();
 
-		horizontalInput = playerMovement.x;
-		verticalInput = playerMovement.y;
+        if (cntxt.action.name.Equals("Up"))
+        {
+            if (cntxt.performed) verticalInput = 1f;
+
+            if (cntxt.canceled) verticalInput = 0f;
+        }
+
+        else if (cntxt.action.name.Equals("Down"))
+        {
+            if (cntxt.performed) verticalInput = -1f;
+
+            if (cntxt.canceled) verticalInput = 0f;
+        }
+
+        else if (cntxt.action.name.Equals("Left"))
+        {
+            if (cntxt.performed) horizontalInput = -1f;
+
+            if (cntxt.canceled) horizontalInput = 0f;
+        }
+
+        else if (cntxt.action.name.Equals("Right"))
+        {
+            if (cntxt.performed) horizontalInput = 1f;
+
+            if (cntxt.canceled) horizontalInput = 0f;
+        }
+
+        //horizontalInput = playerMovement.x;
+		//verticalInput = playerMovement.y;
         //animation stuff
 
         isRunning = ((horizontalInput != 0) || (verticalInput != 0)) ? true : false;
         animator.SetBool("isRunning", isRunning);
-
-
     }
 
     //New input system

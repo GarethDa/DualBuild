@@ -38,12 +38,8 @@ public class MetricsPlugin : MonoBehaviour
 
         EventManager.onRoundEnd += OnRoundEnd;
 
-        //inputAction = PlayerInputController.controller.inputAction;
-
-        //inputAction.Editor.Save.performed += cntxt => SaveItems();
-
         m_Path = Application.dataPath;
-        fn = m_Path + "/save.txt";
+        fn = m_Path + "/metrics.txt";
         Debug.Log(fn);
     }
 

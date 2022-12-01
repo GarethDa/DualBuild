@@ -22,6 +22,8 @@ public class ObjectRespawnManager : MonoBehaviour
 
     public List<Transform> spawnPoints;
 
+    public float respawnTime = 3f;
+
     ObjectPool poolInstance;
 
     float spawnTimer = 0f;
@@ -36,6 +38,8 @@ public class ObjectRespawnManager : MonoBehaviour
     void Update()
     {
         spawnTimer += Time.deltaTime;
+        
+        //if (spawnTimer >= respawnTime)
         /*
         {
             Profiler.BeginSample("Pooling");
@@ -88,7 +92,6 @@ public class ObjectRespawnManager : MonoBehaviour
 
         //other.gameObject.SetActive(false);
 
-        
         {
         Profiler.BeginSample("Ball instantiate");
         GameObject obj = Instantiate(other.gameObject);

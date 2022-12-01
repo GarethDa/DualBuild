@@ -10,6 +10,7 @@ public class CharacterAiming : MonoBehaviour
     [Header("Required Objects")]
     [SerializeField] Camera playerCam;
     [SerializeField] Transform playerObj;
+    [SerializeField] Transform holdPos;
     [SerializeField] CinemachineVirtualCamera zoomCam;
 
     [Header("Throwing Projectiles")]
@@ -21,6 +22,8 @@ public class CharacterAiming : MonoBehaviour
     bool holdingProjectile = false;
 
     GameObject heldProjectile = null;
+    private Animator animator;
+    //BALLER
 
     //UserInput inputAction;
 
@@ -46,11 +49,15 @@ public class CharacterAiming : MonoBehaviour
 
         //Hide the reticle
         reticle.enabled = false;
+        animator = GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        animator.SetBool("isAiming", isAiming);
+        animator.SetBool("hasBall", holdingProjectile);
         if (isAiming)
         {
             //If the player is aiming, set the player object's rotation around the y-axis to that of the camera
@@ -75,6 +82,7 @@ public class CharacterAiming : MonoBehaviour
 
             isAiming = true;
 
+            
             ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
         }
 
@@ -94,6 +102,7 @@ public class CharacterAiming : MonoBehaviour
         //If the player is holding a projectile, then go through the steps to throw it
         if (holdingProjectile)
         {
+            animator.SetTrigger("Throw");
             //Set the projectile back to non-kinematic
             heldProjectile.GetComponent<Rigidbody>().isKinematic = false;
 
@@ -125,13 +134,16 @@ public class CharacterAiming : MonoBehaviour
         heldProjectile = projectile;
 
         //Set the projectile's position to be in front of the player model, with some offset
+        /*
         heldProjectile.transform.position = playerObj.transform.position 
             + playerObj.transform.forward.normalized 
             + (0.8f * playerObj.transform.right.normalized) 
             + (0.5f * playerObj.transform.up.normalized);
+        */
+        heldProjectile.transform.position = holdPos.transform.position;
 
         //Parent the player model to the projectile
-        heldProjectile.transform.SetParent(playerObj.transform);
+        heldProjectile.transform.SetParent(holdPos.transform);
 
         //Set the projectile to kinematic, ensuring it doesn't move while being held
         heldProjectile.GetComponent<Rigidbody>().isKinematic = true;

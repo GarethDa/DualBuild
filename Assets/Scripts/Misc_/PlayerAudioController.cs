@@ -16,15 +16,17 @@ public class PlayerAudioController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         soundCounter += Time.deltaTime;
         if (soundCounter > timeBetweenFootsteps)
         {
             soundCounter = 0;
             if(GetComponent<Rigidbody>().velocity.magnitude > 0.5)
             {
-                GetComponent<AudioClipRandomizer>().PlaySFX();
+                //GetComponent<AudioClipRandomizer>().PlaySFX();
             }
             
         }
+        */
     }
 }

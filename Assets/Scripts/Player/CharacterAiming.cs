@@ -13,7 +13,7 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera zoomCam;
 
     [Header("Throwing Projectiles")]
-    [SerializeField] [Range(100.0f, 2000.0f)] float throwForce = 500.0f;
+    [SerializeField] [Range(1000.0f, 4000.0f)] float throwForce = 2000.0f;
 
     Image reticle;
 
@@ -98,7 +98,7 @@ public class CharacterAiming : MonoBehaviour
             heldProjectile.GetComponent<Rigidbody>().isKinematic = false;
 
             //Throw the ball forward, multiplied by the throwing force
-            heldProjectile.GetComponent<Rigidbody>().AddForce(playerCam.transform.forward * throwForce);
+            heldProjectile.GetComponent<Rigidbody>().AddForce(playerCam.transform.forward * throwForce + Vector3.up * (throwForce / 10));
 
             //The player is no longer holding a projectile
             holdingProjectile = false;
@@ -108,6 +108,9 @@ public class CharacterAiming : MonoBehaviour
 
             //Tell the projectile that it isn't being held anymore
             heldProjectile.GetComponent<BallBehaviour>().SetIsHeld(false);
+
+            //Tell the projectile that it has been thrown 
+            heldProjectile.GetComponent<BallBehaviour>().SetIsThrown(true);
         }
     }
 
@@ -128,7 +131,7 @@ public class CharacterAiming : MonoBehaviour
         heldProjectile.transform.position = playerObj.transform.position 
             + playerObj.transform.forward.normalized 
             + (0.8f * playerObj.transform.right.normalized) 
-            + (0.5f * playerObj.transform.up.normalized);
+            + (3f * playerObj.transform.up.normalized);
 
         //Parent the player model to the projectile
         heldProjectile.transform.SetParent(playerObj.transform);

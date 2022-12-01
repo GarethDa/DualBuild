@@ -21,9 +21,13 @@ public class PowerupGiver : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-            Debug.Log(other.gameObject.name);
-            other.transform.parent.gameObject.GetComponent<PowerUpScript>().selectedPowerUp = type;
-            UIManager.instance.setText("Active powerup: " + type.ToString());
+            //Debug.Log(other.gameObject.name);
+            if(other.transform.parent.gameObject.GetComponent<PowerUpScript>() != null)
+            {
+                other.transform.parent.gameObject.GetComponent<PowerUpScript>().selectedPowerUp = type;
+                UIManager.instance.setText("Active powerup: " + type.ToString());
+            }
+            
         }
     }
 

@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 10
   rotSpeed: 10
-  maxSpeed: 20
+  moveSpeed: 20
   jumpGravity: 32
   fallMultiplier: 1.5
   groundDrag: 3
@@ -288,22 +288,6 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6164643919393318172}
-        m_TargetAssemblyTypeName: TpMovement, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: f7447aaa-52d4-4c2e-8e5f-ea90af93e510
-    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
       m_Calls: []
     m_ActionId: ace42f5a-aed6-4be0-9d34-c19f61aaae97
     m_ActionName: Player/Look[/Mouse/delta,/Pen/delta]
@@ -393,10 +377,6 @@ MonoBehaviour:
     m_ActionName: Player/EnableUI[/Keyboard/ctrl]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: bfd1d926-94f7-4d0d-bd1e-071782297d60
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 23187d22-dd74-4008-8b68-e84f459281ff
     m_ActionName: UI/Submit[/Keyboard/enter]
   - m_PersistentCalls:
@@ -439,6 +419,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: bab3b6b3-fe40-4d53-94a7-0d2a094cad03
     m_ActionName: Player/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3c756741-9119-4851-bbc2-a1742896e79b
+    m_ActionName: Player/Up[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: be75ee37-de98-47bd-926c-242008aed558
+    m_ActionName: Player/Down[/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 01657a24-fee9-47b2-b92f-b681477ef18c
+    m_ActionName: Player/Left[/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 448aebe9-a4b6-4f90-a519-960e0762ada0
+    m_ActionName: Player/Right[/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -502,8 +498,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8411294829149878086}
-  m_LocalRotation: {x: -0.22829899, y: 0.6665775, z: 0.22626269, w: 0.67257655}
-  m_LocalPosition: {x: 64.01142, y: -0.059436798, z: -14.021393}
+  m_LocalRotation: {x: 0.0044445787, y: 0.99284047, z: -0.11276885, w: 0.039130997}
+  m_LocalPosition: {x: 75.34578, y: 4.951628, z: 4.912201}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -970,9 +966,9 @@ MonoBehaviour:
   m_YDamping: 1
   m_ZDamping: 1
   m_TargetMovementOnly: 1
-  m_ScreenX: 0.22
+  m_ScreenX: 0.17
   m_ScreenY: 0.7
-  m_CameraDistance: 5
+  m_CameraDistance: 5.6799927
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -1020,7 +1016,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8411294830436386873}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.3337917, y: 3.7358985, z: -5}
+  m_LocalPosition: {x: 1.7857542, y: 3.8087797, z: -5.6799927}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1253,7 +1249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8411294830900885184
 Transform:
   m_ObjectHideFlags: 0

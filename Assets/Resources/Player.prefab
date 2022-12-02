@@ -18,10 +18,13 @@ GameObject:
   - component: {fileID: 3629872057086614170}
   - component: {fileID: 7118967754305285598}
   - component: {fileID: 7003453695122746443}
+  - component: {fileID: 274432519604743949}
   - component: {fileID: 4218163339387787275}
   - component: {fileID: 990621111752025097}
   - component: {fileID: 6164643919393318148}
   - component: {fileID: -1693054033840807086}
+  - component: {fileID: 2042457383695432984}
+  - component: {fileID: 1826413273884472932}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -100,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3fde07476550a8438f629ba73892904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 10
+  jumpForce: 23
   rotSpeed: 10
   maxSpeed: 20
   jumpGravity: 32
@@ -113,6 +116,7 @@ MonoBehaviour:
   orientation: {fileID: 8411294830836906980}
   playerObj: {fileID: 8411294830480965784}
   playerCam: {fileID: 8411294830145179060}
+  animator: {fileID: 0}
 --- !u!95 &6164643919393318173
 Animator:
   serializedVersion: 4
@@ -166,10 +170,12 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
+  observableSearch: 0
   ObservedComponents:
   - {fileID: 3629872057086614170}
   - {fileID: 7118967754305285598}
+  - {fileID: 1826413273884472932}
+  - {fileID: 274432519604743949}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -239,6 +245,32 @@ MonoBehaviour:
   maxFallSpeed: -4
   powerUpDuration: 3
   selectedPowerUp: 1
+--- !u!114 &274432519604743949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164643919393318149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: isRunning
+  - Type: 4
+    SynchronizeType: 1
+    Name: isGrounded
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
+  - SynchronizeType: 0
+    LayerIndex: 1
 --- !u!114 &4218163339387787275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +502,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db234bcc04fa394786f3d6fbaaa9c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2042457383695432984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164643919393318149}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4405f4e9694e24793d791ee20a6c40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1826413273884472932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164643919393318149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &8411294829149878086
 GameObject:
   m_ObjectHideFlags: 0

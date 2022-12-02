@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using Photon.Pun;
 using Cinemachine;
 
-public class TpMovement : MonoBehaviour
+public class TpMovement : MonoBehaviour, IPunObservable
 {
     [Header("Movement")]
     [SerializeField] [Range(3.0f, 40.0f)] private float jumpForce = 20.0f;
@@ -47,7 +47,7 @@ public class TpMovement : MonoBehaviour
 
     private bool isRunning;
 
-    private Animator animator;
+    public Animator animator;
 
     //UserInput inputAction;
 
@@ -63,15 +63,14 @@ public class TpMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*
         if (!view.IsMine)
         {
-            Destroy(transform.Find("Camera Holder").gameObject);
-            Destroy(transform.Find("Main Camera").gameObject);
-            Destroy(transform.Find("Virtual Camera").gameObject);
-            Destroy(transform.Find("Zoomed Camera").gameObject);
+            Destroy(rBody);
+            //Destroy(transform.Find("Camera Holder").gameObject);
+            //Destroy(transform.Find("Virtual Camera").gameObject);
+            //Destroy(transform.Find("Zoomed Camera").gameObject);
         }
-        */
+        
         //Freeze the rotation of the rigid body, ensuring it doesn't fall over
         rBody.freezeRotation = true;
 
@@ -89,9 +88,6 @@ public class TpMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!view.IsMine)
-            return;
-
         RotatePlayer();
         MovePlayer();
         LimitSpeed();
@@ -280,5 +276,10 @@ public class TpMovement : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        throw new System.NotImplementedException();
     }
 }

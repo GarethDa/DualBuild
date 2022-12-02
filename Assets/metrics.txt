@@ -1,6 +1,4 @@
 Player has jumped this many times: 0
-Current round duration: 21
+Current round duration: 23
 Previous round durations: 
-Round 1: 30
-Round 2: 0
-Average round time: 15
+Average round time: 0

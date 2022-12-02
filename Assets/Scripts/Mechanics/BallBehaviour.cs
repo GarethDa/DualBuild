@@ -8,14 +8,16 @@ public class BallBehaviour : MonoBehaviour
     private bool isHeld = false;
     private bool isThrown = false;
     private GameObject playerCam;
-    private GameObject playerObject;
+    private List<GameObject> playerObject = new List<GameObject>();
     [SerializeField] int hitForce = 500;
 
     void Start()
     {
         //Find the player camera and player objects
         playerCam = GameObject.Find("Main Camera");
-        playerObject = GameObject.Find("PlayerSingle");
+
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
+            playerObject.Add(obj);
     }
 
     // Update is called once per frame
@@ -40,12 +42,16 @@ public class BallBehaviour : MonoBehaviour
         }
 
         //If the player touches a ball that isn't being held, and has not been thrown, and the player isn't already holding a ball
-        if (!isHeld && !isThrown && collision.gameObject.tag == "Player" && !playerObject.GetComponent<CharacterAiming>().IsHoldingProj())
-        {            
-            //Update the ball to be held
-            isHeld = true;
+        if (!isHeld && !isThrown && collision.gameObject.tag == "Player")
+        {
 
-            playerObject.GetComponent<CharacterAiming>().SetProjectile(this.gameObject);
+            if (collision.gameObject.GetComponent<CharacterAiming>() != null && !collision.gameObject.GetComponent<CharacterAiming>().IsHoldingProj())
+            {
+                //Update the ball to be held
+                isHeld = true;
+
+                collision.gameObject.GetComponent<CharacterAiming>().SetProjectile(this.gameObject);
+            }
         }
     }
 

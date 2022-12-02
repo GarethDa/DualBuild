@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -16,10 +17,22 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private List<LayerMask> playerLayers;
 
     private PlayerInputManager playerInManager;
+
+    private GameObject p1Ui;
+    private GameObject p2Ui;
+
     // Start is called before the first frame update
     void Awake()
     {
-        if(instance == null)
+        if (GameObject.Find("P1_UI") != null)
+        {
+            p1Ui = GameObject.Find("P1_UI");
+            p2Ui = GameObject.Find("P2_UI");
+            p1Ui.SetActive(false);
+            p2Ui.SetActive(false);
+        }
+
+        if (instance == null)
         {
             instance = this;
         }
@@ -87,14 +100,20 @@ public class PlayerManager : MonoBehaviour
 
         if (playerInputs.Count == 1)
         {
-            GameObject.Find("P1_UI").GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
-            GameObject.Find("P1_UI").GetComponent<Canvas>().planeDistance = 1;
+            p1Ui.SetActive(true);
+            p1Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
+            p1Ui.GetComponent<Canvas>().planeDistance = 0.5f;
+
+            playerInput.gameObject.name = "P1";
         }
 
         else if (playerInputs.Count == 2)
         {
-            GameObject.Find("P2_UI").GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
-            GameObject.Find("P2_UI").GetComponent<Canvas>().planeDistance = 1;
+            p2Ui.SetActive(true);
+            p2Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
+            p2Ui.GetComponent<Canvas>().planeDistance = 0.5f;
+
+            playerInput.gameObject.name = "P2";
         }
 
     }

@@ -45,7 +45,11 @@ public class CharacterAiming : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        reticle = GameObject.Find("Reticle").GetComponent<Image>();
+        if (gameObject.name == "P1") reticle = GameObject.Find("Reticle1").GetComponent<Image>();
+
+        else if (gameObject.name == "P2") reticle = GameObject.Find("Reticle2").GetComponent<Image>();
+
+        else reticle = GameObject.Find("Reticle").GetComponent<Image>();
 
         //Hide the reticle
         reticle.enabled = false;

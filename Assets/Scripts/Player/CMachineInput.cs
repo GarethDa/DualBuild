@@ -11,7 +11,6 @@ public class CMachineInput : MonoBehaviour, AxisState.IInputAxisProvider
 
     public float GetAxisValue(int axis)
     {
-        Debug.Log("here");
         switch (axis)
         {
             case 0: return horizontal.ReadValue<Vector2>().x;

@@ -70,7 +70,7 @@ public class TpMovement : MonoBehaviour
 
         animator = GetComponent<Animator>();
 
-        GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled = false;
+        //GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled = false;
 
         rBody.drag = 0f;
     }

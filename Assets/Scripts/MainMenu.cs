@@ -18,7 +18,8 @@ public class MainMenu : MonoBehaviour
     }
 
     [Header("Scene/Screen switching")]
-    [SerializeField] private string lobbyLevel;
+    [SerializeField] private string singlePlayer;
+    [SerializeField] private string multiPlayer;
     [SerializeField] private GameObject settingsScreen;
 
     [Header("Control rebinding")]
@@ -66,9 +67,14 @@ public class MainMenu : MonoBehaviour
         StateVariables.zoomedOutSens = zoomedOutSensitivity.value;
     }
 
-    public void StartGame()
+    public void StartSingleplayer()
     {
-        SceneManager.LoadScene(lobbyLevel);
+        SceneManager.LoadScene(singlePlayer);
+    }
+
+    public void StartMultiplayer()
+    {
+        SceneManager.LoadScene(multiPlayer);
     }
 
     public void OpenOptions()

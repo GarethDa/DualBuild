@@ -538,7 +538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d6a57ae5c68ab140ba574c6210b659b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyLevel: playgroundv4
+  singlePlayer: playgroundv4_single
+  multiPlayer: playgroundv4
   settingsScreen: {fileID: 2025071393}
   inputInfoList:
   - actionReference: {fileID: -1037505224642318564, guid: 5fe38157de135d642b72399d3890c389, type: 3}
@@ -1608,7 +1609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4450926428840467284, guid: 6537b15a62bc1134f94abc6c72a3c98d, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartGame
+      value: StartMultiplayer
       objectReference: {fileID: 0}
     - target: {fileID: 4450926428840467284, guid: 6537b15a62bc1134f94abc6c72a3c98d, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -3343,7 +3344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4450926428840467284, guid: 6537b15a62bc1134f94abc6c72a3c98d, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartGame
+      value: StartSingleplayer
       objectReference: {fileID: 0}
     - target: {fileID: 4450926428840467284, guid: 6537b15a62bc1134f94abc6c72a3c98d, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

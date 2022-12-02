@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 990621111752025097}
   - component: {fileID: 6164643919393318148}
   m_Layer: 8
-  m_Name: Player
+  m_Name: PlayerSingle
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1044,7 +1044,7 @@ GameObject:
   - component: {fileID: 8411294830436386872}
   - component: {fileID: 8411294830436386869}
   - component: {fileID: 8411294830436386875}
-  - component: {fileID: 480765334389760564}
+  - component: {fileID: 6929955262055649461}
   m_Layer: 8
   m_Name: Zoomed Camera
   m_TagString: Untagged
@@ -1136,7 +1136,7 @@ MonoBehaviour:
   m_Damping: 0
   m_DampingWhenOccluded: 0
   m_OptimalTargetDistance: 0
---- !u!114 &480765334389760564
+--- !u!114 &6929955262055649461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1145,27 +1145,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8411294830436386873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d295167f06f6aed4480a8302d523274a, type: 3}
+  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontal:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  vertical:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  PlayerIndex: -1
+  AutoEnableInputs: 1
+  XYAxis: {fileID: 722738492234732786, guid: 5fe38157de135d642b72399d3890c389, type: 3}
+  ZAxis: {fileID: 0}
 --- !u!1 &8411294830526435846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1300,7 +1286,7 @@ GameObject:
   - component: {fileID: 8411294830900885184}
   - component: {fileID: 8411294830900885187}
   - component: {fileID: 8411294830900885185}
-  - component: {fileID: 1624667255501160414}
+  - component: {fileID: 4916121063667265305}
   m_Layer: 8
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -1392,7 +1378,7 @@ MonoBehaviour:
   m_Damping: 0
   m_DampingWhenOccluded: 0
   m_OptimalTargetDistance: 0
---- !u!114 &1624667255501160414
+--- !u!114 &4916121063667265305
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1401,27 +1387,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8411294830900885195}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d295167f06f6aed4480a8302d523274a, type: 3}
+  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontal:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  vertical:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  PlayerIndex: -1
+  AutoEnableInputs: 1
+  XYAxis: {fileID: 722738492234732786, guid: 5fe38157de135d642b72399d3890c389, type: 3}
+  ZAxis: {fileID: 0}
 --- !u!1001 &5543823173260936268
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ public class BallBehaviour : MonoBehaviour
     {
         //Find the player camera and player objects
         playerCam = GameObject.Find("Main Camera");
-        playerObject = GameObject.Find("Player");
+        playerObject = GameObject.Find("PlayerSingle");
     }
 
     // Update is called once per frame

@@ -50,6 +50,11 @@ public class MainMenu : MonoBehaviour
             bindingTexts.Add(inputInfoList[i].actionButton.transform.Find("ControlText").GetComponent<TMP_Text>());
             rebindTextObjects.Add(inputInfoList[i].actionButton.transform.Find("ControlText").gameObject);
             waitingTextObjects.Add(inputInfoList[i].actionButton.transform.Find("InputText").gameObject);
+
+            int bindingIndex = inputInfoList[i].actionReference.action.GetBindingIndexForControl(inputInfoList[i].actionReference.action.controls[0]);
+
+            bindingTexts[bindingTexts.Count - 1].text = InputControlPath.ToHumanReadableString(inputInfoList[i].actionReference.action.bindings[bindingIndex].effectivePath,
+                InputControlPath.HumanReadableStringOptions.OmitDevice);
         }
 
         zoomedInSensitivity.value = StateVariables.zoomedInSens;
@@ -88,15 +93,17 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
         Debug.Log("Game Quit");
     }
-
     public void StartRebinding(int index)
     {
         //Hide the control text and show the waiting for input text
         rebindTextObjects[index].SetActive(false);
         waitingTextObjects[index].SetActive(true);
 
+        inputInfoList[index].actionReference.action.Disable();
+
         rebindingOperation = inputInfoList[index].actionReference.action.PerformInteractiveRebinding()
             .OnMatchWaitForAnother(0.1f).OnComplete(operation => RebindComplete(index)).Start();
+        
     }
 
     private void RebindComplete(int index)
@@ -108,9 +115,9 @@ public class MainMenu : MonoBehaviour
 
         rebindingOperation.Dispose();
 
+        inputInfoList[index].actionReference.action.Enable();
+
         rebindTextObjects[index].SetActive(true);
         waitingTextObjects[index].SetActive(false);
-
-
     }
 }

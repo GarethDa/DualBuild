@@ -63,7 +63,15 @@ public class TpMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        /*
+        if (!view.IsMine)
+        {
+            Destroy(transform.Find("Camera Holder").gameObject);
+            Destroy(transform.Find("Main Camera").gameObject);
+            Destroy(transform.Find("Virtual Camera").gameObject);
+            Destroy(transform.Find("Zoomed Camera").gameObject);
+        }
+        */
         //Freeze the rotation of the rigid body, ensuring it doesn't fall over
         rBody.freezeRotation = true;
 
@@ -81,6 +89,9 @@ public class TpMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!view.IsMine)
+            return;
+
         RotatePlayer();
         MovePlayer();
         LimitSpeed();

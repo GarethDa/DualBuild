@@ -4,22 +4,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 
-public class SpawnPlayers : MonoBehaviour
+public class SpawnPlayers : MonoBehaviourPunCallbacks
 {
     public GameObject playerPrefab;
     public float spawnTime = 1;
-    
-    public static SpawnPlayers INSTANCE;
+    PhotonView view;
 
     void Awake()
     {
-        if (INSTANCE == null)
-        {
-            INSTANCE = this;
-        }
+        view = GetComponent<PhotonView>();
     }
 
-    private void Start()
+    void Start()
     {
         SpawnMyPlayer();
     }
@@ -48,6 +44,7 @@ public class SpawnPlayers : MonoBehaviour
         myPlayer.transform.SetParent(GameManager.instance.playerManager.transform);//please dont remove this
 
         //ENABLED SO THAT EACH CLIENT HAS THEIR OWN VERSION
+        
         myPlayer.GetComponent<TpMovement>().enabled = true;
         myPlayer.GetComponent<PlayerInput>().enabled = true;
         myPlayer.GetComponent<CharacterAiming>().enabled = true;
@@ -57,6 +54,7 @@ public class SpawnPlayers : MonoBehaviour
         myPlayer.transform.Find("Virtual Camera").gameObject.SetActive(true);
 
         NetworkTimer.time = -1;
+        
     }
 
 }

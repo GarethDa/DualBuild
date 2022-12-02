@@ -6,7 +6,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 {
     Vector3 accPos = Vector3.zero;
     Quaternion accRot = Quaternion.identity;
- 
+    PhotonView view;
     void Start()
     {
         
@@ -15,7 +15,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        if (photonView.IsMine)
+        if (view.IsMine)
         {
             //nothing
         }

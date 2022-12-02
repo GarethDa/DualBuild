@@ -1,6 +1,4 @@
-Player has jumped this many times: 0
-Current round duration: 15
+Player has jumped this many times: 1
+Current round duration: 2
 Previous round durations: 
-Round 1: 60
-Round 2: 6
-Average round time: 33
+Average round time: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class BallBehaviour : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class BallBehaviour : MonoBehaviour
 
     }
 
+    [PunRPC]
     void OnCollisionEnter(Collision collision)
     {
         //if the ball hits a player after being thrown
@@ -55,21 +57,25 @@ public class BallBehaviour : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void SetIsHeld(bool held)
     {
         isHeld = held;
     }
 
+    [PunRPC]
     public void SetIsThrown(bool thrown)
     {
         isThrown = thrown;
     }
 
+    [PunRPC]
     public bool GetIsHeld()
     {
         return isHeld;
     }
 
+    [PunRPC]
     public bool GetIsThrown()
     {
         return isThrown;

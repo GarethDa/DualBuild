@@ -6,31 +6,33 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks, IPunObservable
 {
     Vector3 accPos = Vector3.zero;
     Quaternion accRot = Quaternion.identity;
-    Quaternion rot;
-
+    Quaternion prevRot;
     Animator animator;
     void Start()
     {
-        rot = transform.Find("PlayerObj").rotation;
         animator = GetComponent<Animator>();
         if (animator == null)
         {
             Debug.LogError("No Animation here");
         }
+
+        photonView.RPC("OnAim", RpcTarget.All);
     }
 
     // Update is called once per frame
     void Update()
     {
+        prevRot = transform.Find("PlayerObj").rotation;
         if (photonView.IsMine)
         {
             //nothing
+            Debug.Log(prevRot);
         }
         else
         {
             transform.position = Vector3.Lerp(transform.position, accPos, 0.1f);
             //transform.rotation = Quaternion.Lerp(transform.rotation, accRot, 0.1f);
-            rot = Quaternion.Lerp(rot, accRot, 0.1f);
+            prevRot = Quaternion.Lerp(prevRot, accRot, 0.1f);
             
         }
     }
@@ -42,7 +44,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
-            stream.SendNext(rot);
+            stream.SendNext(prevRot);
             stream.SendNext(animator.GetBool("isGrounded"));
             stream.SendNext(animator.GetBool("isRunning"));
             stream.SendNext(animator.GetBool("isAiming"));
@@ -54,7 +56,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             transform.position = (Vector3)stream.ReceiveNext();
-            rot = (Quaternion)stream.ReceiveNext();
+            prevRot = (Quaternion)stream.ReceiveNext();
             animator.SetBool("isGrounded", (bool)stream.ReceiveNext());
             animator.SetBool("isRunning", (bool)stream.ReceiveNext());
             animator.SetBool("isAiming", (bool)stream.ReceiveNext());

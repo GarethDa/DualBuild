@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class RoundManager : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class RoundManager : MonoBehaviour
     int gameRoundsCompleted = 0;
     public string gameEndSceneName;
 
+    PhotonView view;
+
     private void Awake()//singleton
     {
         if(instance != null)
@@ -41,7 +44,16 @@ public class RoundManager : MonoBehaviour
         //temporarily starting with an intermission for testing purposes
         addRound(new Intermission());
         startRound();
-        
+
+        view = GetComponent<PhotonView>(); 
+    }
+
+    private void FixedUpdate()
+    {
+        if (view.IsMine)
+        {
+            view.RPC(nameof(updateScreenClock), RpcTarget.All, currentRoundSeconds);
+        }
     }
 
     public void addRound(Round r)
@@ -261,6 +273,8 @@ public class RoundManager : MonoBehaviour
             g.transform.position = teleportLocation;// + offset;
         }
     }
+
+    [PunRPC]
     public void secondTick(object sender, System.EventArgs e)//called every second
     {
         currentRoundSecondsElapsed++;
@@ -279,7 +293,7 @@ public class RoundManager : MonoBehaviour
        
     }
 
-   
+    [PunRPC]
     void updateScreenClock()//function to update the clock
     {
         int counter = currentRoundSeconds - currentRoundSecondsElapsed ;

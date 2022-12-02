@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Cinemachine;
+using Photon.Pun;
 
 public class CharacterAiming : MonoBehaviour
 {
@@ -71,6 +72,7 @@ public class CharacterAiming : MonoBehaviour
     }
 
 	//Aiming is a value type, not a button type, meaning it can sense when aim is being held down and released
+    [PunRPC]
 	public void OnAim(InputAction.CallbackContext cntxt)
 	{
         //If the player is aiming, prioritize the zoomed in camera and enable to reticle
@@ -97,6 +99,7 @@ public class CharacterAiming : MonoBehaviour
         }
 	}
 
+    [PunRPC]
     public void OnFire()
     {
         //If the player is holding a projectile, then go through the steps to throw it
@@ -126,12 +129,14 @@ public class CharacterAiming : MonoBehaviour
     }
 
     //Function for telling whether the player is holding a projectile or not
+    [PunRPC]
     public bool IsHoldingProj()
     {
         return holdingProjectile;
     }
 
     //Function for locking a projectile to the player
+    [PunRPC]
     public void SetProjectile(GameObject projectile)
     {
         //Set holding projectile to true, and save the projectile being held

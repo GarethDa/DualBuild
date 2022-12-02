@@ -17,6 +17,8 @@ public class RoundManager : MonoBehaviour
     public Transform levelLocation;//where to spawn players when a round starts
     public GameObject deathLocation;//where players go when they die (AKA purgatory)
 
+    public List<GameObject> currentPlayers = new List<GameObject>();
+
     public int deadPlayers = 0;
     public int totalPlayers = 1;
     int gameRoundsCompleted = 0;
@@ -252,10 +254,11 @@ public class RoundManager : MonoBehaviour
 
     protected void sendPlayersToLocation(Vector3 teleportLocation)
     {
-        for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
+        foreach(GameObject g in currentPlayers)//for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
         {
-            Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
-            GameManager.instance.playerManager.transform.GetChild(i).transform.position = teleportLocation + offset;
+            //Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+            //GameManager.instance.playerManager.transform.GetChild(i).transform.position = teleportLocation + offset;
+            g.transform.position = teleportLocation;// + offset;
         }
     }
     public void secondTick(object sender, System.EventArgs e)//called every second

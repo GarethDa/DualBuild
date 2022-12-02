@@ -45,6 +45,9 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(rot);
             stream.SendNext(animator.GetBool("isGrounded"));
             stream.SendNext(animator.GetBool("isRunning"));
+            stream.SendNext(animator.GetBool("isAiming"));
+            stream.SendNext(animator.GetBool("Throw"));
+            stream.SendNext(animator.GetBool("hasBall"));
         }
 
         //other player someone ELSE controls, send that pos to network
@@ -54,6 +57,9 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks, IPunObservable
             rot = (Quaternion)stream.ReceiveNext();
             animator.SetBool("isGrounded", (bool)stream.ReceiveNext());
             animator.SetBool("isRunning", (bool)stream.ReceiveNext());
+            animator.SetBool("isAiming", (bool)stream.ReceiveNext());
+            animator.SetBool("Throw", (bool)stream.ReceiveNext());
+            animator.SetBool("hasBall", (bool)stream.ReceiveNext());
         }
 
     }

@@ -200,7 +200,7 @@ public class TpMovement : MonoBehaviour, IPunObservable
 	{
         Debug.Log("MOVING");
 
-		Vector2 playerMovement = cntxt.ReadValue<Vector2>();
+		//Vector2 playerMovement = cntxt.ReadValue<Vector2>();
 
         if (cntxt.action.name.Equals("Up"))
         {

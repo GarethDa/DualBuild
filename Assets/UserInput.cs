@@ -119,30 +119,30 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Down"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""be75ee37-de98-47bd-926c-242008aed558"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Left"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""01657a24-fee9-47b2-b92f-b681477ef18c"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Right"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""448aebe9-a4b6-4f90-a519-960e0762ada0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [

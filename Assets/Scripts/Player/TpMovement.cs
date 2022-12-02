@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 using Cinemachine;
+using System;
 
 public class TpMovement : MonoBehaviour
 {
@@ -36,6 +37,11 @@ public class TpMovement : MonoBehaviour
     Rigidbody rBody;
 
     PhotonView view;
+
+    bool upHeld = false;
+    bool downHeld = false;
+    bool leftHeld = false;
+    bool rightHeld = false;
 
     bool isGrounded;
     bool lastFrameGrounded = true;
@@ -195,34 +201,37 @@ public class TpMovement : MonoBehaviour
 
         if (cntxt.action.name.Equals("Up"))
         {
-            if (cntxt.performed) verticalInput = 1f;
+            if (cntxt.performed) upHeld = true;
 
-            if (cntxt.canceled) verticalInput = 0f;
+            if (cntxt.canceled) upHeld = false;
         }
 
-        else if (cntxt.action.name.Equals("Down"))
+        if (cntxt.action.name.Equals("Down"))
         {
-            if (cntxt.performed) verticalInput = -1f;
+            if (cntxt.performed) downHeld = true;
 
-            if (cntxt.canceled) verticalInput = 0f;
+            if (cntxt.canceled) downHeld = false;
         }
 
-        else if (cntxt.action.name.Equals("Left"))
+        if (cntxt.action.name.Equals("Left"))
         {
-            if (cntxt.performed) horizontalInput = -1f;
+            if (cntxt.performed) leftHeld = true;
 
-            if (cntxt.canceled) horizontalInput = 0f;
+            if (cntxt.canceled) leftHeld = false;
         }
 
-        else if (cntxt.action.name.Equals("Right"))
+        if (cntxt.action.name.Equals("Right"))
         {
-            if (cntxt.performed) horizontalInput = 1f;
+            if (cntxt.performed) rightHeld = true;
 
-            if (cntxt.canceled) horizontalInput = 0f;
+            if (cntxt.canceled) rightHeld = false;
         }
+
+        verticalInput = Convert.ToInt32(upHeld) - Convert.ToInt32(downHeld);
+        horizontalInput = Convert.ToInt32(rightHeld) - Convert.ToInt32(leftHeld);
 
         //horizontalInput = playerMovement.x;
-		//verticalInput = playerMovement.y;
+        //verticalInput = playerMovement.y;
         //animation stuff
 
         isRunning = ((horizontalInput != 0) || (verticalInput != 0)) ? true : false;

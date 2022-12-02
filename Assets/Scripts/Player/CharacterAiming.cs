@@ -102,6 +102,8 @@ public class CharacterAiming : MonoBehaviour
         //If the player is holding a projectile, then go through the steps to throw it
         if (holdingProjectile)
         {
+            heldProjectile.GetComponent<Collider>().enabled = true;
+
             animator.SetTrigger("Throw");
             //Set the projectile back to non-kinematic
             heldProjectile.GetComponent<Rigidbody>().isKinematic = false;
@@ -150,5 +152,7 @@ public class CharacterAiming : MonoBehaviour
 
         //Set the projectile to kinematic, ensuring it doesn't move while being held
         heldProjectile.GetComponent<Rigidbody>().isKinematic = true;
+
+        heldProjectile.GetComponent<Collider>().enabled = false;
     }
 }

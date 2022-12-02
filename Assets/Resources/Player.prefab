@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 4218163339387787275}
   - component: {fileID: 990621111752025097}
   - component: {fileID: 6164643919393318148}
+  - component: {fileID: 498925828732421943}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -63,7 +64,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &4204457449091283935
 MonoBehaviour:
@@ -392,10 +393,6 @@ MonoBehaviour:
     m_ActionName: Player/EnableUI[/Keyboard/ctrl]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: bfd1d926-94f7-4d0d-bd1e-071782297d60
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 23187d22-dd74-4008-8b68-e84f459281ff
     m_ActionName: UI/Submit[/Keyboard/enter]
   - m_PersistentCalls:
@@ -443,6 +440,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 8411294830145179060}
+--- !u!114 &498925828732421943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164643919393318149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4405f4e9694e24793d791ee20a6c40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8411294829149878086
 GameObject:
   m_ObjectHideFlags: 0

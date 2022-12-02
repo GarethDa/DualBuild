@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Photon.Pun;
 
-public class SpawnPlayers : MonoBehaviourPun
+public class SpawnPlayers : MonoBehaviour
 {
     public GameObject playerPrefab;
     public float spawnTime = 1;
@@ -19,13 +19,14 @@ public class SpawnPlayers : MonoBehaviourPun
         }
     }
 
-    void Start()
+    private void Start()
     {
-        
+        SpawnMyPlayer();
     }
 
     void Update()
     {
+        /**
         if (NetworkTimer.time < 0)
             return;
 
@@ -36,6 +37,7 @@ public class SpawnPlayers : MonoBehaviourPun
         {
             SpawnMyPlayer();
         }
+        */
     }
 
     void SpawnMyPlayer()

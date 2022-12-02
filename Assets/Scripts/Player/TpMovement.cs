@@ -51,13 +51,18 @@ public class TpMovement : MonoBehaviour
 
     //UserInput inputAction;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rBody = GetComponent<Rigidbody>();
 
         //Photon component attached to player
         view = GetComponent<PhotonView>();
+    }
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
 
         //Freeze the rotation of the rigid body, ensuring it doesn't fall over
         rBody.freezeRotation = true;
@@ -76,34 +81,29 @@ public class TpMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (view.IsMine)
+        RotatePlayer();
+        MovePlayer();
+        LimitSpeed();
+        //AddHorizontalDrag();
+
+        isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
+        animator.SetBool("isGrounded", isGrounded);
+
+        if (isGrounded) rBody.drag = groundDrag;
+
+        else rBody.drag = 0f;
+
+        if (isGrounded && !lastFrameGrounded) justSwapped = true;
+
+        lastFrameGrounded = isGrounded;
+        justSwapped = false;
+
+        //Debug.Log(Mathf.Sqrt(Mathf.Pow(rBody.velocity.x, 2) + Mathf.Pow(rBody.velocity.z, 2)));
+
+        if (rBody.velocity.y < 0)
         {
-            RotatePlayer();
-            MovePlayer();
-            LimitSpeed();
-            //AddHorizontalDrag();
-
-            isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
-            animator.SetBool("isGrounded", isGrounded);
-
-            if (isGrounded) rBody.drag = groundDrag;
-
-            else rBody.drag = 0f;
-
-            if (isGrounded && !lastFrameGrounded) justSwapped = true;
-
-            lastFrameGrounded = isGrounded;
-            justSwapped = false;
-
-            //Debug.Log(Mathf.Sqrt(Mathf.Pow(rBody.velocity.x, 2) + Mathf.Pow(rBody.velocity.z, 2)));
-
-            if (rBody.velocity.y < 0)
-            {
-                rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
-            }
+            rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
         }
-        else
-            return;
         //Debug.Log(new Vector3(rBody.velocity.x, 0f, rBody.velocity.z).magnitude);
 
     }
@@ -186,6 +186,8 @@ public class TpMovement : MonoBehaviour
     //New input system
 	public void OnMove(InputAction.CallbackContext cntxt)
 	{
+        Debug.Log("MOVING");
+
 		Vector2 playerMovement = cntxt.ReadValue<Vector2>();
 
 		horizontalInput = playerMovement.x;
@@ -201,6 +203,9 @@ public class TpMovement : MonoBehaviour
     //New input system
     public void OnJump(InputAction.CallbackContext cntxt)
     {
+
+        Debug.Log("JUMP");
+
         if (cntxt.performed)
         {
             if (isGrounded)

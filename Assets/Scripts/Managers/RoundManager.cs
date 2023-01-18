@@ -17,11 +17,15 @@ public class RoundManager : MonoBehaviour
     public Transform levelLocation;//where to spawn players when a round starts
     public GameObject deathLocation;//where players go when they die (AKA purgatory)
 
+    public List<GameObject> currentPlayers = new List<GameObject>();
+
     public int deadPlayers = 0;
     public int totalPlayers = 1;
     int gameRoundsCompleted = 0;
     public string gameEndSceneName;
 
+    List<roundPair> levelCombinations = new List<roundPair>();
+      
     private void Awake()//singleton
     {
         if(instance != null)
@@ -37,6 +41,7 @@ public class RoundManager : MonoBehaviour
     private void Start()
     {
         //temporarily starting with an intermission for testing purposes
+        levelCombinations = new List<roundPair>();
         addRound(new Intermission());
         startRound();
         
@@ -92,8 +97,9 @@ public class RoundManager : MonoBehaviour
         else
         {
             //Debug.log("$START HAS NO INTERMISSION");
-            loadLevel(toLoad);//load the level needed
-            sendPlayersToLevel();
+            
+           
+            sendPlayersToLevel(loadLevel(toLoad));
         }
         
        //reset lists for next round
@@ -156,55 +162,105 @@ public class RoundManager : MonoBehaviour
 
     private void generateNextRoundLevels()
     {
-        List<roundType> playingRounds = new List<roundType>();
-        List<roundType> possibleRounds = new List<roundType>();
-        int levelsPerRound = 2;
-           
-        foreach(roundType r in System.Enum.GetValues(typeof(roundType)))//make a list of all roundTypes
-        {
-            if(r == roundType.NONE || r == roundType.INTERMISSION)
-            {
-                continue;
-            }
-            possibleRounds.Add(r);
-        }
-        for (int i = 0; i < levelsPerRound; i++)//pop a random element into a new list levelsPerRound amount of times
-        {
 
-            int randomIndex = Random.Range(0, possibleRounds.Count);       
-            playingRounds.Add(possibleRounds[randomIndex]);
-            possibleRounds.RemoveAt(randomIndex);
+        if(levelCombinations.Count == 0)
+        {
+            //generate level combinations again
+            List<roundType> possibleRounds = new List<roundType>();
+
+
+            foreach (roundType r in System.Enum.GetValues(typeof(roundType)))//make a list of all roundTypes
+            {
+                if (r == roundType.NONE || r == roundType.INTERMISSION)
+                {
+                    continue;
+                }
+                possibleRounds.Add(r);
+            }
+
+            foreach (roundType outerType in possibleRounds)
+            {
+                foreach (roundType innerType in possibleRounds)
+                {
+                    if (outerType != innerType)
+                    {
+                        //add to list if list doesnt contain its code
+                        int code = (int)outerType + (int)innerType;
+
+                        bool listHasCode = false;
+
+                        //scan list to see if there is a combination with the same code
+                        foreach (roundPair r in levelCombinations)
+                        {
+                            if (r.roundCode == code)
+                            {
+                                listHasCode = true;
+                                break;
+                            }
+                        }
+                        if (listHasCode)
+                        {
+                            continue;
+                        }
+                        levelCombinations.Add(new roundPair(getRoundByRoundType(outerType), getRoundByRoundType(innerType), code));
+                    }
+                }
+            }
+
+            List<roundPair> randomizedCombinations = new List<roundPair>();
+            foreach(roundPair roundPair in levelCombinations)
+            {
+                randomizedCombinations.Add(roundPair);
+            }
+            levelCombinations.Clear();
+            while(randomizedCombinations.Count != 0)
+            {
+                int randomIndex = Random.Range(0, randomizedCombinations.Count);
+                levelCombinations.Add(randomizedCombinations[randomIndex]);
+                randomizedCombinations.RemoveAt(randomIndex);
+            }
         }
 
-        
-       //queue rounds
-        foreach (roundType r in playingRounds)
-        {
-            
-            if (r == roundType.BUMPER)
-            {
-                addRound(new BumperRound());
-            }
-            if (r == roundType.DODGEBALL)
-            {
-                addRound(new DodgeballRound());
-            }
-            if (r == roundType.PACHINKO_BALL)
-            {
-                addRound(new PachinkoRound());
-            }
-            if (r == roundType.FALLING_PLATFORMS)
-            {
-                addRound(new FallingPlatformRound());
-            }
-        }
+
+
+        int index = gameRoundsCompleted % levelCombinations.Count;
+        addRound(levelCombinations[index].getRoundOne());
+        addRound(levelCombinations[index].getRoundTwo());
+       
     }
 
-    public void loadLevel(int number)
+    private Round getRoundByRoundType(roundType r)
+    {
+        if (r == roundType.BUMPER)
+        {
+            return (new BumperRound());
+        }
+        if (r == roundType.DODGEBALL)
+        {
+            return (new DodgeballRound());
+        }
+        if (r == roundType.PACHINKO_BALL)
+        {
+            return (new PachinkoRound());
+        }
+        if (r == roundType.FALLING_PLATFORMS)
+        {
+            return (new FallingPlatformRound());
+        }
+        return new Intermission();
+    }
+
+    public List<Transform> loadLevel(int number)
     {//instantiate from resources/load
         GameObject level = Instantiate(Resources.Load<GameObject>("Levels/" + number.ToString()));
+        List<Transform> spawnPoints = new List<Transform>();
+        Transform levelSpawnParent = level.transform.Find("SpawnPoints");
+        for (int i = 0; i < 4; i++) {
+            spawnPoints.Add(levelSpawnParent.GetChild(i));
+        }
         level.transform.SetParent(GameManager.instance.levelManager.transform);
         level.transform.position = level.transform.parent.transform.position + level.transform.position;
+        return spawnPoints;
     }
 
     protected bool nextRoundsHaveIntermission()//check next rounds for an intermission round
@@ -238,24 +294,28 @@ public class RoundManager : MonoBehaviour
         return hasIntermission;
     }
 
-    protected void sendPlayersToLevel()
+    protected void sendPlayersToLevel(List<Transform> t)
     {
         //Debug.log("$SEND TO LEVEL");
-        sendPlayersToLocation(levelLocation.position);
+        sendPlayersToLocation(t);
     }
 
     protected void sendPlayersToIntermission()
     {
         //Debug.log("$SEND TO INTERMISSION");
-        sendPlayersToLocation(intermissionLocation.position);
+        sendPlayersToLocation(new List<Transform> { intermissionLocation });
     }
 
-    protected void sendPlayersToLocation(Vector3 teleportLocation)
+    protected void sendPlayersToLocation(List<Transform> t)
     {
-        for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
+        int index = 0;
+        foreach(GameObject g in currentPlayers)//for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
         {
-            Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
-            GameManager.instance.playerManager.transform.GetChild(i).transform.position = teleportLocation + offset;
+            //Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+            //GameManager.instance.playerManager.transform.GetChild(i).transform.position = teleportLocation + offset;
+            g.transform.position = t[index%t.Count].position;// + offset;
+
+            index++;
         }
     }
     public void secondTick(object sender, System.EventArgs e)//called every second
@@ -300,5 +360,26 @@ public class RoundManager : MonoBehaviour
     }
 }
 
+public struct roundPair{
+    Round roundOne;
+    Round roundTwo;
+    public int roundCode;
+
+    public roundPair(Round one, Round two, int code)
+    {
+        roundOne = one;
+        roundTwo = two;
+        roundCode = code;
+    }
+
+    public Round getRoundOne()
+    {
+        return roundOne;
+    }
+    public Round getRoundTwo()
+    {
+        return roundTwo;
+    }
+}
 
 

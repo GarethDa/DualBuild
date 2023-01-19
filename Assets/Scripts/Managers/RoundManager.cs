@@ -146,7 +146,7 @@ public class RoundManager : MonoBehaviour
         if (!currentRoundsHaveIntermission())
         {
             currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
-            //Debug.log("$END ROUND HAS NO INTERMISSION");
+            Debug.Log("$END ROUND HAS NO INTERMISSION");
             gameRoundsCompleted++;
             addRound(new Intermission());
             startRound();
@@ -154,7 +154,7 @@ public class RoundManager : MonoBehaviour
         else
         {//start rounds
             currentRounds.Clear();
-            //Debug.log("$END ROUND INTERMISSION");
+            Debug.Log("$END ROUND INTERMISSION");
             generateNextRoundLevels();
             startRound();
         }
@@ -309,11 +309,11 @@ public class RoundManager : MonoBehaviour
     protected void sendPlayersToLocation(List<Transform> t)
     {
         int index = 0;
-        foreach(GameObject g in currentPlayers)//for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
+        for(int i = 0; i < PlayerManager.instance.transform.childCount; i++)//for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
         {
             //Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
             //GameManager.instance.playerManager.transform.GetChild(i).transform.position = teleportLocation + offset;
-            g.transform.position = t[index%t.Count].position;// + offset;
+            PlayerManager.instance.transform.GetChild(i).transform.position = t[index%t.Count].position;// + offset;
 
             index++;
         }

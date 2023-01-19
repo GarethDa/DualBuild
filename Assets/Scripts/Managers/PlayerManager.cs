@@ -42,12 +42,12 @@ public class PlayerManager : MonoBehaviour
 
     private void OnEnable()
     {
-        playerInManager.onPlayerJoined += AddPlayer;
+        //playerInManager.onPlayerJoined += AddPlayer;
     }
 
     private void OnDisable()
     {
-        playerInManager.onPlayerJoined -= AddPlayer;
+        //playerInManager.onPlayerJoined -= AddPlayer;
     }
 
     protected void checkLastOneStanding()
@@ -115,7 +115,5 @@ public class PlayerManager : MonoBehaviour
 
             playerInput.gameObject.name = "P2";
         }
-
     }
-
 }

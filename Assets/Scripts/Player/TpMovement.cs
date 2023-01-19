@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Photon.Pun;
 using Cinemachine;
 using System;
 
@@ -36,8 +35,6 @@ public class TpMovement : MonoBehaviour
 
     Rigidbody rBody;
 
-    PhotonView view;
-
     bool upHeld = false;
     bool downHeld = false;
     bool leftHeld = false;
@@ -64,9 +61,6 @@ public class TpMovement : MonoBehaviour
        
         //Freeze the rotation of the rigid body, ensuring it doesn't fall over
         rBody.freezeRotation = true;
-
-        //Photon component attached to player
-        view = GetComponent<PhotonView>();
 
         animator = GetComponent<Animator>();
 

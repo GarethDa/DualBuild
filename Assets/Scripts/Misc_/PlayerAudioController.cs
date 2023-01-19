@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerAudioController : MonoBehaviour
 {
     public float timeBetweenFootsteps = 0.5f;
-    float soundCounter = 0f;
+    //float soundCounter = 0f;
     // Start is called before the first frame update
     void Start()
     {

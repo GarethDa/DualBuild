@@ -14,9 +14,7 @@ GameObject:
   - component: {fileID: 6164643919393318172}
   - component: {fileID: 6164643919393318173}
   - component: {fileID: 6164643919393318146}
-  - component: {fileID: 3629872057086614170}
   - component: {fileID: 7003453695122746443}
-  - component: {fileID: 1132006945155385936}
   - component: {fileID: 4218163339387787275}
   - component: {fileID: 990621111752025097}
   - component: {fileID: 6164643919393318148}
@@ -148,39 +146,6 @@ MonoBehaviour:
   holdPos: {fileID: 8319145080816732317}
   zoomCam: {fileID: 8411294830436386869}
   throwForce: 1500
---- !u!114 &3629872057086614170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6164643919393318149}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PositionModel:
-    SynchronizeEnabled: 1
-    TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 2
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 1
-    ExtrapolateOption: 0
-    ExtrapolateSpeed: 1
-    ExtrapolateIncludingRoundTripTime: 1
-    ExtrapolateNumberOfStoredPositions: 1
-  m_RotationModel:
-    SynchronizeEnabled: 1
-    InterpolateOption: 1
-    InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
-  m_ScaleModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 0
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 0
 --- !u!114 &7003453695122746443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,29 +163,6 @@ MonoBehaviour:
   maxFallSpeed: -4
   powerUpDuration: 3
   selectedPowerUp: 1
---- !u!114 &1132006945155385936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6164643919393318149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 3629872057086614170}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!114 &4218163339387787275
 MonoBehaviour:
   m_ObjectHideFlags: 0

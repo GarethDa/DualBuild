@@ -9,10 +9,12 @@ public class PatrolScript : MonoBehaviour
     //public Transform P2T;
     
     //Old system stuff
+    /*
     Vector3 patrol1;
     Vector3 patrol2;
     bool targettingP1 = true;
     Vector3 target;
+    */
 
     GameObject trackedPlayer;
     bool trackingPlayer = false;

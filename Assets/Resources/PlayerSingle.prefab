@@ -146,6 +146,7 @@ MonoBehaviour:
   holdPos: {fileID: 8319145080816732317}
   zoomCam: {fileID: 8411294830436386869}
   throwForce: 1500
+  animator: {fileID: 6164643919393318173}
 --- !u!114 &7003453695122746443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,7 +518,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8411294829149878086}
   m_LocalRotation: {x: -0.22829899, y: 0.6665775, z: 0.22626269, w: 0.67257655}
-  m_LocalPosition: {x: -7.9701777, y: -2.8394408, z: -0.071395874}
+  m_LocalPosition: {x: 3.032156, y: 3.9706035, z: -125.1149}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

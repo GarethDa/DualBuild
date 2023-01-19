@@ -29,10 +29,4 @@ public class InputController : MonoBehaviour
 
         inputAction = new UserInput();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

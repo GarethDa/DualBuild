@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class playerFallScript : MonoBehaviour
 {
+    [SerializeField] bool debugPrint;
     public static playerFallScript instance;
     public List<GameObject> fallenPlayers = new List<GameObject>();
+
    
 
     public void resetFallenPlayers()
     {
         fallenPlayers.Clear();
     }
+
     public void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
-
-        
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -30,12 +31,10 @@ public class playerFallScript : MonoBehaviour
                 return;
             }
             fallenPlayers.Add(collision.gameObject);
-            //its a player
-            Debug.Log("$COLLISION");
-            //playerDied();
+            if (debugPrint) {
+                Debug.Log("$COLLISION");
+            }
             EventManager.onPlayerFell?.Invoke(null, new PlayerArgs(collision.gameObject));
-            //PlayerManager.instance.playerfell(collision.gameObject);
-           // Debug.Log("FELL");
         }
     }
 

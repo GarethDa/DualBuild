@@ -12,6 +12,8 @@ public class BounceBallGenerator : MonoBehaviour
     [SerializeField]float angle = 0;
     float anglePerSecond = 2.5f;
     public GameObject arrow;
+
+    [SerializeField] GameObject projectile;
     
     // Start is called before the first frame update
     void Start()
@@ -72,7 +74,7 @@ public class BounceBallGenerator : MonoBehaviour
             direction = dir;
         }
 
-        GameObject newBall = Instantiate(Resources.Load<GameObject>("Projectiles/PachinkoBall"));
+        GameObject newBall = Instantiate(projectile);
         newBall.transform.position = transform.position;
         newBall.GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
     }

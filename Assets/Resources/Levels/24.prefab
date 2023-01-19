@@ -1141,6 +1141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angle: 0
   arrow: {fileID: 8225896991175506385}
+  projectile: {fileID: 575967481415569178, guid: bc90590a22f6f124c8ec97e336ba1547, type: 3}
 --- !u!1 &6614384604386435796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1561,3 +1562,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angle: 0
   arrow: {fileID: 9222359363501076027}
+  projectile: {fileID: 575967481415569178, guid: bc90590a22f6f124c8ec97e336ba1547, type: 3}

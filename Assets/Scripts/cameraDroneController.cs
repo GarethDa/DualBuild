@@ -15,6 +15,5 @@ public class cameraDroneController : MonoBehaviour
     void Update()
     {
         transform.LookAt(lookAt.position);
-
     }
 }

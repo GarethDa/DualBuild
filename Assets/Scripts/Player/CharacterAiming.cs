@@ -22,7 +22,7 @@ public class CharacterAiming : MonoBehaviour
     bool holdingProjectile = false;
 
     GameObject heldProjectile = null;
-    private Animator animator;
+    Animator animator;
     //BALLER
 
     //UserInput inputAction;
@@ -60,8 +60,15 @@ public class CharacterAiming : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animator.SetBool("isAiming", isAiming);
-        animator.SetBool("hasBall", holdingProjectile);
+        if (animator != null)
+        {
+            animator.SetBool("isAiming", isAiming);
+            animator.SetBool("hasBall", holdingProjectile);
+        }
+        else
+        {
+            Debug.Log("Drink your grandson's pee");
+        }
         if (isAiming)
         {
             //If the player is aiming, set the player object's rotation around the y-axis to that of the camera

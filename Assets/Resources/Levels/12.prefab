@@ -2359,6 +2359,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angle: 0
   arrow: {fileID: 2252594822437499188}
+  projectile: {fileID: 575967481415569178, guid: bc90590a22f6f124c8ec97e336ba1547, type: 3}
 --- !u!1 &2252594822437499188
 GameObject:
   m_ObjectHideFlags: 0
@@ -2504,6 +2505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angle: 0
   arrow: {fileID: 5074326687608008928}
+  projectile: {fileID: 575967481415569178, guid: bc90590a22f6f124c8ec97e336ba1547, type: 3}
 --- !u!1 &2487076081488076476
 GameObject:
   m_ObjectHideFlags: 0

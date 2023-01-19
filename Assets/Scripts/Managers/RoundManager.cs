@@ -12,10 +12,10 @@ public class RoundManager : MonoBehaviour
     int currentRoundSeconds = 0;//seconds the current round should last
     public int currentRoundSecondsElapsed = 0;//current elapsed time
 
-    public TextMeshProUGUI clockObject;//clock text on canvas
-    public Transform intermissionLocation;//where to spawn players for intermission
-    public Transform levelLocation;//where to spawn players when a round starts
-    public GameObject deathLocation;//where players go when they die (AKA purgatory)
+    public TextMeshProUGUI clockObject; //clock text on canvas
+    public Transform intermissionLocation; //where to spawn players for intermission
+    public Transform levelLocation; //where to spawn players when a round starts
+    public GameObject deathLocation; //where players go when they die (AKA purgatory)
 
     public List<GameObject> currentPlayers = new List<GameObject>();
 
@@ -26,16 +26,15 @@ public class RoundManager : MonoBehaviour
 
     List<roundPair> levelCombinations = new List<roundPair>();
       
-    private void Awake()//singleton
+    private void Awake() //singleton
     {
         if(instance != null)
         {
             return;
         }
+
         instance = this;
         gameRoundsCompleted = 0;
-        
-        
     }
 
     private void Start()
@@ -44,7 +43,6 @@ public class RoundManager : MonoBehaviour
         levelCombinations = new List<roundPair>();
         addRound(new Intermission());
         startRound();
-        
     }
 
     public void addRound(Round r)
@@ -61,8 +59,6 @@ public class RoundManager : MonoBehaviour
             endRound("All players died");
             deadPlayers = 0;
         }
-       
-        
     }
 
     public void startRound()

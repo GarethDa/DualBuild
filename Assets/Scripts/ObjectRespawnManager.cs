@@ -91,20 +91,6 @@ public class ObjectRespawnManager : MonoBehaviour
         */
 
         //other.gameObject.SetActive(false);
-
-        {
-        Profiler.BeginSample("Ball instantiate");
-        GameObject obj = Instantiate(other.gameObject);
-
-        obj.transform.position = spawnPoints[0].transform.position;
-
-        Destroy(other.gameObject);
-
-        spawnPoints.Add(spawnPoints[0]);
-        spawnPoints.RemoveAt(0);
-
-        Profiler.EndSample();
-        }
     }
 
     /*

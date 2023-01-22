@@ -134,6 +134,17 @@ public class CharacterAiming : MonoBehaviour
             //Tell the projectile that it has been thrown 
             heldProjectile.GetComponent<BallBehaviour>().SetIsThrown(true);
         }
+
+        else
+        {
+            RaycastHit hitInfo;
+            Physics.Raycast(transform.position, transform.forward, out hitInfo, 100);
+
+            if (hitInfo.collider != null && hitInfo.collider.gameObject.tag == "Player")
+            {
+                gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(-transform.forward, ForceMode.Impulse);
+            }
+        }
     }
 
     //Function for telling whether the player is holding a projectile or not

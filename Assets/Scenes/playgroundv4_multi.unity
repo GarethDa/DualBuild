@@ -3234,6 +3234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 977526631}
   - component: {fileID: 977526630}
+  - component: {fileID: 977526632}
   m_Layer: 0
   m_Name: PlayerHolder
   m_TagString: Untagged
@@ -3277,6 +3278,50 @@ Transform:
   m_Father: {fileID: 2010642206}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &977526632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977526629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NotificationBehavior: 0
+  m_MaxPlayerCount: -1
+  m_AllowJoining: 1
+  m_JoinBehavior: 1
+  m_PlayerJoinedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_PlayerLeftEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_JoinAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Join
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 76b392e0-c702-49aa-91d6-5987d2464f2c
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 7368923195460212398, guid: 5fe38157de135d642b72399d3890c389, type: 3}
+  m_PlayerPrefab: {fileID: 6164643919393318149, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
+  m_SplitScreen: 1
+  m_MaintainAspectRatioInSplitScreen: 0
+  m_FixedNumberOfSplitScreens: -1
+  m_SplitScreenRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &1004032704
 GameObject:
   m_ObjectHideFlags: 0
@@ -6351,6 +6396,10 @@ PrefabInstance:
     - target: {fileID: 6164643919393318149, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
       propertyPath: m_Name
       value: PlayerSingle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6164643919393318149, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8411294829596977121, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
       propertyPath: m_BiasX

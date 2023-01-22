@@ -13,8 +13,9 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] Transform holdPos;
     [SerializeField] CinemachineVirtualCamera zoomCam;
 
-    [Header("Throwing Projectiles")]
+    [Header("Projectiles & Punching")]
     [SerializeField] [Range(1000.0f, 4000.0f)] float throwForce = 2000.0f;
+    [SerializeField] [Range(1.0f, 100.0f)] float punchForce = 20f;
 
     Image reticle;
 
@@ -137,12 +138,18 @@ public class CharacterAiming : MonoBehaviour
 
         else
         {
+            GameObject playerObj = transform.Find("PlayerObj").gameObject;
+
             RaycastHit hitInfo;
-            Physics.Raycast(transform.position, transform.forward, out hitInfo, 100);
+            //Physics.Raycast(transform.position, playerObj.transform.forward, out hitInfo, 100);
+
+            Physics.BoxCast(transform.position, new Vector3(1f, 1f, .1f), playerObj.transform.forward, out hitInfo, Quaternion.identity, 4f);
 
             if (hitInfo.collider != null && hitInfo.collider.gameObject.tag == "Player")
             {
-                gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(-transform.forward, ForceMode.Impulse);
+                //GameObject hitPlayer = hitInfo.collider.transform.Find("PlayerObj").gameObject;
+                hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3 (0f, punchForce, 0f), ForceMode.Impulse);
+                Debug.Log("punch");
             }
         }
     }

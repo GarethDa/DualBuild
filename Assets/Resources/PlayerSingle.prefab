@@ -146,6 +146,7 @@ MonoBehaviour:
   holdPos: {fileID: 8319145080816732317}
   zoomCam: {fileID: 8411294830436386869}
   throwForce: 1500
+  punchForce: 5
 --- !u!114 &7003453695122746443
 MonoBehaviour:
   m_ObjectHideFlags: 0

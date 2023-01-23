@@ -281,22 +281,4 @@ public class TpMovement : MonoBehaviour
     }
     */
 
-    public void OnEditorPause()
-    {
-        editing = !editing;
-
-        if (editing)
-        {
-            Time.timeScale = 0f;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
-        else
-        {
-            Time.timeScale = 1f;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-    }
 }

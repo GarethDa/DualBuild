@@ -52,6 +52,8 @@ public class TpMovement : MonoBehaviour
 
     private Animator animator;
 
+    private PowerUpScript powerup;
+
     //UserInput inputAction;
 
     // Start is called before the first frame update
@@ -67,6 +69,8 @@ public class TpMovement : MonoBehaviour
         //GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled = false;
 
         rBody.drag = 0f;
+
+        powerup = GetComponent<PowerUpScript>();
     }
 
     // Update is called once per frame
@@ -241,6 +245,7 @@ public class TpMovement : MonoBehaviour
             {
                 rBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 //ParticleManager.instance.PlayEffect(transform.position, "WhiteParticles");
+                powerup.PlayerJumped();
             }
         }
     }

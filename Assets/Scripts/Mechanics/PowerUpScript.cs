@@ -10,19 +10,20 @@ public class PowerUpScript : MonoBehaviour
     //Super Jump Vairables
     private bool superjumpEnabled = false;
     private float initialJumpForce; //grabbed value at start
-    [SerializeField] [Range(1.0f, 40.0f)] private float superjumpForce = 15.0f;
+    [SerializeField] [Range(1.0f, 40.0f)] private float superjumpForce = 35.0f;
 
     //Slowfall variables
     private bool slowfallEnabled = false;
     [SerializeField] [Range(1.0f, 20.0f)] private float slowfallForce = 10.0f;
     [SerializeField] [Range(-1.0f, -10.0f)] private float maxFallSpeed = -4.0f;
     private bool playerGrounded = true;
+    [SerializeField] [Range(1.0f, 10.0f)] private float slowfallDuration = 3.0f;
 
     //Dash variables
     private bool dashEnabled = false;
     private float initialSpeed; //grabbed value at start
     [SerializeField] [Range(1.0f, 50.0f)] private float dashSpeed = 30.0f;
-
+    [SerializeField] [Range(1.0f, 10.0f)] private float dashDuration = 3.0f;
 
     private bool usedPowerUp = false; //if we have used our powerup
     public float powerUpDuration = 3f; //total duration of ability in seconds
@@ -30,14 +31,24 @@ public class PowerUpScript : MonoBehaviour
 
     
     [SerializeField] public powerUpList selectedPowerUp;
-
+    
     // Start is called before the first frame update
     void Start()
     {
-        playerObject = gameObject;
-        rb = gameObject.GetComponent<Rigidbody>();
-        initialJumpForce = playerObject.GetComponent<TpMovement>().GetJumpForce();
-        initialSpeed = playerObject.GetComponent<TpMovement>().GetSpeed();
+        playerObject = gameObject;//the player this script is attached to
+        rb = gameObject.GetComponent<Rigidbody>();//our player's rigidbody
+        initialJumpForce = playerObject.GetComponent<TpMovement>().GetJumpForce();//starting jump force, so we can reset
+        initialSpeed = playerObject.GetComponent<TpMovement>().GetSpeed();//starting speed, so we can reset
+    }
+
+    public void PlayerJumped()
+    {
+        //this is so TpMovement can notify this script for when we jumped and disable our superjump
+        if (superjumpEnabled == true)
+        {
+            superjumpEnabled = false;
+            playerObject.GetComponent<TpMovement>().SetJumpForce(initialJumpForce);
+        }
     }
 
     public void OnPowerUp()
@@ -98,32 +109,28 @@ public class PowerUpScript : MonoBehaviour
             }
         }
 
-        //if we're over our timer and we actually used a powerup
-        if (currentPowerUpDuration >= powerUpDuration && usedPowerUp)
+        //if we've used a powerup, check each one's duration
+        if (usedPowerUp)
         {
-            //reset our used state and our duration
-            usedPowerUp = false;
-            currentPowerUpDuration = 0;
-
-            if (selectedPowerUp == powerUpList.SuperJump)
-            {
-                superjumpEnabled = false;
-                playerObject.GetComponent<TpMovement>().SetJumpForce(initialJumpForce);
-            }
-            else if (selectedPowerUp == powerUpList.SlowFall)
+            if (selectedPowerUp == powerUpList.SlowFall && currentPowerUpDuration >= slowfallDuration)
             {
                 slowfallEnabled = false;
                 playerGrounded = true;
+                currentPowerUpDuration = 0;
+                usedPowerUp = false;
+                selectedPowerUp = powerUpList.None; //"Consume" powerup when done
+
             }
-            else if (selectedPowerUp == powerUpList.Dash)
+            else if (selectedPowerUp == powerUpList.Dash && currentPowerUpDuration >= dashDuration)
             {
                 dashEnabled = false;
                 playerObject.GetComponent<TpMovement>().SetSpeed(initialSpeed);
+                currentPowerUpDuration = 0;
+                usedPowerUp = false;
+                selectedPowerUp = powerUpList.None; //"Consume" powerup when done
             }
-            Debug.Log("Powerup done");
-            selectedPowerUp = powerUpList.None; //"Consume" powerup when done
+
         }
     }
 }
-
 public enum powerUpList { None, SuperJump, SlowFall , Dash}

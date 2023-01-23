@@ -257,6 +257,17 @@ public class TpMovement : MonoBehaviour
         return jumpForce;
     }
 
+    public void SetSpeed(float newSpeed)
+    {
+        moveSpeed = newSpeed;
+    }
+
+    //For getting the jump force
+    public float GetSpeed()
+    {
+        return moveSpeed;
+    }
+
     public bool GetIsGrounded()
     {
         return isGrounded;

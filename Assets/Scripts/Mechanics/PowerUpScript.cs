@@ -8,6 +8,7 @@ public class PowerUpScript : MonoBehaviour
     private Rigidbody rb; //player rigidboy
 
     //Super Jump Vairables
+    private bool superjumpEnabled = false;
     private float initialJumpForce; //grabbed value at start
     [SerializeField] [Range(1.0f, 40.0f)] private float superjumpForce = 15.0f;
 
@@ -16,6 +17,12 @@ public class PowerUpScript : MonoBehaviour
     [SerializeField] [Range(1.0f, 20.0f)] private float slowfallForce = 10.0f;
     [SerializeField] [Range(-1.0f, -10.0f)] private float maxFallSpeed = -4.0f;
     private bool playerGrounded = true;
+
+    //Dash variables
+    private bool dashEnabled = false;
+    private float initialSpeed; //grabbed value at start
+    [SerializeField] [Range(1.0f, 50.0f)] private float dashSpeed = 30.0f;
+
 
     private bool usedPowerUp = false; //if we have used our powerup
     public float powerUpDuration = 3f; //total duration of ability in seconds
@@ -30,6 +37,7 @@ public class PowerUpScript : MonoBehaviour
         playerObject = gameObject;
         rb = gameObject.GetComponent<Rigidbody>();
         initialJumpForce = playerObject.GetComponent<TpMovement>().GetJumpForce();
+        initialSpeed = playerObject.GetComponent<TpMovement>().GetSpeed();
     }
 
     public void OnPowerUp()
@@ -38,19 +46,27 @@ public class PowerUpScript : MonoBehaviour
         //there should probably also be an observer to check when the player actually uses their boosted ablility and then resets
         //their stats and removes their powerup
         //for now, we'll just have it on a timer
-        if (!usedPowerUp)
+        if (!usedPowerUp && selectedPowerUp != powerUpList.None)
         {
             usedPowerUp = true;
             currentPowerUpDuration = 0;
 
             if (selectedPowerUp == powerUpList.SuperJump)
             {
+                superjumpEnabled = true;
                 playerObject.GetComponent<TpMovement>().SetJumpForce(superjumpForce);
             }
             else if (selectedPowerUp == powerUpList.SlowFall)
             {
                 slowfallEnabled = true;
             }
+            else if (selectedPowerUp == powerUpList.Dash)
+            {
+                dashEnabled = true;
+                playerObject.GetComponent<TpMovement>().SetSpeed(dashSpeed);
+            }
+
+            ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
         }
     }
 
@@ -91,13 +107,18 @@ public class PowerUpScript : MonoBehaviour
 
             if (selectedPowerUp == powerUpList.SuperJump)
             {
+                superjumpEnabled = false;
                 playerObject.GetComponent<TpMovement>().SetJumpForce(initialJumpForce);
-
             }
             else if (selectedPowerUp == powerUpList.SlowFall)
             {
                 slowfallEnabled = false;
                 playerGrounded = true;
+            }
+            else if (selectedPowerUp == powerUpList.Dash)
+            {
+                dashEnabled = false;
+                playerObject.GetComponent<TpMovement>().SetSpeed(initialSpeed);
             }
             Debug.Log("Powerup done");
             selectedPowerUp = powerUpList.None; //"Consume" powerup when done
@@ -105,4 +126,4 @@ public class PowerUpScript : MonoBehaviour
     }
 }
 
-public enum powerUpList { None, SuperJump, SlowFall }
+public enum powerUpList { None, SuperJump, SlowFall , Dash}

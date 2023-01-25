@@ -74,6 +74,7 @@ public class CharacterAiming : MonoBehaviour
         {
             //If the player is aiming, set the player object's rotation around the y-axis to that of the camera
             playerObj.transform.rotation = Quaternion.Euler(new Vector3(0f, playerCam.transform.rotation.eulerAngles.y, 0f));
+            //transform.Find("Orientation").rotation = Quaternion.Euler(new Vector3(0f, playerCam.transform.rotation.eulerAngles.y, 0f));
         }
         
     }
@@ -183,5 +184,10 @@ public class CharacterAiming : MonoBehaviour
         heldProjectile.GetComponent<Rigidbody>().isKinematic = true;
 
         heldProjectile.GetComponent<Collider>().enabled = false;
+    }
+
+    public bool GetIsAiming()
+    {
+        return isAiming;
     }
 }

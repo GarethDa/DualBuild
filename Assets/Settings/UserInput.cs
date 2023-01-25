@@ -91,15 +91,6 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""EditorPause"",
-                    ""type"": ""Button"",
-                    ""id"": ""9848d9df-0fe6-4eb3-a0a0-b27171ca129b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""bab3b6b3-fe40-4d53-94a7-0d2a094cad03"",
@@ -110,12 +101,12 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Up"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""3c756741-9119-4851-bbc2-a1742896e79b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Down"",
@@ -148,6 +139,15 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""name"": ""Join"",
                     ""type"": ""Button"",
                     ""id"": ""be3b7d2b-72d4-4fc5-802f-4a5f87f4b123"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleEditor"",
+                    ""type"": ""Button"",
+                    ""id"": ""62636741-5808-4b10-8596-f3f270d99f8f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -322,17 +322,6 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b7aa8457-26f2-4f46-a504-1d77ada4fa09"",
-                    ""path"": ""<Keyboard>/backquote"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""EditorPause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""a4e83a0f-843a-4abb-9b64-177454f7b140"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
@@ -449,6 +438,17 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Join"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2aee5acc-80c4-47e7-9cff-e600c8c6e54a"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleEditor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -696,6 +696,54 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Editor"",
+            ""id"": ""5c58a80b-564e-4c0d-b116-9bff96a1100f"",
+            ""actions"": [
+                {
+                    ""name"": ""SpawnDummy"",
+                    ""type"": ""Button"",
+                    ""id"": ""0d5549ff-f0d5-4a97-8830-7a6206e9e836"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EditorPause"",
+                    ""type"": ""Button"",
+                    ""id"": ""8824c4e2-1ea4-4689-b95c-5ce3e6ac432e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""324310d3-c123-4e4d-90a0-e3d5ab26cb3c"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpawnDummy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aea34541-a228-418b-bcbb-e8856d3bf36b"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditorPause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -770,13 +818,13 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_PowerUp = m_Player.FindAction("PowerUp", throwIfNotFound: true);
         m_Player_EnableUI = m_Player.FindAction("EnableUI", throwIfNotFound: true);
-        m_Player_EditorPause = m_Player.FindAction("EditorPause", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Up = m_Player.FindAction("Up", throwIfNotFound: true);
         m_Player_Down = m_Player.FindAction("Down", throwIfNotFound: true);
         m_Player_Left = m_Player.FindAction("Left", throwIfNotFound: true);
         m_Player_Right = m_Player.FindAction("Right", throwIfNotFound: true);
         m_Player_Join = m_Player.FindAction("Join", throwIfNotFound: true);
+        m_Player_ToggleEditor = m_Player.FindAction("ToggleEditor", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
@@ -788,6 +836,10 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // Editor
+        m_Editor = asset.FindActionMap("Editor", throwIfNotFound: true);
+        m_Editor_SpawnDummy = m_Editor.FindAction("SpawnDummy", throwIfNotFound: true);
+        m_Editor_EditorPause = m_Editor.FindAction("EditorPause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -854,13 +906,13 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_PowerUp;
     private readonly InputAction m_Player_EnableUI;
-    private readonly InputAction m_Player_EditorPause;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Up;
     private readonly InputAction m_Player_Down;
     private readonly InputAction m_Player_Left;
     private readonly InputAction m_Player_Right;
     private readonly InputAction m_Player_Join;
+    private readonly InputAction m_Player_ToggleEditor;
     public struct PlayerActions
     {
         private @UserInput m_Wrapper;
@@ -872,13 +924,13 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputAction @PowerUp => m_Wrapper.m_Player_PowerUp;
         public InputAction @EnableUI => m_Wrapper.m_Player_EnableUI;
-        public InputAction @EditorPause => m_Wrapper.m_Player_EditorPause;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @Up => m_Wrapper.m_Player_Up;
         public InputAction @Down => m_Wrapper.m_Player_Down;
         public InputAction @Left => m_Wrapper.m_Player_Left;
         public InputAction @Right => m_Wrapper.m_Player_Right;
         public InputAction @Join => m_Wrapper.m_Player_Join;
+        public InputAction @ToggleEditor => m_Wrapper.m_Player_ToggleEditor;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -909,9 +961,6 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @EnableUI.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnableUI;
                 @EnableUI.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnableUI;
                 @EnableUI.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEnableUI;
-                @EditorPause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEditorPause;
-                @EditorPause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEditorPause;
-                @EditorPause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEditorPause;
                 @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
@@ -930,6 +979,9 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @Join.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJoin;
                 @Join.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJoin;
                 @Join.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJoin;
+                @ToggleEditor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleEditor;
+                @ToggleEditor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleEditor;
+                @ToggleEditor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleEditor;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -955,9 +1007,6 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @EnableUI.started += instance.OnEnableUI;
                 @EnableUI.performed += instance.OnEnableUI;
                 @EnableUI.canceled += instance.OnEnableUI;
-                @EditorPause.started += instance.OnEditorPause;
-                @EditorPause.performed += instance.OnEditorPause;
-                @EditorPause.canceled += instance.OnEditorPause;
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
@@ -976,6 +1025,9 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @Join.started += instance.OnJoin;
                 @Join.performed += instance.OnJoin;
                 @Join.canceled += instance.OnJoin;
+                @ToggleEditor.started += instance.OnToggleEditor;
+                @ToggleEditor.performed += instance.OnToggleEditor;
+                @ToggleEditor.canceled += instance.OnToggleEditor;
             }
         }
     }
@@ -1077,6 +1129,47 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Editor
+    private readonly InputActionMap m_Editor;
+    private IEditorActions m_EditorActionsCallbackInterface;
+    private readonly InputAction m_Editor_SpawnDummy;
+    private readonly InputAction m_Editor_EditorPause;
+    public struct EditorActions
+    {
+        private @UserInput m_Wrapper;
+        public EditorActions(@UserInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SpawnDummy => m_Wrapper.m_Editor_SpawnDummy;
+        public InputAction @EditorPause => m_Wrapper.m_Editor_EditorPause;
+        public InputActionMap Get() { return m_Wrapper.m_Editor; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EditorActions set) { return set.Get(); }
+        public void SetCallbacks(IEditorActions instance)
+        {
+            if (m_Wrapper.m_EditorActionsCallbackInterface != null)
+            {
+                @SpawnDummy.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnSpawnDummy;
+                @SpawnDummy.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnSpawnDummy;
+                @SpawnDummy.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnSpawnDummy;
+                @EditorPause.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnEditorPause;
+                @EditorPause.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnEditorPause;
+                @EditorPause.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnEditorPause;
+            }
+            m_Wrapper.m_EditorActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SpawnDummy.started += instance.OnSpawnDummy;
+                @SpawnDummy.performed += instance.OnSpawnDummy;
+                @SpawnDummy.canceled += instance.OnSpawnDummy;
+                @EditorPause.started += instance.OnEditorPause;
+                @EditorPause.performed += instance.OnEditorPause;
+                @EditorPause.canceled += instance.OnEditorPause;
+            }
+        }
+    }
+    public EditorActions @Editor => new EditorActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1131,13 +1224,13 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnPowerUp(InputAction.CallbackContext context);
         void OnEnableUI(InputAction.CallbackContext context);
-        void OnEditorPause(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnUp(InputAction.CallbackContext context);
         void OnDown(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
         void OnJoin(InputAction.CallbackContext context);
+        void OnToggleEditor(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1150,5 +1243,10 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface IEditorActions
+    {
+        void OnSpawnDummy(InputAction.CallbackContext context);
+        void OnEditorPause(InputAction.CallbackContext context);
     }
 }

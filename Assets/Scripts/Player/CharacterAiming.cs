@@ -13,8 +13,9 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] Transform holdPos;
     [SerializeField] CinemachineVirtualCamera zoomCam;
 
-    [Header("Throwing Projectiles")]
+    [Header("Projectiles & Punching")]
     [SerializeField] [Range(1000.0f, 4000.0f)] float throwForce = 2000.0f;
+    [SerializeField] [Range(1.0f, 100.0f)] float punchForce = 20f;
 
     Image reticle;
 
@@ -73,6 +74,7 @@ public class CharacterAiming : MonoBehaviour
         {
             //If the player is aiming, set the player object's rotation around the y-axis to that of the camera
             playerObj.transform.rotation = Quaternion.Euler(new Vector3(0f, playerCam.transform.rotation.eulerAngles.y, 0f));
+            //transform.Find("Orientation").rotation = Quaternion.Euler(new Vector3(0f, playerCam.transform.rotation.eulerAngles.y, 0f));
         }
         
     }
@@ -134,6 +136,23 @@ public class CharacterAiming : MonoBehaviour
             //Tell the projectile that it has been thrown 
             heldProjectile.GetComponent<BallBehaviour>().SetIsThrown(true);
         }
+
+        else
+        {
+            GameObject playerObj = transform.Find("PlayerObj").gameObject;
+
+            RaycastHit hitInfo;
+            //Physics.Raycast(transform.position, playerObj.transform.forward, out hitInfo, 100);
+
+            Physics.BoxCast(transform.position, new Vector3(1f, 1f, .1f), playerObj.transform.forward, out hitInfo, Quaternion.identity, 4f);
+
+            if (hitInfo.collider != null && hitInfo.collider.gameObject.tag == "Player")
+            {
+                //GameObject hitPlayer = hitInfo.collider.transform.Find("PlayerObj").gameObject;
+                hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3 (0f, punchForce, 0f), ForceMode.Impulse);
+                Debug.Log("punch");
+            }
+        }
     }
 
     //Function for telling whether the player is holding a projectile or not
@@ -165,5 +184,10 @@ public class CharacterAiming : MonoBehaviour
         heldProjectile.GetComponent<Rigidbody>().isKinematic = true;
 
         heldProjectile.GetComponent<Collider>().enabled = false;
+    }
+
+    public bool GetIsAiming()
+    {
+        return isAiming;
     }
 }

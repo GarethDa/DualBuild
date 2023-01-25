@@ -539,7 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   singlePlayer: playgroundv4_single
-  multiPlayer: playgroundv4
+  multiPlayer: playgroundv4_multi
   settingsScreen: {fileID: 2025071393}
   inputInfoList:
   - actionReference: {fileID: -1037505224642318564, guid: 5fe38157de135d642b72399d3890c389, type: 3}

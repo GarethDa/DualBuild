@@ -75,6 +75,7 @@ public class BounceBallGenerator : MonoBehaviour
         }
 
         GameObject newBall = Instantiate(projectile);
+        newBall.transform.SetParent(transform);
         newBall.transform.position = transform.position;
         newBall.GetComponent<Rigidbody>().AddForce(direction, ForceMode.Impulse);
     }

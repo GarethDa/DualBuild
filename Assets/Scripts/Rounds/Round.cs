@@ -7,13 +7,17 @@ public abstract class Round
     protected int roundTime = 10;
     protected roundType type = roundType.DODGEBALL;
     protected string mapPrefabName = "";
+    protected string tutorialText = "";
     public bool hasMap
     {
         get;set;
 
     } = false;
 
-   
+   public string getTutorialText()
+    {
+        return tutorialText;
+    }
 
     public void load()
     {

@@ -23,9 +23,20 @@ public class RoundManager : MonoBehaviour
     public int totalPlayers = 1;
     int gameRoundsCompleted = 0;
     public string gameEndSceneName;
+    public int roundsToPlay = 4;
+    public Camera levelCam;
+    public Camera camToDisable;
 
     List<roundPair> levelCombinations = new List<roundPair>();
-      
+
+    public List<DynamicUIComponent> tutorials;
+    public List<TextMeshProUGUI> tutorialText;
+    public List<Transform> tutorialOffScreen;
+    public List<Transform> tutorialOnScreen;
+
+    public int roundsBetweenPowerups = 3;
+    int roundsSinceLastPowerup = 0;
+
     private void Awake() //singleton
     {
         if(instance != null)
@@ -40,6 +51,8 @@ public class RoundManager : MonoBehaviour
     private void Start()
     {
         //temporarily starting with an intermission for testing purposes
+        levelCam.enabled = false;
+        camToDisable.enabled = true;
         levelCombinations = new List<roundPair>();
         addRound(new Intermission());
         startRound();
@@ -63,7 +76,7 @@ public class RoundManager : MonoBehaviour
 
     public void startRound()
     {
-        if(gameRoundsCompleted == 4)
+        if(gameRoundsCompleted == roundsToPlay)
         {
             //switch scene
             gameRoundsCompleted = 0;
@@ -76,14 +89,31 @@ public class RoundManager : MonoBehaviour
         deadPlayers = 0;
         int toLoad = 0;
         int roundSeconds = 0;
+        bool sendToLevel = true;
         foreach(Round r in nextRounds)
         {
+            if(r is PreviewRound)
+            {
+                PreviewRound preview = (PreviewRound)r;
+                toLoad += (int)preview.nextRounds[0].getType();
+                toLoad += (int)preview.nextRounds[1].getType();
+                roundSeconds += preview.getRoundTime();
+                sendToLevel = false;
+               
+
+            }
+            else
+            {
+                toLoad += (int)r.getType();
+                roundSeconds += r.getRoundTime();
+            }
             r.load();
-            toLoad += (int)r.getType();
-            roundSeconds += r.getRoundTime();
+           
             currentRounds.Add(r);
         }
 
+        //Camera.main.enabled = false;
+       
         if (nextRoundsHaveIntermission())//if next round is intermission, go to intermission
         {
             //Debug.log("$START HAS INTERMISSION");
@@ -93,9 +123,14 @@ public class RoundManager : MonoBehaviour
         else
         {
             //Debug.log("$START HAS NO INTERMISSION");
+
+            List<Transform> placeToSend = loadLevel(toLoad);
+
+                if (sendToLevel)
+            {
+                sendPlayersToLevel(placeToSend);
+            }
             
-           
-            sendPlayersToLevel(loadLevel(toLoad));
         }
         
        //reset lists for next round
@@ -139,8 +174,23 @@ public class RoundManager : MonoBehaviour
         }
         
         //check if its intermission
-        if (!currentRoundsHaveIntermission())
+        
+        if (currentRoundsHavePreview())
         {
+            PreviewRound preview = (PreviewRound)currentRounds[0];
+            addRound(preview.nextRounds[0]);
+            addRound(preview.nextRounds[1]);
+            currentRounds.Clear();
+            startRound();
+        }
+        else if (!currentRoundsHaveIntermission())
+        {
+            roundsSinceLastPowerup++;
+
+            if(roundsSinceLastPowerup >= roundsBetweenPowerups)
+            {
+                //give players the choice
+            }
             currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
             Debug.Log("$END ROUND HAS NO INTERMISSION");
             gameRoundsCompleted++;
@@ -220,8 +270,15 @@ public class RoundManager : MonoBehaviour
 
 
         int index = gameRoundsCompleted % levelCombinations.Count;
-        addRound(levelCombinations[index].getRoundOne());
-        addRound(levelCombinations[index].getRoundTwo());
+
+        //add preview round first
+        List<Round> playingRounds = new List<Round>();
+        playingRounds.Add(levelCombinations[index].getRoundOne());
+        playingRounds.Add(levelCombinations[index].getRoundTwo());
+
+        addRound(new PreviewRound(playingRounds));
+
+        
        
     }
 
@@ -288,6 +345,22 @@ public class RoundManager : MonoBehaviour
         }
 
         return hasIntermission;
+    }
+
+    protected bool currentRoundsHavePreview()//check current rounds for an preview round
+    {
+        bool hasPreview = false;
+
+        foreach (Round r in currentRounds)
+        {
+
+            if (r.getType() == roundType.NONE)
+            {
+                hasPreview = true;
+            }
+        }
+
+        return hasPreview;
     }
 
     protected void sendPlayersToLevel(List<Transform> t)

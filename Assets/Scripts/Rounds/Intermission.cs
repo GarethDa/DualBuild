@@ -8,8 +8,7 @@ public class Intermission : Round
     public Intermission()
     {
         type = roundType.INTERMISSION;
-        //roundTime = 30;
-        roundTime = 5;
+        roundTime = 30;
         hasMap = true;
     }
 

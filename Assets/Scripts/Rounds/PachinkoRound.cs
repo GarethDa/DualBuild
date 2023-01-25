@@ -7,9 +7,11 @@ public class PachinkoRound : Round
 
     public PachinkoRound()
     {
-        roundTime = 10;
+        roundTime = 60;
         mapPrefabName = "PachinkoBall";
         hasMap = false;
+        tutorialText = "Run for your life! The pachinko machine is shooting out pachinko balls! They will bounce off walls and bounce you up into the air!";
+
         type = roundType.PACHINKO_BALL;
     }
     public override void onTenSecondsBefore(object sender, System.EventArgs e)

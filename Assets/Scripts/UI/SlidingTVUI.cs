@@ -19,6 +19,7 @@ public class SlidingTVUI : DynamicUIComponent
             EventManager.onOffAirShowEvent += showEase;
             EventManager.onOffAirHideEvent += hideEase;
         }
+        
         EventManager.onRoundSecondTickEvent += updateClock;
         base.onStart();
     }

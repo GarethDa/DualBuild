@@ -46,8 +46,10 @@ public class PowerUpScript : MonoBehaviour
         //this is so TpMovement can notify this script for when we jumped and disable our superjump
         if (superjumpEnabled == true)
         {
+            usedPowerUp = false;
             superjumpEnabled = false;
             playerObject.GetComponent<TpMovement>().SetJumpForce(initialJumpForce);
+            selectedPowerUp = powerUpList.None;
         }
     }
 

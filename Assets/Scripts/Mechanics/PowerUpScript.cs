@@ -25,6 +25,10 @@ public class PowerUpScript : MonoBehaviour
     [SerializeField] [Range(1.0f, 50.0f)] private float dashSpeed = 30.0f;
     [SerializeField] [Range(1.0f, 10.0f)] private float dashDuration = 3.0f;
 
+    //Bomb Variables
+    private bool bombEnabled = false;
+    [SerializeField] private GameObject bombPrefab;
+
     private bool usedPowerUp = false; //if we have used our powerup
     public float powerUpDuration = 3f; //total duration of ability in seconds
     private float currentPowerUpDuration = 0f; //internal clock for powerup duration
@@ -77,6 +81,12 @@ public class PowerUpScript : MonoBehaviour
             {
                 dashEnabled = true;
                 playerObject.GetComponent<TpMovement>().SetSpeed(dashSpeed);
+            }
+            else if (selectedPowerUp == powerUpList.Bomb)
+            {
+                Instantiate(bombPrefab, transform.position, transform.rotation);
+                usedPowerUp = false;
+                selectedPowerUp = powerUpList.None;
             }
 
             ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
@@ -135,4 +145,4 @@ public class PowerUpScript : MonoBehaviour
         }
     }
 }
-public enum powerUpList { None, SuperJump, SlowFall , Dash}
+public enum powerUpList { None, SuperJump, SlowFall , Dash, Bomb}

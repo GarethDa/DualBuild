@@ -24,7 +24,7 @@ public class PowerupGiver : MonoBehaviour
             //Debug.Log(other.gameObject.name);
             if(other.transform.parent.gameObject.GetComponent<PowerUpScript>() != null)
             {
-                other.transform.parent.gameObject.GetComponent<PowerUpScript>().selectedPowerUp = type;
+                other.transform.parent.gameObject.GetComponent<PowerUpScript>().setSelectedPowerUp(type);
                 UIManager.instance.setText("Active powerup: " + type.ToString());
             }
             

@@ -22,7 +22,7 @@ public class PowerUpScript : MonoBehaviour
     private float currentPowerUpDuration = 0f; //internal clock for powerup duration
 
     
-    [SerializeField] public powerUpList selectedPowerUp;
+    [SerializeField] powerUpList selectedPowerUp;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +30,12 @@ public class PowerUpScript : MonoBehaviour
         playerObject = gameObject;
         rb = gameObject.GetComponent<Rigidbody>();
         initialJumpForce = playerObject.GetComponent<TpMovement>().GetJumpForce();
+    }
+
+    public void setSelectedPowerUp(powerUpList powerUp)
+    {
+        selectedPowerUp = powerUp;
+        setPowerUpImage();
     }
 
     public void OnPowerUp()
@@ -51,7 +57,9 @@ public class PowerUpScript : MonoBehaviour
             {
                 slowfallEnabled = true;
             }
+            
         }
+        setPowerUpImage();
     }
 
     private void Update()
@@ -101,7 +109,15 @@ public class PowerUpScript : MonoBehaviour
             }
             Debug.Log("Powerup done");
             selectedPowerUp = powerUpList.None; //"Consume" powerup when done
+            setPowerUpImage();
         }
+    }
+
+    private void setPowerUpImage()
+    {
+        //change the image in the UI
+
+        UIManager.instance.setPowerUpIconImage(UIManager.instance.getPowerUpIconByType(selectedPowerUp));
     }
 }
 

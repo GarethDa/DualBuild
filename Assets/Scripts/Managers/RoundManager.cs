@@ -36,6 +36,7 @@ public class RoundManager : MonoBehaviour
 
     public int roundsBetweenPowerups = 3;
     int roundsSinceLastPowerup = 0;
+    bool inPreview = false;
 
     private void Awake() //singleton
     {
@@ -56,6 +57,11 @@ public class RoundManager : MonoBehaviour
         levelCombinations = new List<roundPair>();
         addRound(new Intermission());
         startRound();
+    }
+
+    public bool isInPreview()
+    {
+        return inPreview;
     }
 
     public void addRound(Round r)
@@ -182,6 +188,7 @@ public class RoundManager : MonoBehaviour
             addRound(preview.nextRounds[1]);
             currentRounds.Clear();
             startRound();
+            inPreview = false;
         }
         else if (!currentRoundsHaveIntermission())
         {
@@ -196,6 +203,7 @@ public class RoundManager : MonoBehaviour
             gameRoundsCompleted++;
             addRound(new Intermission());
             startRound();
+            inPreview = false;
         }
         else
         {//start rounds
@@ -277,9 +285,9 @@ public class RoundManager : MonoBehaviour
         playingRounds.Add(levelCombinations[index].getRoundTwo());
 
         addRound(new PreviewRound(playingRounds));
+        inPreview = true;
 
-        
-       
+
     }
 
     private Round getRoundByRoundType(roundType r)

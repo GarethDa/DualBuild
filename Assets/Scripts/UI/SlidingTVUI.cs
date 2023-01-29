@@ -19,19 +19,20 @@ public class SlidingTVUI : DynamicUIComponent
             EventManager.onOffAirShowEvent += showEase;
             EventManager.onOffAirHideEvent += hideEase;
         }
+        
         EventManager.onRoundSecondTickEvent += updateClock;
         base.onStart();
     }
 
     public void showEase(object sender, System.EventArgs e)
     {
-        Debug.Log("UI ELEMENT SHOW " + "ISONAIR: " + isOnAir.ToString());
+       // Debug.Log("UI ELEMENT SHOW " + "ISONAIR: " + isOnAir.ToString());
         easeIn(UIManager.instance.UIOnScreen, 3f, UIManager.instance.UIOffScreen);
     }
 
     public void hideEase(object sender, System.EventArgs e)
     {
-        Debug.Log("UI ELEMENT HIDE " + "ISONAIR: " + isOnAir.ToString());
+      //  Debug.Log("UI ELEMENT HIDE " + "ISONAIR: " + isOnAir.ToString());
 
         easeIn(UIManager.instance.UIOffScreen, 0.5f, UIManager.instance.UIOnScreen);
     }

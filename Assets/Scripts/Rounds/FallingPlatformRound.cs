@@ -7,8 +7,10 @@ public class FallingPlatformRound : Round
     public FallingPlatformRound()
     {
         hasMap = true;
-        roundTime = 10;
+        roundTime = 60;
         mapPrefabName = "FallingPlatforms";
+        tutorialText = "Don't fall! Watch out for falling platforms! If you stand on one for too long, it will fall under you!";
+
         type = roundType.FALLING_PLATFORMS;
     }
     public override void onTenSecondsBefore(object sender, System.EventArgs e)

@@ -13,13 +13,27 @@ public static class EventManager
     public static EventHandler onOnAirHideEvent;
     public static EventHandler onOffAirShowEvent;
     public static EventHandler onOffAirHideEvent;
-    public static EventHandler onRoundEnd;
-    public static EventHandler onRoundStart;
+    public static EventHandler<RoundArgs> onRoundEnd;
+    public static EventHandler<RoundArgs> onRoundStart;
     public static EventHandler<PlayerArgs> onPlayerDeath;//TODO: remove player from the pool of players that can get rewards in some new manager class we have to make
     public static EventHandler<PlayerArgs> onPlayerFell;
     public static EventHandler<CollectableArgs> onPlayerCollect;
     public static EventHandler<CollectableArgs> onPlayerUsePowerup;
     
+}
+
+public class RoundArgs : EventArgs
+{
+    roundType[] rounds = new roundType[2];
+    public RoundArgs(roundType[] typesInRound)
+    {
+        rounds = typesInRound;
+    }
+
+    public roundType getRound(int index)
+    {
+        return rounds[index];
+    }
 }
 
 public class RoundTickArgs : EventArgs

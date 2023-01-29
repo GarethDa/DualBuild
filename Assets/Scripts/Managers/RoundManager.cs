@@ -21,6 +21,7 @@ public class RoundManager : MonoBehaviour
 
     public int deadPlayers = 0;
     public int totalPlayers = 1;
+    int playersReady = 0;
     int gameRoundsCompleted = 0;
     public string gameEndSceneName;
     public int roundsToPlay = 4;
@@ -37,6 +38,9 @@ public class RoundManager : MonoBehaviour
     public int roundsBetweenPowerups = 3;
     int roundsSinceLastPowerup = 0;
     bool inPreview = false;
+    int secondsToAddBack = 0;
+    public PowerupGiver lastPlacePowerupGiver;
+    public PowerupGiver mainPowerupGiver;
 
     private void Awake() //singleton
     {
@@ -55,8 +59,43 @@ public class RoundManager : MonoBehaviour
         levelCam.enabled = false;
         camToDisable.enabled = true;
         levelCombinations = new List<roundPair>();
+        mainPowerupGiver.setPowerup(powerUpList.None);
+        lastPlacePowerupGiver.setPowerup(powerUpList.None);
         addRound(new Intermission());
         startRound();
+    }
+
+    public void onPlayerEnterReadyZone()
+    {
+        playersReady++;
+        if(currentRoundSeconds - currentRoundSecondsElapsed <= 10)
+        {
+            return;
+        }
+        if(playersReady == totalPlayers)
+        {
+            secondsToAddBack = (currentRoundSeconds - currentRoundSecondsElapsed);
+            setRoundTime(5);
+            EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
+            EventManager.onOnAirShowEvent?.Invoke(null, System.EventArgs.Empty);
+           
+        }
+    }
+    public void onPlayerExitReadyZone()
+    {
+        playersReady--;
+        if (currentRoundSeconds - currentRoundSecondsElapsed <= 10 && secondsToAddBack == 0)
+        {
+            return;
+        }
+        if (playersReady != totalPlayers)
+        {
+            
+            setRoundTime(secondsToAddBack);
+            EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
+            EventManager.onOnAirHideEvent?.Invoke(null, System.EventArgs.Empty);
+            secondsToAddBack = 0;
+        }
     }
 
     public bool isInPreview()
@@ -96,8 +135,10 @@ public class RoundManager : MonoBehaviour
         int toLoad = 0;
         int roundSeconds = 0;
         bool sendToLevel = true;
+        List<roundType> roundTypes = new List<roundType>();
         foreach(Round r in nextRounds)
         {
+            roundTypes.Add(r.getType());
             if(r is PreviewRound)
             {
                 PreviewRound preview = (PreviewRound)r;
@@ -150,7 +191,7 @@ public class RoundManager : MonoBehaviour
         //subscribe to events
         EventManager.onPlayerFell += onDeath;
         EventManager.onSecondTickEvent += secondTick;//subscribe to the second ticking event
-        EventManager.onRoundStart?.Invoke(null, System.EventArgs.Empty);//invoke the round start event for other scripts
+        EventManager.onRoundStart?.Invoke(null, new RoundArgs(roundTypes.ToArray())); ;//invoke the round start event for other scripts
         
     }
 
@@ -160,7 +201,7 @@ public class RoundManager : MonoBehaviour
         //Debug.log("$WHY: " + why);
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
         EventManager.onPlayerFell -= onDeath;
-        EventManager.onRoundEnd?.Invoke(null, System.EventArgs.Empty);
+        EventManager.onRoundEnd?.Invoke(null, new RoundArgs(new roundType[] {roundType.NONE,roundType.NONE }));
         
         //deadPlayers = 0;
         //remove children from the levelManager (destroys the level that was spawned in)
@@ -193,11 +234,14 @@ public class RoundManager : MonoBehaviour
         else if (!currentRoundsHaveIntermission())
         {
             roundsSinceLastPowerup++;
-
+            powerUpList givenPowerUp = powerUpList.None;
             if(roundsSinceLastPowerup >= roundsBetweenPowerups)
             {
                 //give players the choice
+                givenPowerUp = assignPowerUp(mainPowerupGiver, givenPowerUp);
+
             }
+            assignPowerUp(lastPlacePowerupGiver, givenPowerUp);
             currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
             Debug.Log("$END ROUND HAS NO INTERMISSION");
             gameRoundsCompleted++;
@@ -398,6 +442,10 @@ public class RoundManager : MonoBehaviour
     public void secondTick(object sender, System.EventArgs e)//called every second
     {
         currentRoundSecondsElapsed++;
+        if(secondsToAddBack > 0)
+        {
+            secondsToAddBack--;
+        }
         updateScreenClock();
         
         ////Debug.log("SEC LEFT " +( currentRoundSeconds - currentRoundSecondsElapsed).ToString());
@@ -411,6 +459,12 @@ public class RoundManager : MonoBehaviour
             endRound("Time's up!");
         }
        
+    }
+
+    public void setRoundTime(int secondsUntilEnd)
+    {
+        currentRoundSecondsElapsed = (currentRoundSeconds - secondsUntilEnd);
+        updateScreenClock();
     }
 
    
@@ -434,6 +488,26 @@ public class RoundManager : MonoBehaviour
          
 
         clockObject.text = minutes.ToString() + ":" + extraSecondZero + seconds.ToString();
+    }
+
+    public powerUpList assignPowerUp(PowerupGiver g, powerUpList exclude)
+    {
+        //generate level combinations again
+        List<powerUpList> possiblePowerUps = new List<powerUpList>();
+
+
+        foreach (powerUpList r in System.Enum.GetValues(typeof(powerUpList)))//make a list of all roundTypes
+        {
+            if (r == powerUpList.None || r == exclude)
+            {
+                continue;
+            }
+
+            possiblePowerUps.Add(r);
+        }
+        powerUpList returner = possiblePowerUps[Random.Range(0, possiblePowerUps.Count)];
+        g.setPowerup(returner);
+        return returner;
     }
 }
 

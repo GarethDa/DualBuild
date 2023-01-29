@@ -5,26 +5,29 @@ using UnityEngine;
 public class PowerupGiver : MonoBehaviour
 {
     public powerUpList type;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public void setPowerup(powerUpList t)
     {
-        
+        type = t;
     }
 
     public void OnTriggerEnter(Collider other)
     {
+        if(type == powerUpList.None)
+        {
+            return;
+        }
         if (other.gameObject.tag.Equals("Player"))
         {
             //Debug.Log(other.gameObject.name);
             if(other.transform.parent.gameObject.GetComponent<PowerUpScript>() != null)
             {
-                other.transform.parent.gameObject.GetComponent<PowerUpScript>().setSelectedPowerUp(type);
+                if (other.transform.parent.gameObject.GetComponent<PowerUpScript>().getSelectedPowerUp() != powerUpList.None)
+                {
+                    UIManager.instance.setText("You already have a powerup!");
+                    return;
+                }
+                    other.transform.parent.gameObject.GetComponent<PowerUpScript>().setSelectedPowerUp(type);
                 UIManager.instance.setText("Active powerup: " + type.ToString());
             }
             

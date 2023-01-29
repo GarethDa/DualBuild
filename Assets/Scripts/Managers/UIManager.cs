@@ -16,10 +16,12 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
+        EventManager.onRoundStart += roundStart;
+        EventManager.onRoundEnd += roundEnd;
         hideIOnScreenPowerUpIcon();
         clearText();
     }
@@ -31,9 +33,29 @@ public class UIManager : MonoBehaviour
 
     public void showIOnScreenPowerUpIcon()
     {
+
         onScreenPowerupIcon.enabled = true;
 
     }
+
+    public void roundStart(object sender, RoundArgs e)
+    {
+        if(e.getRound(0) == roundType.NONE)
+        {
+            hideIOnScreenPowerUpIcon();
+        }
+        
+    }
+
+    public void roundEnd(object sender, RoundArgs e)
+    {
+        if (e.getRound(0) == roundType.NONE)
+        {
+            showIOnScreenPowerUpIcon();
+        }
+      
+    }
+
 
     public void setPowerUpIconImage(Texture image)
     {
@@ -52,7 +74,7 @@ public class UIManager : MonoBehaviour
         {
             return null;
         }
-        Debug.Log(type.ToString() + " " + ((int)type).ToString() + " " + ((int)type - 1).ToString());
+        //Debug.Log(type.ToString() + " " + ((int)type).ToString() + " " + ((int)type - 1).ToString());
         return powerupIcons[((int)type)-1];
     }
 

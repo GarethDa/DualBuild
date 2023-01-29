@@ -38,6 +38,11 @@ public class PowerUpScript : MonoBehaviour
         setPowerUpImage();
     }
 
+    public powerUpList getSelectedPowerUp()
+    {
+        return selectedPowerUp;
+    }
+
     public void OnPowerUp()
     {
         //in the future this should probably be part of a game manager, but for now it's on the player//

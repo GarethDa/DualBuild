@@ -69,15 +69,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EditorPause",
-                    "type": "Button",
-                    "id": "9848d9df-0fe6-4eb3-a0a0-b27171ca129b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Pause",
                     "type": "Button",
                     "id": "bab3b6b3-fe40-4d53-94a7-0d2a094cad03",
@@ -88,12 +79,12 @@
                 },
                 {
                     "name": "Up",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "3c756741-9119-4851-bbc2-a1742896e79b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Down",
@@ -126,6 +117,15 @@
                     "name": "Join",
                     "type": "Button",
                     "id": "be3b7d2b-72d4-4fc5-802f-4a5f87f4b123",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleEditor",
+                    "type": "Button",
+                    "id": "62636741-5808-4b10-8596-f3f270d99f8f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -300,17 +300,6 @@
                 },
                 {
                     "name": "",
-                    "id": "b7aa8457-26f2-4f46-a504-1d77ada4fa09",
-                    "path": "<Keyboard>/backquote",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "EditorPause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a4e83a0f-843a-4abb-9b64-177454f7b140",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
@@ -427,6 +416,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Join",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2aee5acc-80c4-47e7-9cff-e600c8c6e54a",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleEditor",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -670,6 +670,54 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Editor",
+            "id": "5c58a80b-564e-4c0d-b116-9bff96a1100f",
+            "actions": [
+                {
+                    "name": "SpawnDummy",
+                    "type": "Button",
+                    "id": "0d5549ff-f0d5-4a97-8830-7a6206e9e836",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "EditorPause",
+                    "type": "Button",
+                    "id": "8824c4e2-1ea4-4689-b95c-5ce3e6ac432e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "324310d3-c123-4e4d-90a0-e3d5ab26cb3c",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnDummy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aea34541-a228-418b-bcbb-e8856d3bf36b",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EditorPause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

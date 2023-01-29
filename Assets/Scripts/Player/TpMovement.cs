@@ -122,9 +122,16 @@ public class TpMovement : MonoBehaviour
     //For rotating the player object when the player inputs a direction
 	private void RotatePlayer()
 	{
-		//Rotate orientation
-		Vector3 viewDir = transform.position - new Vector3(playerCam.transform.position.x, transform.position.y, playerCam.transform.position.z);
-		orientation.forward = viewDir.normalized;
+        //Rotate orientation
+
+        Vector3 viewDir;
+        if (GetComponent<CharacterAiming>().GetIsAiming())
+            viewDir = new Vector3(playerCam.transform.forward.x, 0f, playerCam.transform.forward.z).normalized;
+
+        else
+            viewDir = transform.position - new Vector3(playerCam.transform.position.x, transform.position.y, playerCam.transform.position.z);
+		
+        orientation.forward = viewDir.normalized;
 
         //Determine the input direction based on the current orientation of the player model
 		Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
@@ -281,22 +288,4 @@ public class TpMovement : MonoBehaviour
     }
     */
 
-    public void OnEditorPause()
-    {
-        editing = !editing;
-
-        if (editing)
-        {
-            Time.timeScale = 0f;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
-        else
-        {
-            Time.timeScale = 1f;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-    }
 }

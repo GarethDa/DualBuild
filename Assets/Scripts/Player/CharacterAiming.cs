@@ -96,7 +96,7 @@ public class CharacterAiming : MonoBehaviour
             isAiming = true;
 
             
-            ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
+            //ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
         }
 
         //If the player isn't aiming, prioritize the zoomed out camera and disable the reticle
@@ -131,10 +131,24 @@ public class CharacterAiming : MonoBehaviour
             heldProjectile.transform.SetParent(null);
 
             //Tell the projectile that it isn't being held anymore
-            heldProjectile.GetComponent<BallBehaviour>().SetIsHeld(false);
+            if (heldProjectile.GetComponent<BallBehaviour>() != null)
+            { 
+                heldProjectile.GetComponent<BallBehaviour>().SetIsHeld(false);
+            }
+            else if (heldProjectile.GetComponent<BombBehaviour>() != null)
+            {
+                heldProjectile.GetComponent<BombBehaviour>().SetIsHeld(false);
+            }
 
             //Tell the projectile that it has been thrown 
-            heldProjectile.GetComponent<BallBehaviour>().SetIsThrown(true);
+            if (heldProjectile.GetComponent<BallBehaviour>() != null)
+            {
+                heldProjectile.GetComponent<BallBehaviour>().SetIsThrown(true);
+            }
+            else if (heldProjectile.GetComponent<BombBehaviour>() != null)
+            {
+                heldProjectile.GetComponent<BombBehaviour>().SetIsThrown(true);
+            }
         }
 
         else

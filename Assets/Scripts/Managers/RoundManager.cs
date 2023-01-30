@@ -385,6 +385,7 @@ public class RoundManager : MonoBehaviour
         level.transform.position = level.transform.parent.transform.position + level.transform.position;
         deathZone.transform.SetParent(GameManager.instance.levelManager.transform);
         deathZone.transform.position = level.transform.parent.transform.position + Vector3.up * 50;
+        GameManager.instance.deathZone = deathZone;
         deathLocation = deathZone;
         return spawnPoints;
     }

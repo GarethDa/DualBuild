@@ -375,6 +375,7 @@ public class RoundManager : MonoBehaviour
     public List<Transform> loadLevel(int number)
     {//instantiate from resources/load
         GameObject level = Instantiate(Resources.Load<GameObject>("Levels/" + number.ToString()));
+        GameObject deathZone = Instantiate(Resources.Load<GameObject>("Levels/DeathZone"));
         List<Transform> spawnPoints = new List<Transform>();
         Transform levelSpawnParent = level.transform.Find("SpawnPoints");
         for (int i = 0; i < 4; i++) {
@@ -382,6 +383,9 @@ public class RoundManager : MonoBehaviour
         }
         level.transform.SetParent(GameManager.instance.levelManager.transform);
         level.transform.position = level.transform.parent.transform.position + level.transform.position;
+        deathZone.transform.SetParent(GameManager.instance.levelManager.transform);
+        deathZone.transform.position = level.transform.parent.transform.position + Vector3.up * 50;
+        deathLocation = deathZone;
         return spawnPoints;
     }
 

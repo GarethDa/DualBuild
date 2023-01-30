@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerManager;
     public GameObject levelManager;
     public GameObject deathZone;
+    public PowerUpScript powerupManager;
 
     public int playersConnected = 2;
     

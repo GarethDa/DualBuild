@@ -89,6 +89,10 @@ public class RoundManager : MonoBehaviour
         {
             return;
         }
+        if (!currentRoundsHaveIntermission())
+        {
+            return;
+        }
         if (playersReady != totalPlayers)
         {
             
@@ -132,6 +136,7 @@ public class RoundManager : MonoBehaviour
         //Debug.log("$-------------");
         currentRoundSeconds = 0;//reset time of rounds
         currentRoundSecondsElapsed = 0;
+        secondsToAddBack = 0;
         deadPlayers = 0;
         int toLoad = 0;
         int roundSeconds = 0;
@@ -180,9 +185,9 @@ public class RoundManager : MonoBehaviour
             }
             
         }
-        
-       //reset lists for next round
-        
+
+        //reset lists for next round
+        Debug.Log(roundSeconds);
         currentRoundSeconds = roundSeconds;
         updateScreenClock();
         roundSeconds = 0;
@@ -226,9 +231,10 @@ public class RoundManager : MonoBehaviour
         if (currentRoundsHavePreview())
         {
             PreviewRound preview = (PreviewRound)currentRounds[0];
+            currentRounds.Clear();
             addRound(preview.nextRounds[0]);
             addRound(preview.nextRounds[1]);
-            currentRounds.Clear();
+            
             startRound();
             inPreview = false;
         }
@@ -432,7 +438,7 @@ public class RoundManager : MonoBehaviour
         sendPlayersToLocation(t);
     }
 
-    protected void sendPlayersToIntermission()
+    public void sendPlayersToIntermission()
     {
         //Debug.log("$SEND TO INTERMISSION");
         sendPlayersToLocation(new List<Transform> { intermissionLocation });

@@ -20,6 +20,7 @@ public abstract class PowerUp : MonoBehaviour
     {
         UIManager.instance.getOnScreenPowerUpIcon().queueFadeTransparency(0, 0.5f);
         EventManager.onPlayerUsePowerup?.Invoke(null, System.EventArgs.Empty);
+        GameManager.instance.powerupManager.clearPowerUp();
         Destroy(this);
     }
 
@@ -107,6 +108,7 @@ public class Dash : PowerUp
         used = false;
         playerObject.GetComponent<TpMovement>().SetSpeed(initialSpeed);
         EventManager.onPlayerUsePowerup?.Invoke(null, System.EventArgs.Empty);
+        GameManager.instance.powerupManager.clearPowerUp();
         Destroy(this);
     }
 
@@ -196,6 +198,7 @@ public class SlowFall : PowerUp
         usedPowerUp = false;
         
         EventManager.onPlayerUsePowerup?.Invoke(null, System.EventArgs.Empty);
+        GameManager.instance.powerupManager.clearPowerUp();
         Destroy(this);
 
     }

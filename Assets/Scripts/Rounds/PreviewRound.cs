@@ -65,7 +65,7 @@ public class PreviewRound : Round
 
         TransformInterpolator levelCam = RoundManager.instance.levelCam.GetComponent<TransformInterpolator>();
         levelCam.setTransform(levelCam.edges[0].transform);
-
+        
     }
 
     

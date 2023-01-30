@@ -47,6 +47,21 @@ public class PowerUpScript : MonoBehaviour
         initialSpeed = playerObject.GetComponent<TpMovement>().GetSpeed();//starting speed, so we can reset
     }
 
+    public powerUpList getCurrentPowerUp()
+    {
+        if(currentPowerUp == null)
+        {
+            return powerUpList.None;
+        }
+        return currentPowerUp.type;
+
+    }
+
+    public void clearPowerUp()
+    {
+        currentPowerUp = null;
+    }
+
     public void PlayerJumped()
     {
        if(currentPowerUp is SuperJump)

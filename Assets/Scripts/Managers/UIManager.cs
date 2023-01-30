@@ -40,6 +40,11 @@ public class UIManager : MonoBehaviour
 
     public void showIOnScreenPowerUpIcon()
     {
+        if(GameManager.instance.powerupManager.getCurrentPowerUp() == powerUpList.None)
+        {
+            hideIOnScreenPowerUpIcon();
+            return;
+        }
         onScreenPowerupIcon.snapTransparency(1);
         //onScreenPowerupIcon.enabled = true;
 
@@ -66,7 +71,7 @@ public class UIManager : MonoBehaviour
 
     public void setPowerUpIconImage(Texture image, float lengthOfPowerUp)
     {
-        if(image == null && onScreenPowerupIcon.getWantedTransparency() < 0)
+        if(image == null || GameManager.instance.powerupManager.getCurrentPowerUp() == powerUpList.None)
         {
             hideIOnScreenPowerUpIcon();
             return;

@@ -41,6 +41,7 @@ public class RoundManager : MonoBehaviour
     int secondsToAddBack = 0;
     public PowerupGiver lastPlacePowerupGiver;
     public PowerupGiver mainPowerupGiver;
+    public powerUpList givingPowerup;
 
     private void Awake() //singleton
     {
@@ -187,7 +188,7 @@ public class RoundManager : MonoBehaviour
         roundSeconds = 0;
         
         nextRounds.Clear();
-
+        setPowerUps();
         //subscribe to events
         EventManager.onPlayerFell += onDeath;
         EventManager.onSecondTickEvent += secondTick;//subscribe to the second ticking event
@@ -234,14 +235,7 @@ public class RoundManager : MonoBehaviour
         else if (!currentRoundsHaveIntermission())
         {
             roundsSinceLastPowerup++;
-            powerUpList givenPowerUp = powerUpList.None;
-            if(roundsSinceLastPowerup >= roundsBetweenPowerups)
-            {
-                //give players the choice
-                givenPowerUp = assignPowerUp(mainPowerupGiver, givenPowerUp);
-
-            }
-            assignPowerUp(lastPlacePowerupGiver, givenPowerUp);
+            setPowerUps();
             currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
             Debug.Log("$END ROUND HAS NO INTERMISSION");
             gameRoundsCompleted++;
@@ -334,6 +328,23 @@ public class RoundManager : MonoBehaviour
 
     }
 
+    private void setPowerUps()
+    {
+        if(givingPowerup != powerUpList.None)
+        {
+            assignPowerUp(mainPowerupGiver, powerUpList.None, givingPowerup);
+            assignPowerUp(lastPlacePowerupGiver, powerUpList.None, givingPowerup);
+            return;
+        }
+        powerUpList givenPowerUp = powerUpList.None;
+        if (roundsSinceLastPowerup >= roundsBetweenPowerups)
+        {
+            //give players the choice
+            givenPowerUp = assignPowerUp(mainPowerupGiver, givenPowerUp,powerUpList.None);
+
+        }
+        assignPowerUp(lastPlacePowerupGiver, givenPowerUp, powerUpList.None);
+    }
     private Round getRoundByRoundType(roundType r)
     {
         if (r == roundType.BUMPER)
@@ -490,8 +501,13 @@ public class RoundManager : MonoBehaviour
         clockObject.text = minutes.ToString() + ":" + extraSecondZero + seconds.ToString();
     }
 
-    public powerUpList assignPowerUp(PowerupGiver g, powerUpList exclude)
+    public powerUpList assignPowerUp(PowerupGiver g, powerUpList exclude, powerUpList give = powerUpList.None)
     {
+        if(give != powerUpList.None)
+        {
+            g.setPowerup(give);
+            return give;
+        }
         //generate level combinations again
         List<powerUpList> possiblePowerUps = new List<powerUpList>();
 

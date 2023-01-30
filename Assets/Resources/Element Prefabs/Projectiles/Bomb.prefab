@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2370066802426273845}
   - component: {fileID: 2370066802426273849}
   - component: {fileID: 6816493223513054269}
+  - component: {fileID: 4235221282667964771}
   m_Layer: 0
   m_Name: Bomb
   m_TagString: Untagged
@@ -34,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2370066802426273847
 MeshFilter:
@@ -127,4 +128,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4f4629bd0c0b546affd87b8809a0b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitForce: 500
+  bombForce: 861
+  bombRadius: 80
+  outCollider: {fileID: 4235221282667964771}
+--- !u!135 &4235221282667964771
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2370066802426273844}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 49.58
+  m_Center: {x: 0, y: 0, z: 0}

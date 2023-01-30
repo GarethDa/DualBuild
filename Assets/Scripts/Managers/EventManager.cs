@@ -18,7 +18,8 @@ public static class EventManager
     public static EventHandler<PlayerArgs> onPlayerDeath;//TODO: remove player from the pool of players that can get rewards in some new manager class we have to make
     public static EventHandler<PlayerArgs> onPlayerFell;
     public static EventHandler<CollectableArgs> onPlayerCollect;
-    public static EventHandler<CollectableArgs> onPlayerUsePowerup;
+    public static EventHandler onPlayerUsePowerup;
+
     
 }
 

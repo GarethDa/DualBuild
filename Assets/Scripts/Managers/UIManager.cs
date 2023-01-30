@@ -12,7 +12,8 @@ public class UIManager : MonoBehaviour
     public Transform UIOnScreen;
     public TextMeshProUGUI text;
     [SerializeField] List<Texture> powerupIcons;
-    [SerializeField] RawImage onScreenPowerupIcon;
+    
+    [SerializeField] TransparencyUI onScreenPowerupIcon;
     // Start is called before the first frame update
     void Awake()
     {
@@ -26,15 +27,21 @@ public class UIManager : MonoBehaviour
         clearText();
     }
 
+    public TransparencyUI getOnScreenPowerUpIcon()
+    {
+        return onScreenPowerupIcon;
+    }
+
     public void hideIOnScreenPowerUpIcon()
     {
-        onScreenPowerupIcon.enabled = false;
+        //onScreenPowerupIcon.enabled = false;
+        onScreenPowerupIcon.snapTransparency(0);
     }
 
     public void showIOnScreenPowerUpIcon()
     {
-
-        onScreenPowerupIcon.enabled = true;
+        onScreenPowerupIcon.snapTransparency(1);
+        //onScreenPowerupIcon.enabled = true;
 
     }
 
@@ -57,15 +64,21 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void setPowerUpIconImage(Texture image)
+    public void setPowerUpIconImage(Texture image, float lengthOfPowerUp)
     {
-        if(image == null)
+        if(image == null && onScreenPowerupIcon.getWantedTransparency() < 0)
         {
             hideIOnScreenPowerUpIcon();
             return;
         }
-        showIOnScreenPowerUpIcon();
-        onScreenPowerupIcon.texture = image;
+        //showIOnScreenPowerUpIcon();
+        onScreenPowerupIcon.queueFadeTransparency(1f, 0.5f);
+        onScreenPowerupIcon.setTransparencyImage(image);
+    }
+
+    public void setPowerUpIconImageByPowerUpType(powerUpList type, float length)
+    {
+        setPowerUpIconImage(getPowerUpIconByType(type),length);
     }
 
     public Texture getPowerUpIconByType(powerUpList type)

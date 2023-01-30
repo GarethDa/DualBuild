@@ -66,10 +66,7 @@ public class CharacterAiming : MonoBehaviour
             animator.SetBool("isAiming", isAiming);
             animator.SetBool("hasBall", holdingProjectile);
         }
-        else
-        {
-            Debug.Log("Drink your grandson's pee");
-        }
+        
         if (isAiming)
         {
             //If the player is aiming, set the player object's rotation around the y-axis to that of the camera
@@ -135,10 +132,7 @@ public class CharacterAiming : MonoBehaviour
             { 
                 heldProjectile.GetComponent<BallBehaviour>().SetIsHeld(false);
             }
-            else if (heldProjectile.GetComponent<BombBehaviour>() != null)
-            {
-                heldProjectile.GetComponent<BombBehaviour>().SetIsHeld(false);
-            }
+            
 
             //Tell the projectile that it has been thrown 
             if (heldProjectile.GetComponent<BallBehaviour>() != null)
@@ -147,7 +141,8 @@ public class CharacterAiming : MonoBehaviour
             }
             else if (heldProjectile.GetComponent<BombBehaviour>() != null)
             {
-                heldProjectile.GetComponent<BombBehaviour>().SetIsThrown(true);
+                heldProjectile.GetComponent<BombBehaviour>().setThrown(true);
+                Debug.Log("thrown");
             }
         }
 

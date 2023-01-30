@@ -5,112 +5,100 @@ using UnityEngine;
 public class BombBehaviour : MonoBehaviour
 {
 
-    private bool isHeld = false;
+   
     private bool isThrown = false;
-    private GameObject playerCam;
-    private List<GameObject> playerObject = new List<GameObject>();
-    [SerializeField] [Range(1f, 1000f)] int bombForce = 5000;
-    [SerializeField] [Range(1f, 100f)] int bombRadius = 500;
+    GameObject player;
+    private List<Rigidbody> affectedObjects = new List<Rigidbody>();
+    [SerializeField] [Range(1f, 1000f)] int bombForce = 850;
+    [SerializeField] [Range(1f, 100f)] int bombRadius = 80;
+    public SphereCollider outCollider;
+    float radius = 0f;
+    float timeThrown = 0f;
+    float maxTimeThrown = 10f;
 
     void Start()
     {
-        //Find the player camera and player objects
-        playerCam = GameObject.Find("Main Camera");
-
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
-            playerObject.Add(obj);
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
+       
+       radius =  outCollider.bounds.size.x;
+        
 
     }
 
-    void OnCollisionEnter(Collision collision)
+    public void setPlayer(GameObject g)
     {
-        /*
-        //if the ball hits a player after being thrown
-        if (isThrown && collision.gameObject.tag == "Player")
+        player = g;
+        player.GetComponent<CharacterAiming>().SetProjectile(this.gameObject);
+    }
+
+    public void setThrown(bool t)
+    {
+        isThrown = t;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isThrown)
         {
-            collision.rigidbody.AddExplosionForce(hitForce, collision.contacts[0].point, 5);
-            Debug.Log("Hit Player");
-            ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
+            return;
         }
 
-        //if the ball hits the ground while not being held
-        if (!isHeld && collision.gameObject.layer == LayerMask.NameToLayer("FloorLayer"))
+        Debug.Log("HIT GROUND");
+        //check for floor or player and explode
+        if(collision.gameObject.tag == "Player" || collision.gameObject.layer == 6)
         {
-            isThrown = false;
-            ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
-        }
-        */
-        if (isThrown && !isHeld)
-        {
-            ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
-
-            Collider[] colliders = Physics.OverlapSphere(transform.position, bombRadius);
-
-            foreach (Collider hit in colliders)
+            foreach (Rigidbody g in affectedObjects)
             {
+                 Rigidbody rg = g.GetComponentInParent<Rigidbody>();
+                //Vector3 toMove = transform.position - g.gameObject.transform.position;
+                //Vector3 newForce = (radius - Vector3.Distance(transform.position, g.transform.position)) * toMove.normalized * bombForce;
+                // g.AddForce(newForce, ForceMode.Impulse);
+                rg.AddExplosionForce(bombForce, transform.position, radius, 3.0F);
+                Debug.Log(rg.gameObject.name);
 
-                if (hit.tag == "Player")
-                {
-                    Rigidbody rb = hit.GetComponentInParent<Rigidbody>();
-
-                    if (rb != null)
-                    {
-                        Debug.Log("Bomb Hit Player");
-                        rb.AddExplosionForce(bombForce, transform.position, bombRadius, 3f, ForceMode.Force);
-                        gameObject.SetActive(false);
-                    }
-                }
-                else
-                {
-                    Rigidbody rb = hit.GetComponent<Rigidbody>();
-
-                    if (rb != null)
-                    {
-                        Debug.Log("Bomb Hit " + hit.name);
-                        rb.AddExplosionForce(bombForce, transform.position, bombRadius, 10f, ForceMode.Impulse);
-                        gameObject.SetActive(false);
-                    }
-
-                }
             }
+            Destroy(gameObject);
         }
+        
+       
+    }
 
-        //If the player touches a ball that isn't being held, and has not been thrown, and the player isn't already holding a ball
-        if (!isHeld && !isThrown && collision.gameObject.tag == "Player")
+    public void OnTriggerEnter(Collider other)
+    {
+        
+        if (other.gameObject.GetComponentInParent<Rigidbody>() != null)
         {
-
-            if (collision.gameObject.GetComponent<CharacterAiming>() != null && !collision.gameObject.GetComponent<CharacterAiming>().IsHoldingProj())
-            {
-                //Update the ball to be held
-                isHeld = true;
-
-                collision.gameObject.GetComponent<CharacterAiming>().SetProjectile(this.gameObject);
-            }
+            affectedObjects.Add(other.gameObject.GetComponentInParent<Rigidbody>());
+            Debug.Log("ADDED");
         }
     }
 
-    public void SetIsHeld(bool held)
+    public void OnTriggerExit(Collider other)
     {
-        isHeld = held;
+        
+        if (other.gameObject.GetComponent<Rigidbody>() != null)
+        {
+            if (!affectedObjects.Contains(other.gameObject.GetComponent<Rigidbody>()))
+            {
+                return;
+            }
+            affectedObjects.Remove(other.gameObject.GetComponent<Rigidbody>());
+            Debug.Log("REMOVED");
+
+        }
     }
 
-    public void SetIsThrown(bool thrown)
+    private void Update()
     {
-        isThrown = thrown;
+        if (!isThrown)
+        {
+            return;
+        }
+
+        timeThrown += Time.deltaTime;
+        if(timeThrown == maxTimeThrown)
+        {
+            Destroy(gameObject);
+        }
     }
 
-    public bool GetIsHeld()
-    {
-        return isHeld;
-    }
-
-    public bool GetIsThrown()
-    {
-        return isThrown;
-    }
 }

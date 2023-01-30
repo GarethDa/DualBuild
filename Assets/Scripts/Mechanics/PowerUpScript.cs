@@ -34,7 +34,9 @@ public class PowerUpScript : MonoBehaviour
     private float currentPowerUpDuration = 0f; //internal clock for powerup duration
 
     
-    [SerializeField] powerUpList selectedPowerUp;
+   
+
+    PowerUp currentPowerUp;
 
     // Start is called before the first frame update
     void Start()
@@ -47,25 +49,24 @@ public class PowerUpScript : MonoBehaviour
 
     public void PlayerJumped()
     {
-        //this is so TpMovement can notify this script for when we jumped and disable our superjump
-        if (superjumpEnabled == true)
+       if(currentPowerUp is SuperJump)
         {
-            usedPowerUp = false;
-            superjumpEnabled = false;
-            playerObject.GetComponent<TpMovement>().SetJumpForce(initialJumpForce);
-            selectedPowerUp = powerUpList.None;
+            currentPowerUp.onUse();          
         }
     }
 
     public void setSelectedPowerUp(powerUpList powerUp)
     {
-        selectedPowerUp = powerUp;
-        setPowerUpImage();
+        addPowerUp(powerUp);
     }
 
     public powerUpList getSelectedPowerUp()
     {
-        return selectedPowerUp;
+        if(currentPowerUp == null)
+        {
+            return powerUpList.None;
+        }
+        return currentPowerUp.type;
     }
 
     public void OnPowerUp()
@@ -74,94 +75,45 @@ public class PowerUpScript : MonoBehaviour
         //there should probably also be an observer to check when the player actually uses their boosted ablility and then resets
         //their stats and removes their powerup
         //for now, we'll just have it on a timer
-        if (!usedPowerUp && selectedPowerUp != powerUpList.None)
-        {
-            usedPowerUp = true;
-            currentPowerUpDuration = 0;
 
-            if (selectedPowerUp == powerUpList.SuperJump)
-            {
-                superjumpEnabled = true;
-                playerObject.GetComponent<TpMovement>().SetJumpForce(superjumpForce);
-            }
-            else if (selectedPowerUp == powerUpList.SlowFall)
-            {
-                slowfallEnabled = true;
-            }
-            else if (selectedPowerUp == powerUpList.Dash)
-            {
-                dashEnabled = true;
-                playerObject.GetComponent<TpMovement>().SetSpeed(dashSpeed);
-            }
-            else if (selectedPowerUp == powerUpList.Bomb)
-            {
-                Instantiate(bombPrefab, transform.position, transform.rotation);
-                usedPowerUp = false;
-                selectedPowerUp = powerUpList.None;
-            }
+        ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
 
-            ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
-        }
-        setPowerUpImage();
+        currentPowerUp.onUse();
+
+       
+
     }
 
-    private void Update()
+    public void addPowerUp(powerUpList t)
     {
-        //this one goes in update instead of fixed update; causes freezes otherwise
-        if (slowfallEnabled)
+        if(t == powerUpList.Bomb)
         {
-            playerGrounded = playerObject.GetComponent<TpMovement>().GetIsGrounded();
+            playerObject.AddComponent<Bomb>().setup(bombPrefab, playerObject);
+           
         }
+        if (t == powerUpList.Dash)
+        {
+            playerObject.AddComponent<Dash>().setup(initialSpeed,dashSpeed,playerObject);
+            
+        }
+        if (t == powerUpList.SuperJump)
+        {
+            playerObject.AddComponent<SuperJump>().setup(superjumpForce,initialJumpForce,playerObject);
+          
+        }
+        if (t == powerUpList.SlowFall)
+        {
+            
+            playerObject.AddComponent<SlowFall>().setup(slowfallForce, maxFallSpeed, playerObject);
+            
+            
+        }
+        currentPowerUp = playerObject.GetComponent<PowerUp>();
+        
+        currentPowerUp.onPickup();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        //constantly adds up INGAME time, in case we want to use slow motion or something
-        if (usedPowerUp)
-        {
-            currentPowerUpDuration += Time.fixedDeltaTime;
-        }
 
-        //only apply the force when the player is in the air
-        if (!playerGrounded)
-        {
-            //only apply forec if the player is actually falling
-            if (rb.velocity.y < maxFallSpeed)
-            {
-                rb.AddForce(Vector3.up * (rb.velocity.y * rb.velocity.y + maxFallSpeed) / 10 * slowfallForce); //apply force as a function of current downward velocity
-            }
-        }
 
-        //if we've used a powerup, check each one's duration
-        if (usedPowerUp)
-        {
-            if (selectedPowerUp == powerUpList.SlowFall && currentPowerUpDuration >= slowfallDuration)
-            {
-                slowfallEnabled = false;
-                playerGrounded = true;
-                currentPowerUpDuration = 0;
-                usedPowerUp = false;
-                selectedPowerUp = powerUpList.None; //"Consume" powerup when done
-
-            }
-            else if (selectedPowerUp == powerUpList.Dash && currentPowerUpDuration >= dashDuration)
-            {
-                dashEnabled = false;
-                playerObject.GetComponent<TpMovement>().SetSpeed(initialSpeed);
-                currentPowerUpDuration = 0;
-                usedPowerUp = false;
-                selectedPowerUp = powerUpList.None; //"Consume" powerup when done
-            }
-
-        }
-    }
-
-    private void setPowerUpImage()
-    {
-        //change the image in the UI
-
-        UIManager.instance.setPowerUpIconImage(UIManager.instance.getPowerUpIconByType(selectedPowerUp));
-    }
 }
 public enum powerUpList { None, SuperJump, SlowFall , Dash, Bomb}

@@ -24,7 +24,7 @@ public class PowerupGiver : MonoBehaviour
             {
                 if (other.transform.parent.gameObject.GetComponent<PowerUpScript>().getSelectedPowerUp() != powerUpList.None)
                 {
-                    UIManager.instance.setText("You already have a powerup!");
+                    UIManager.instance.setText("You already have a powerup! " + other.transform.parent.gameObject.GetComponent<PowerUpScript>().getSelectedPowerUp().ToString()); ;
                     return;
                 }
                     other.transform.parent.gameObject.GetComponent<PowerUpScript>().setSelectedPowerUp(type);

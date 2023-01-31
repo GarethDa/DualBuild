@@ -422,7 +422,7 @@
                 {
                     "name": "",
                     "id": "2aee5acc-80c4-47e7-9cff-e600c8c6e54a",
-                    "path": "<Keyboard>/alt",
+                    "path": "<Keyboard>/rightShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -696,6 +696,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "GiveSuperjump",
+                    "type": "Button",
+                    "id": "64160930-e8dd-4241-b896-f2cb9b700d2d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GiveSlowfall",
+                    "type": "Button",
+                    "id": "c28db084-31f5-4852-a4b2-443afca3c6d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GiveDash",
+                    "type": "Button",
+                    "id": "9a2ee341-ac5d-4c88-ba3a-d26a479ff00a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GiveBomb",
+                    "type": "Button",
+                    "id": "cea4a3be-c1ca-44a4-8979-11830f49a53c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -718,6 +754,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "EditorPause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5beb9019-35ba-46c5-980b-fd448cd49008",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GiveSuperjump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "74b40fa1-cf43-4bc7-b9c1-f3e5c7e32a6a",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GiveSlowfall",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77ec4ad7-d2d2-400d-b94a-c491f69006ee",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GiveDash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a4c2fbe-7d39-42e9-a385-5e5cb4af6b4d",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GiveBomb",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

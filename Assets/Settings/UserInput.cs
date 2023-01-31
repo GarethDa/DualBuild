@@ -444,7 +444,7 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2aee5acc-80c4-47e7-9cff-e600c8c6e54a"",
-                    ""path"": ""<Keyboard>/alt"",
+                    ""path"": ""<Keyboard>/rightShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -718,6 +718,42 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GiveSuperjump"",
+                    ""type"": ""Button"",
+                    ""id"": ""64160930-e8dd-4241-b896-f2cb9b700d2d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GiveSlowfall"",
+                    ""type"": ""Button"",
+                    ""id"": ""c28db084-31f5-4852-a4b2-443afca3c6d1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GiveDash"",
+                    ""type"": ""Button"",
+                    ""id"": ""9a2ee341-ac5d-4c88-ba3a-d26a479ff00a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GiveBomb"",
+                    ""type"": ""Button"",
+                    ""id"": ""cea4a3be-c1ca-44a4-8979-11830f49a53c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -740,6 +776,50 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""EditorPause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5beb9019-35ba-46c5-980b-fd448cd49008"",
+                    ""path"": ""<Keyboard>/u"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GiveSuperjump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""74b40fa1-cf43-4bc7-b9c1-f3e5c7e32a6a"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GiveSlowfall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77ec4ad7-d2d2-400d-b94a-c491f69006ee"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GiveDash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a4c2fbe-7d39-42e9-a385-5e5cb4af6b4d"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GiveBomb"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -840,6 +920,10 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         m_Editor = asset.FindActionMap("Editor", throwIfNotFound: true);
         m_Editor_SpawnDummy = m_Editor.FindAction("SpawnDummy", throwIfNotFound: true);
         m_Editor_EditorPause = m_Editor.FindAction("EditorPause", throwIfNotFound: true);
+        m_Editor_GiveSuperjump = m_Editor.FindAction("GiveSuperjump", throwIfNotFound: true);
+        m_Editor_GiveSlowfall = m_Editor.FindAction("GiveSlowfall", throwIfNotFound: true);
+        m_Editor_GiveDash = m_Editor.FindAction("GiveDash", throwIfNotFound: true);
+        m_Editor_GiveBomb = m_Editor.FindAction("GiveBomb", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1135,12 +1219,20 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
     private IEditorActions m_EditorActionsCallbackInterface;
     private readonly InputAction m_Editor_SpawnDummy;
     private readonly InputAction m_Editor_EditorPause;
+    private readonly InputAction m_Editor_GiveSuperjump;
+    private readonly InputAction m_Editor_GiveSlowfall;
+    private readonly InputAction m_Editor_GiveDash;
+    private readonly InputAction m_Editor_GiveBomb;
     public struct EditorActions
     {
         private @UserInput m_Wrapper;
         public EditorActions(@UserInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @SpawnDummy => m_Wrapper.m_Editor_SpawnDummy;
         public InputAction @EditorPause => m_Wrapper.m_Editor_EditorPause;
+        public InputAction @GiveSuperjump => m_Wrapper.m_Editor_GiveSuperjump;
+        public InputAction @GiveSlowfall => m_Wrapper.m_Editor_GiveSlowfall;
+        public InputAction @GiveDash => m_Wrapper.m_Editor_GiveDash;
+        public InputAction @GiveBomb => m_Wrapper.m_Editor_GiveBomb;
         public InputActionMap Get() { return m_Wrapper.m_Editor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1156,6 +1248,18 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @EditorPause.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnEditorPause;
                 @EditorPause.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnEditorPause;
                 @EditorPause.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnEditorPause;
+                @GiveSuperjump.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveSuperjump;
+                @GiveSuperjump.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveSuperjump;
+                @GiveSuperjump.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveSuperjump;
+                @GiveSlowfall.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveSlowfall;
+                @GiveSlowfall.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveSlowfall;
+                @GiveSlowfall.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveSlowfall;
+                @GiveDash.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveDash;
+                @GiveDash.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveDash;
+                @GiveDash.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveDash;
+                @GiveBomb.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveBomb;
+                @GiveBomb.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveBomb;
+                @GiveBomb.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveBomb;
             }
             m_Wrapper.m_EditorActionsCallbackInterface = instance;
             if (instance != null)
@@ -1166,6 +1270,18 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @EditorPause.started += instance.OnEditorPause;
                 @EditorPause.performed += instance.OnEditorPause;
                 @EditorPause.canceled += instance.OnEditorPause;
+                @GiveSuperjump.started += instance.OnGiveSuperjump;
+                @GiveSuperjump.performed += instance.OnGiveSuperjump;
+                @GiveSuperjump.canceled += instance.OnGiveSuperjump;
+                @GiveSlowfall.started += instance.OnGiveSlowfall;
+                @GiveSlowfall.performed += instance.OnGiveSlowfall;
+                @GiveSlowfall.canceled += instance.OnGiveSlowfall;
+                @GiveDash.started += instance.OnGiveDash;
+                @GiveDash.performed += instance.OnGiveDash;
+                @GiveDash.canceled += instance.OnGiveDash;
+                @GiveBomb.started += instance.OnGiveBomb;
+                @GiveBomb.performed += instance.OnGiveBomb;
+                @GiveBomb.canceled += instance.OnGiveBomb;
             }
         }
     }
@@ -1248,5 +1364,9 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
     {
         void OnSpawnDummy(InputAction.CallbackContext context);
         void OnEditorPause(InputAction.CallbackContext context);
+        void OnGiveSuperjump(InputAction.CallbackContext context);
+        void OnGiveSlowfall(InputAction.CallbackContext context);
+        void OnGiveDash(InputAction.CallbackContext context);
+        void OnGiveBomb(InputAction.CallbackContext context);
     }
 }

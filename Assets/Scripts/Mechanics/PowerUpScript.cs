@@ -90,13 +90,11 @@ public class PowerUpScript : MonoBehaviour
         //there should probably also be an observer to check when the player actually uses their boosted ablility and then resets
         //their stats and removes their powerup
         //for now, we'll just have it on a timer
-
-        ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
-
-        currentPowerUp.onUse();
-
-       
-
+        if (currentPowerUp != null)
+        {
+            ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
+            currentPowerUp.onUse();
+        }
     }
 
     public void addPowerUp(powerUpList t)

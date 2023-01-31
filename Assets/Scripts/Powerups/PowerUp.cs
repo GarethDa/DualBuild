@@ -49,10 +49,18 @@ public class Bomb : PowerUp
         {
             return;
         }
-        hasClicked = true;
-        GameObject bomb = Instantiate(bombPrefab, transform.position, transform.rotation);
-        bomb.GetComponent<BombBehaviour>().setPlayer(playerObject);
-        onEffect();
+
+        if (!playerObject.GetComponent<CharacterAiming>().IsHoldingProj())
+        {
+            hasClicked = true;
+            GameObject bomb = Instantiate(bombPrefab, transform.position, transform.rotation);
+            bomb.GetComponent<BombBehaviour>().setPlayer(playerObject);
+            onEffect();
+        }
+        else
+        {
+            Debug.LogWarning("Tried to activate bomb while holding dodgeball!");
+        }
     }
 }
 

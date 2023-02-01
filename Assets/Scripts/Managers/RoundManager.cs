@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class RoundManager : MonoBehaviour
 {
@@ -42,10 +43,12 @@ public class RoundManager : MonoBehaviour
     public PowerupGiver lastPlacePowerupGiver;
     public PowerupGiver mainPowerupGiver;
     public powerUpList givingPowerup;
+    bool skipPreview = false;
+    bool hasModifiedLevels = false;
 
     private void Awake() //singleton
     {
-        if(instance != null)
+        if (instance != null)
         {
             return;
         }
@@ -64,6 +67,57 @@ public class RoundManager : MonoBehaviour
         lastPlacePowerupGiver.setPowerup(powerUpList.None);
         addRound(new Intermission());
         startRound();
+    }
+
+   public void addPachinko(InputAction.CallbackContext cntxt)
+    {
+        if (cntxt.performed)
+        {
+            addRound(new PachinkoRound());
+            Debug.Log(getNextRoundNumber());
+            hasModifiedLevels = true;
+        }
+    } 
+    public void addDodgeball(InputAction.CallbackContext cntxt)
+    {
+        if (cntxt.performed)
+        {
+            addRound(new DodgeballRound());
+            Debug.Log(getNextRoundNumber());
+            hasModifiedLevels = true;
+
+
+        }
+    } 
+    public void addBumper(InputAction.CallbackContext cntxt)
+    {
+        if (cntxt.performed)
+        {
+            addRound(new BumperRound());
+            Debug.Log(getNextRoundNumber());
+            hasModifiedLevels = true;
+
+
+        }
+    } 
+    public void addPlatform(InputAction.CallbackContext cntxt)
+    {
+        if (cntxt.performed)
+        {
+            addRound(new FallingPlatformRound());
+            Debug.Log(getNextRoundNumber());
+            hasModifiedLevels = true;
+
+
+        }
+    }
+
+    public void skipTutorial(InputAction.CallbackContext cntxt)
+    {
+        if (cntxt.performed)
+        {
+            skipPreview = !skipPreview;
+        }
     }
 
     public void onPlayerEnterReadyZone()
@@ -124,9 +178,20 @@ public class RoundManager : MonoBehaviour
         }
     }
 
+    public int getNextRoundNumber()
+    {
+        int returner = 0;
+        foreach(Round r in nextRounds)
+        {
+            returner += (int)r.getType();
+        }
+        return returner;
+    }
     public void startRound()
     {
-        if(gameRoundsCompleted == roundsToPlay)
+        hasModifiedLevels = false;
+
+        if (gameRoundsCompleted == roundsToPlay)
         {
             //switch scene
             gameRoundsCompleted = 0;
@@ -176,7 +241,7 @@ public class RoundManager : MonoBehaviour
         else
         {
             //Debug.log("$START HAS NO INTERMISSION");
-
+            Debug.Log(toLoad);
             List<Transform> placeToSend = loadLevel(toLoad);
 
                 if (sendToLevel)
@@ -228,7 +293,7 @@ public class RoundManager : MonoBehaviour
         
         //check if its intermission
         
-        if (currentRoundsHavePreview())
+        if (currentRoundsHavePreview() && !skipPreview)
         {
             PreviewRound preview = (PreviewRound)currentRounds[0];
             currentRounds.Clear();
@@ -260,7 +325,10 @@ public class RoundManager : MonoBehaviour
 
     private void generateNextRoundLevels()
     {
-
+        if (hasModifiedLevels)
+        {
+            return;
+        }
         if(levelCombinations.Count == 0)
         {
             //generate level combinations again
@@ -328,8 +396,18 @@ public class RoundManager : MonoBehaviour
         playingRounds.Add(levelCombinations[index].getRoundOne());
         playingRounds.Add(levelCombinations[index].getRoundTwo());
 
-        addRound(new PreviewRound(playingRounds));
-        inPreview = true;
+        if (!skipPreview)
+        {
+            addRound(new PreviewRound(playingRounds));
+            inPreview = true;
+        }
+        else
+        {
+            addRound(playingRounds[0]);
+            addRound(playingRounds[1]);
+            startRound();
+        }
+       
 
 
     }

@@ -732,6 +732,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "AddPachinko",
+                    "type": "Button",
+                    "id": "232c6690-0427-49e2-9c91-900ed6480b35",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AddDodgeball",
+                    "type": "Button",
+                    "id": "6f43eff9-2fef-4741-879c-3b1366a5c427",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AddBumper",
+                    "type": "Button",
+                    "id": "2a691928-e0a8-4adc-9f59-94eb02476218",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AddFallingPlatfom",
+                    "type": "Button",
+                    "id": "70006745-111e-418e-b2a3-332d8ef10b00",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -798,6 +834,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "GiveBomb",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "43523af4-3d92-443f-a0b8-16a74c3d0fd7",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddPachinko",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4d5d05eb-fe69-48b7-a5e8-3e87a8d79e8f",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddDodgeball",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "26d5280e-f2d1-4100-8ce5-75f130f01881",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddBumper",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1dce7a0e-cb4e-4289-ac00-548adb992163",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddFallingPlatfom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

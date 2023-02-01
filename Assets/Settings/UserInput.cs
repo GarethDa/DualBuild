@@ -754,6 +754,42 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddPachinko"",
+                    ""type"": ""Button"",
+                    ""id"": ""232c6690-0427-49e2-9c91-900ed6480b35"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddDodgeball"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f43eff9-2fef-4741-879c-3b1366a5c427"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddBumper"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a691928-e0a8-4adc-9f59-94eb02476218"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddFallingPlatfom"",
+                    ""type"": ""Button"",
+                    ""id"": ""70006745-111e-418e-b2a3-332d8ef10b00"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -820,6 +856,50 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""GiveBomb"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43523af4-3d92-443f-a0b8-16a74c3d0fd7"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddPachinko"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d5d05eb-fe69-48b7-a5e8-3e87a8d79e8f"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddDodgeball"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26d5280e-f2d1-4100-8ce5-75f130f01881"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddBumper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1dce7a0e-cb4e-4289-ac00-548adb992163"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddFallingPlatfom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -924,6 +1004,10 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         m_Editor_GiveSlowfall = m_Editor.FindAction("GiveSlowfall", throwIfNotFound: true);
         m_Editor_GiveDash = m_Editor.FindAction("GiveDash", throwIfNotFound: true);
         m_Editor_GiveBomb = m_Editor.FindAction("GiveBomb", throwIfNotFound: true);
+        m_Editor_AddPachinko = m_Editor.FindAction("AddPachinko", throwIfNotFound: true);
+        m_Editor_AddDodgeball = m_Editor.FindAction("AddDodgeball", throwIfNotFound: true);
+        m_Editor_AddBumper = m_Editor.FindAction("AddBumper", throwIfNotFound: true);
+        m_Editor_AddFallingPlatfom = m_Editor.FindAction("AddFallingPlatfom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1223,6 +1307,10 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Editor_GiveSlowfall;
     private readonly InputAction m_Editor_GiveDash;
     private readonly InputAction m_Editor_GiveBomb;
+    private readonly InputAction m_Editor_AddPachinko;
+    private readonly InputAction m_Editor_AddDodgeball;
+    private readonly InputAction m_Editor_AddBumper;
+    private readonly InputAction m_Editor_AddFallingPlatfom;
     public struct EditorActions
     {
         private @UserInput m_Wrapper;
@@ -1233,6 +1321,10 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         public InputAction @GiveSlowfall => m_Wrapper.m_Editor_GiveSlowfall;
         public InputAction @GiveDash => m_Wrapper.m_Editor_GiveDash;
         public InputAction @GiveBomb => m_Wrapper.m_Editor_GiveBomb;
+        public InputAction @AddPachinko => m_Wrapper.m_Editor_AddPachinko;
+        public InputAction @AddDodgeball => m_Wrapper.m_Editor_AddDodgeball;
+        public InputAction @AddBumper => m_Wrapper.m_Editor_AddBumper;
+        public InputAction @AddFallingPlatfom => m_Wrapper.m_Editor_AddFallingPlatfom;
         public InputActionMap Get() { return m_Wrapper.m_Editor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1260,6 +1352,18 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @GiveBomb.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveBomb;
                 @GiveBomb.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveBomb;
                 @GiveBomb.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveBomb;
+                @AddPachinko.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddPachinko;
+                @AddPachinko.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddPachinko;
+                @AddPachinko.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddPachinko;
+                @AddDodgeball.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddDodgeball;
+                @AddDodgeball.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddDodgeball;
+                @AddDodgeball.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddDodgeball;
+                @AddBumper.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddBumper;
+                @AddBumper.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddBumper;
+                @AddBumper.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddBumper;
+                @AddFallingPlatfom.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddFallingPlatfom;
+                @AddFallingPlatfom.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddFallingPlatfom;
+                @AddFallingPlatfom.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddFallingPlatfom;
             }
             m_Wrapper.m_EditorActionsCallbackInterface = instance;
             if (instance != null)
@@ -1282,6 +1386,18 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @GiveBomb.started += instance.OnGiveBomb;
                 @GiveBomb.performed += instance.OnGiveBomb;
                 @GiveBomb.canceled += instance.OnGiveBomb;
+                @AddPachinko.started += instance.OnAddPachinko;
+                @AddPachinko.performed += instance.OnAddPachinko;
+                @AddPachinko.canceled += instance.OnAddPachinko;
+                @AddDodgeball.started += instance.OnAddDodgeball;
+                @AddDodgeball.performed += instance.OnAddDodgeball;
+                @AddDodgeball.canceled += instance.OnAddDodgeball;
+                @AddBumper.started += instance.OnAddBumper;
+                @AddBumper.performed += instance.OnAddBumper;
+                @AddBumper.canceled += instance.OnAddBumper;
+                @AddFallingPlatfom.started += instance.OnAddFallingPlatfom;
+                @AddFallingPlatfom.performed += instance.OnAddFallingPlatfom;
+                @AddFallingPlatfom.canceled += instance.OnAddFallingPlatfom;
             }
         }
     }
@@ -1368,5 +1484,9 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         void OnGiveSlowfall(InputAction.CallbackContext context);
         void OnGiveDash(InputAction.CallbackContext context);
         void OnGiveBomb(InputAction.CallbackContext context);
+        void OnAddPachinko(InputAction.CallbackContext context);
+        void OnAddDodgeball(InputAction.CallbackContext context);
+        void OnAddBumper(InputAction.CallbackContext context);
+        void OnAddFallingPlatfom(InputAction.CallbackContext context);
     }
 }

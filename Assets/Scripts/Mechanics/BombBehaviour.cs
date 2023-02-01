@@ -56,6 +56,7 @@ public class BombBehaviour : MonoBehaviour
                 Debug.Log(rg.gameObject.name);
 
             }
+            ParticleManager.instance.PlayEffect(transform.position, "ExplosionParticles");
             Destroy(gameObject);
         }
         

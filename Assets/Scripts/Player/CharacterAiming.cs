@@ -11,10 +11,15 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] Camera playerCam;
     [SerializeField] Transform playerObj;
     [SerializeField] Transform holdPos;
+    [SerializeField] CinemachineVirtualCamera normalCam;
     [SerializeField] CinemachineVirtualCamera zoomCam;
 
     [Header("Projectiles & Punching")]
     [SerializeField] [Range(1000.0f, 4000.0f)] float throwForce = 2000.0f;
+    [SerializeField] [Range(100f, 1000f)] float throwUpModifier = 200f;
+    [SerializeField] [Range(100f, 1000f)] float chargePerSec = 500f;
+    [SerializeField] [Range(1f, 5f)] float maxChargeTime = 3f;
+    [SerializeField] [Range(0f, 20f)] float maxChangeFOV = 10f;
     [SerializeField] [Range(1.0f, 100.0f)] float punchForce = 20f;
 
     Image reticle;
@@ -24,6 +29,15 @@ public class CharacterAiming : MonoBehaviour
 
     GameObject heldProjectile = null;
     Animator animator;
+
+    //Parameters for charging projectile throwing
+    bool charging = false;
+    float chargeTime = 0f;
+    float chargedForce = 0f;
+    float normalCamOrigFOV;
+    float zoomCamOrigFOV;
+    float returnTimeFOV = 0f;
+
     //BALLER
 
     //UserInput inputAction;
@@ -56,6 +70,9 @@ public class CharacterAiming : MonoBehaviour
         reticle.enabled = false;
         animator = GetComponent<Animator>();
 
+        normalCamOrigFOV = normalCam.m_Lens.FieldOfView;
+        zoomCamOrigFOV = zoomCam.m_Lens.FieldOfView;
+
     }
 
     // Update is called once per frame
@@ -73,14 +90,63 @@ public class CharacterAiming : MonoBehaviour
             playerObj.transform.rotation = Quaternion.Euler(new Vector3(0f, playerCam.transform.rotation.eulerAngles.y, 0f));
             //transform.Find("Orientation").rotation = Quaternion.Euler(new Vector3(0f, playerCam.transform.rotation.eulerAngles.y, 0f));
         }
-        
+
+        ChargeProjectile();
     }
 
     private void FixedUpdate()
     {
     }
 
-	//Aiming is a value type, not a button type, meaning it can sense when aim is being held down and released
+    //Function for charging projectile throwing speed and altering the camera FOV accordingly
+    public void ChargeProjectile()
+    {
+        //If we are charging
+        if (charging)
+        {
+            //Increase the charge time
+            chargeTime += Time.deltaTime;
+
+            //If the charge time hasn't reached the max
+            if (chargeTime <= maxChargeTime)
+            {
+                //Add to the extra throw force
+                chargedForce += chargePerSec * Time.deltaTime;
+
+                //Zoom in
+                normalCam.m_Lens.FieldOfView = normalCamOrigFOV - (chargeTime / maxChargeTime) * maxChangeFOV;
+                zoomCam.m_Lens.FieldOfView = zoomCamOrigFOV - (chargeTime / maxChargeTime) * maxChangeFOV;
+            }
+
+            //If the charge time has reached the max
+            else
+            {
+                //Max out the extra throw force
+                chargedForce = chargePerSec * maxChargeTime;
+                //Debug.Log("Max force! " + chargedForce);
+
+                //Fully zoom the cameras
+                normalCam.m_Lens.FieldOfView = normalCamOrigFOV - maxChangeFOV;
+                zoomCam.m_Lens.FieldOfView = zoomCamOrigFOV - maxChangeFOV;
+            }
+        }
+
+        //If the return time for FOV is greater than zero, meaning we should be returning the FOV to normal
+        else if (returnTimeFOV > 0f)
+        {
+            //Reduce the return time left
+            returnTimeFOV -= Time.deltaTime;
+
+            //If the return time is less than zero, set it back to zero
+            if (returnTimeFOV < 0f)
+                returnTimeFOV = 0f;
+
+            //Set the camera zoom accordingly
+            normalCam.m_Lens.FieldOfView = normalCamOrigFOV - (returnTimeFOV / 0.3f) * maxChangeFOV;
+            zoomCam.m_Lens.FieldOfView = zoomCamOrigFOV - (returnTimeFOV / 0.3f) * maxChangeFOV;
+        }
+    }
+
 	public void OnAim(InputAction.CallbackContext cntxt)
 	{
         //If the player is aiming, prioritize the zoomed in camera and enable to reticle
@@ -107,46 +173,80 @@ public class CharacterAiming : MonoBehaviour
         }
 	}
 
-    public void OnFire()
+    public void OnFire(InputAction.CallbackContext cntxt)
     {
-        //If the player is holding a projectile, then go through the steps to throw it
-        if (holdingProjectile)
+        if (cntxt.performed && holdingProjectile)
+            charging = true;
+
+        //Debug.Log(charging);
+
+        //If the player is holding a projectile and releases the throw button, then go through the steps to throw it
+        if (holdingProjectile && cntxt.canceled)
         {
-            heldProjectile.GetComponent<Collider>().enabled = true;
-
-            animator.SetTrigger("Throw");
-            //Set the projectile back to non-kinematic
-            heldProjectile.GetComponent<Rigidbody>().isKinematic = false;
-
-            //Throw the ball forward, multiplied by the throwing force
-            heldProjectile.GetComponent<Rigidbody>().AddForce(playerCam.transform.forward * throwForce + Vector3.up * (throwForce / 10));
-
-            //The player is no longer holding a projectile
-            holdingProjectile = false;
-
-            //The ball shouldn't be a child of the player model anymore
-            heldProjectile.transform.SetParent(null);
-
-            //Tell the projectile that it isn't being held anymore
-            if (heldProjectile.GetComponent<BallBehaviour>() != null)
-            { 
-                heldProjectile.GetComponent<BallBehaviour>().SetIsHeld(false);
-            }
-            
-
-            //Tell the projectile that it has been thrown 
-            if (heldProjectile.GetComponent<BallBehaviour>() != null)
             {
-                heldProjectile.GetComponent<BallBehaviour>().SetIsThrown(true);
-            }
-            else if (heldProjectile.GetComponent<BombBehaviour>() != null)
-            {
-                heldProjectile.GetComponent<BombBehaviour>().setThrown(true);
-                Debug.Log("thrown");
+                heldProjectile.GetComponent<Collider>().enabled = true;
+
+                animator.SetTrigger("Throw");
+                //Set the projectile back to non-kinematic
+                heldProjectile.GetComponent<Rigidbody>().isKinematic = false;
+
+                Vector3 throwDir;
+
+                RaycastHit hitInfo;
+
+                //If we are aiming and the raycast hits something
+                if (isAiming && Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hitInfo, 100f))
+                {
+                    //Set the throw direction to be the vector pointing from the projectile's position to the raycast's point of contact
+                    throwDir = (hitInfo.point - heldProjectile.transform.position).normalized;
+                }
+
+                //If the player isn't in aiming mode or if the raycast doesn't hit anything, just throw in the direction of the camera forward
+                else
+                    throwDir = playerCam.transform.forward;
+
+                //If the player isn't aiming, move the ball forward a bit.
+                //This is to stop the ball from hitting the player the moment it is thrown
+                if (!isAiming)
+                    heldProjectile.transform.position += new Vector3(2 * playerCam.transform.forward.x, 0f, 2 * playerCam.transform.forward.z);
+
+                //Throw the ball forward, multiplied by the throwing force
+                heldProjectile.GetComponent<Rigidbody>().AddForce(throwDir * (throwForce + chargedForce) + Vector3.up * (throwUpModifier));
+
+                //Return all the charging parameters back to 0
+                chargedForce = 0f;
+                chargeTime = 0f;
+                charging = false;
+
+                //Start returning the camera FOVs to normal
+                returnTimeFOV = 0.3f;
+
+                //The player is no longer holding a projectile
+                holdingProjectile = false;
+
+                //The ball shouldn't be a child of the player model anymore
+                heldProjectile.transform.SetParent(null);
+
+                //Tell the projectile that it isn't being held anymore
+                if (heldProjectile.GetComponent<BallBehaviour>() != null)
+                {
+                    heldProjectile.GetComponent<BallBehaviour>().SetIsHeld(false);
+                }
+
+                //Tell the projectile that it has been thrown 
+                if (heldProjectile.GetComponent<BallBehaviour>() != null)
+                {
+                    heldProjectile.GetComponent<BallBehaviour>().SetIsThrown(true);
+                }
+                else if (heldProjectile.GetComponent<BombBehaviour>() != null)
+                {
+                    heldProjectile.GetComponent<BombBehaviour>().setThrown(true);
+                    Debug.Log("thrown");
+                }
             }
         }
 
-        else
+        else if (!holdingProjectile)
         {
             GameObject playerObj = transform.Find("PlayerObj").gameObject;
 

@@ -8,7 +8,7 @@ public class HitParticleOnHit : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player" || collision.gameObject.tag == "Bullet" || collision.gameObject.layer == 6)
         {
-           if(gameObject.GetComponent<Rigidbody>().velocity.magnitude > 31)
+           if(gameObject.GetComponent<Rigidbody>().velocity.magnitude > 30)
             {
                 ParticleManager.instance.PlayEffect(collision.contacts[0].point, "Hit");
             }

@@ -9,9 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2333658594377326970}
-  - component: {fileID: 2333658594377326969}
   m_Layer: 0
-  m_Name: BumperBallParent
+  m_Name: BallHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,36 +24,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2333658594377326971}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 52.66, y: -3.98, z: 164.57}
+  m_LocalPosition: {x: -7.84, y: 0, z: -7.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2333658594655470632}
+  - {fileID: 1448501893305854682}
+  - {fileID: 7927762395167653395}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2333658594377326969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2333658594377326971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a074d529cf945029ef7cf40540c9df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Target: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_LoopMode: 1
-  m_Method: 1
-  m_Duration: 2.4386044
-  m_MaxSpeed: 20
-  m_EasingMode: 0
-  m_AlignmentMode: 2
-  m_ObjectForwardAxis: 2
-  m_ObjectUpAxis: 1
 --- !u!1 &2333658594655470624
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,8 +68,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2333658594377326970}
-  m_RootOrder: 0
+  m_Father: {fileID: 7927762395167653395}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2333658594655470633
 MeshFilter:
@@ -202,7 +180,7 @@ MonoBehaviour:
   speedMax: 15
   speedDelta: 0.01
   playerTargettingCooldown: 10
-  spline: {fileID: 0}
+  spline: {fileID: 4182733128338281294}
 --- !u!114 &2333658594655470639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,3 +195,179 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ignoreTag: Environment
   bounceForce: 1500
+--- !u!1 &6086898645913170930
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1448501893305854682}
+  - component: {fileID: 4182733128338281294}
+  m_Layer: 0
+  m_Name: Spline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1448501893305854682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6086898645913170930}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3.92, y: 3.92, z: 3.92}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 2333658594377326970}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4182733128338281294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6086898645913170930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: -0.5
+        y: 0
+        z: -0.5
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.36
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.36
+      Rotation:
+        value:
+          x: 0
+          y: -0.38268346
+          z: 0
+          w: 0.9238795
+    - Position:
+        x: -0.5
+        y: 0
+        z: 0.5
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.36
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.36
+      Rotation:
+        value:
+          x: 0
+          y: 0.38268346
+          z: 0
+          w: 0.9238795
+    - Position:
+        x: 0.5
+        y: 0
+        z: 0.5
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.36
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.36
+      Rotation:
+        value:
+          x: 0
+          y: 0.9238795
+          z: 0
+          w: 0.38268343
+    - Position:
+        x: 0.5
+        y: 0
+        z: -0.5
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.36
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.36
+      Rotation:
+        value:
+          x: 0
+          y: -0.9238795
+          z: 0
+          w: 0.38268343
+    m_Length: -1
+    m_Closed: 1
+--- !u!1 &7856083037473006034
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7927762395167653395}
+  - component: {fileID: 2967440272928569778}
+  m_Layer: 0
+  m_Name: BumperBallParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7927762395167653395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7856083037473006034}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.96, y: 0, z: -1.96}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2333658594655470632}
+  m_Father: {fileID: 2333658594377326970}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2967440272928569778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7856083037473006034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29a074d529cf945029ef7cf40540c9df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Target: {fileID: 4182733128338281294}
+  m_PlayOnAwake: 1
+  m_LoopMode: 1
+  m_Method: 1
+  m_Duration: 0.8606385
+  m_MaxSpeed: 20
+  m_EasingMode: 0
+  m_AlignmentMode: 2
+  m_ObjectForwardAxis: 2
+  m_ObjectUpAxis: 1

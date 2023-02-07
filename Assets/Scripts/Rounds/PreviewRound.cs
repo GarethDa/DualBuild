@@ -9,7 +9,7 @@ public class PreviewRound : Round
     public PreviewRound(List<Round> adding)
     {
         hasMap = false;
-        roundTime = 20;
+        roundTime = 10;
         mapPrefabName = "NONE";
         tutorialText = "Tutorial";
         type = roundType.NONE;

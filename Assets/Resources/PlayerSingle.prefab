@@ -63,7 +63,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &3436805638776943962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,9 +161,10 @@ MonoBehaviour:
   normalCam: {fileID: 8411294830900885187}
   zoomCam: {fileID: 8411294830436386869}
   throwForce: 1500
-  throwUpModifier: 200
+  throwUpModifier: 35
   chargePerSec: 500
   maxChargeTime: 3
+  maxChangeFOV: 10
   punchForce: 5
 --- !u!114 &7003453695122746443
 MonoBehaviour:
@@ -507,6 +508,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 62636741-5808-4b10-8596-f3f270d99f8f
     m_ActionName: Player/ToggleEditor[/Keyboard/alt]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 64160930-e8dd-4241-b896-f2cb9b700d2d
+    m_ActionName: Editor/GiveSuperjump[/Keyboard/u]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c28db084-31f5-4852-a4b2-443afca3c6d1
+    m_ActionName: Editor/GiveSlowfall[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9a2ee341-ac5d-4c88-ba3a-d26a479ff00a
+    m_ActionName: Editor/GiveDash[/Keyboard/o]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cea4a3be-c1ca-44a4-8979-11830f49a53c
+    m_ActionName: Editor/GiveBomb[/Keyboard/p]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 232c6690-0427-49e2-9c91-900ed6480b35
+    m_ActionName: Editor/AddPachinko[/Keyboard/h]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6f43eff9-2fef-4741-879c-3b1366a5c427
+    m_ActionName: Editor/AddDodgeball[/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2a691928-e0a8-4adc-9f59-94eb02476218
+    m_ActionName: Editor/AddBumper[/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 70006745-111e-418e-b2a3-332d8ef10b00
+    m_ActionName: Editor/AddFallingPlatfom[/Keyboard/l]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

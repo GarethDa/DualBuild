@@ -16,7 +16,7 @@ public class CharacterAiming : MonoBehaviour
 
     [Header("Projectiles & Punching")]
     [SerializeField] [Range(1000.0f, 4000.0f)] float throwForce = 2000.0f;
-    [SerializeField] [Range(100f, 1000f)] float throwUpModifier = 200f;
+    [SerializeField] [Range(10f, 200f)] float throwUpModifier = 200f;
     [SerializeField] [Range(100f, 1000f)] float chargePerSec = 500f;
     [SerializeField] [Range(1f, 5f)] float maxChargeTime = 3f;
     [SerializeField] [Range(0f, 20f)] float maxChangeFOV = 10f;
@@ -114,7 +114,7 @@ public class CharacterAiming : MonoBehaviour
                 chargedForce += chargePerSec * Time.deltaTime;
 
                 //Zoom in
-                normalCam.m_Lens.FieldOfView = normalCamOrigFOV - (chargeTime / maxChargeTime) * maxChangeFOV;
+                //normalCam.m_Lens.FieldOfView = normalCamOrigFOV - (chargeTime / maxChargeTime) * maxChangeFOV;
                 zoomCam.m_Lens.FieldOfView = zoomCamOrigFOV - (chargeTime / maxChargeTime) * maxChangeFOV;
             }
 
@@ -126,7 +126,7 @@ public class CharacterAiming : MonoBehaviour
                 //Debug.Log("Max force! " + chargedForce);
 
                 //Fully zoom the cameras
-                normalCam.m_Lens.FieldOfView = normalCamOrigFOV - maxChangeFOV;
+                //normalCam.m_Lens.FieldOfView = normalCamOrigFOV - maxChangeFOV;
                 zoomCam.m_Lens.FieldOfView = zoomCamOrigFOV - maxChangeFOV;
             }
         }
@@ -142,7 +142,7 @@ public class CharacterAiming : MonoBehaviour
                 returnTimeFOV = 0f;
 
             //Set the camera zoom accordingly
-            normalCam.m_Lens.FieldOfView = normalCamOrigFOV - (returnTimeFOV / 0.3f) * maxChangeFOV;
+            //normalCam.m_Lens.FieldOfView = normalCamOrigFOV - (returnTimeFOV / 0.3f) * maxChangeFOV;
             zoomCam.m_Lens.FieldOfView = zoomCamOrigFOV - (returnTimeFOV / 0.3f) * maxChangeFOV;
         }
     }
@@ -175,13 +175,13 @@ public class CharacterAiming : MonoBehaviour
 
     public void OnFire(InputAction.CallbackContext cntxt)
     {
-        if (cntxt.performed && holdingProjectile)
+        if (cntxt.performed && holdingProjectile && isAiming)
             charging = true;
 
         //Debug.Log(charging);
 
         //If the player is holding a projectile and releases the throw button, then go through the steps to throw it
-        if (holdingProjectile && cntxt.canceled)
+        if (holdingProjectile && cntxt.canceled && isAiming)
         {
             {
                 heldProjectile.GetComponent<Collider>().enabled = true;
@@ -219,7 +219,7 @@ public class CharacterAiming : MonoBehaviour
                 charging = false;
 
                 //Start returning the camera FOVs to normal
-                returnTimeFOV = 0.3f;
+                returnTimeFOV = 0.3f * -((zoomCam.m_Lens.FieldOfView - zoomCamOrigFOV) / maxChangeFOV);
 
                 //The player is no longer holding a projectile
                 holdingProjectile = false;
@@ -246,8 +246,12 @@ public class CharacterAiming : MonoBehaviour
             }
         }
 
-        else if (!holdingProjectile)
+        else if (!isAiming && cntxt.performed)
         {
+
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Throw"))
+                animator.SetTrigger("Throw");
+
             GameObject playerObj = transform.Find("PlayerObj").gameObject;
 
             RaycastHit hitInfo;

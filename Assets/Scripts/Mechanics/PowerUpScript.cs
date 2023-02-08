@@ -64,7 +64,7 @@ public class PowerUpScript : MonoBehaviour
 
     public void PlayerJumped()
     {
-       if(currentPowerUp is SuperJump)
+       if(currentPowerUp is SuperJump && currentPowerUp.hasClicked)
         {
             currentPowerUp.onUse();          
         }

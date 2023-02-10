@@ -34,7 +34,7 @@ public class CharacterAiming : MonoBehaviour
     bool charging = false;
     float chargeTime = 0f;
     float chargedForce = 0f;
-    float normalCamOrigFOV;
+    //float normalCamOrigFOV;
     float zoomCamOrigFOV;
     float returnTimeFOV = 0f;
 
@@ -70,7 +70,7 @@ public class CharacterAiming : MonoBehaviour
         reticle.enabled = false;
         animator = GetComponent<Animator>();
 
-        normalCamOrigFOV = normalCam.m_Lens.FieldOfView;
+        //normalCamOrigFOV = normalCam.m_Lens.FieldOfView;
         zoomCamOrigFOV = zoomCam.m_Lens.FieldOfView;
 
     }
@@ -184,6 +184,8 @@ public class CharacterAiming : MonoBehaviour
         if (holdingProjectile && cntxt.canceled && isAiming)
         {
             {
+                heldProjectile.GetComponent<TrailRenderer>().time = 0.3f;
+
                 heldProjectile.GetComponent<Collider>().enabled = true;
 
                 animator.SetTrigger("Throw");
@@ -297,6 +299,8 @@ public class CharacterAiming : MonoBehaviour
         heldProjectile.GetComponent<Rigidbody>().isKinematic = true;
 
         heldProjectile.GetComponent<Collider>().enabled = false;
+
+        heldProjectile.GetComponent<TrailRenderer>().time = 0.1f;
     }
 
     public bool GetIsAiming()

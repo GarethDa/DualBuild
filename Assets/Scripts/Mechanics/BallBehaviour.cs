@@ -21,9 +21,15 @@ public class BallBehaviour : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+        if (gameObject.GetComponent<Rigidbody>().velocity.magnitude < 5f && !gameObject.GetComponent<Rigidbody>().isKinematic)
+        {
+            gameObject.GetComponent<TrailRenderer>().emitting = false;
+        }
 
+        else
+            gameObject.GetComponent<TrailRenderer>().emitting = true;
     }
 
     void OnCollisionEnter(Collision collision)

@@ -8108,6 +8108,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerSingle
       objectReference: {fileID: 0}
+    - target: {fileID: 6164643919393318172, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
+      propertyPath: physMat
+      value: 
+      objectReference: {fileID: 13400000, guid: b0e81c5c8783b1b4dbf30f758236d8b7, type: 2}
+    - target: {fileID: 6164643919393318172, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
+      propertyPath: physMatFriction
+      value: 
+      objectReference: {fileID: 13400000, guid: b0e81c5c8783b1b4dbf30f758236d8b7, type: 2}
+    - target: {fileID: 6164643919393318172, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
+      propertyPath: physMatFrictionless
+      value: 
+      objectReference: {fileID: 13400000, guid: 54f83b1a6eaef7542a304b0d0ac95ff8, type: 2}
     - target: {fileID: 6164643919393318175, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
       propertyPath: m_CollisionDetection
       value: 2
@@ -8159,6 +8171,10 @@ PrefabInstance:
     - target: {fileID: 8411294830436386872, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
       propertyPath: m_LocalPosition.y
       value: 3.9279394
+      objectReference: {fileID: 0}
+    - target: {fileID: 8411294830860781000, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8411294830900885184, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
       propertyPath: m_LocalPosition.x

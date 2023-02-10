@@ -15,6 +15,8 @@ public class TpMovement : MonoBehaviour
     [SerializeField] [Range(1.0f, 100.0f)] private float jumpGravity = 9.8f;
     [SerializeField] [Range(1.0f, 4.0f)] private float fallMultiplier = 1.0f;
     [SerializeField] [Range(0f, 10.0f)] private float groundDrag = 1.0f;
+    [SerializeField] PhysicMaterial physMatFriction;
+    [SerializeField] PhysicMaterial physMatFrictionless;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask floorMask;
@@ -95,12 +97,25 @@ public class TpMovement : MonoBehaviour
         isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
         animator.SetBool("isGrounded", isGrounded);
 
-        if (isGrounded) rBody.drag = groundDrag;
+        if (isGrounded)
+        {
+            rBody.drag = groundDrag;
+            //physMat.dynamicFriction = 3.5f;
+        }
 
         else
         {
             rBody.drag = 0f;
+            //physMat.dynamicFriction = 0f;
         }
+
+        if (isRunning)
+            playerObj.GetComponent<Collider>().material = physMatFrictionless;
+            //physMat.dynamicFriction = 0f;
+
+        else
+            playerObj.GetComponent<Collider>().material = physMatFriction;
+            //physMat.dynamicFriction = 3.5f;
 
         if (isGrounded && !lastFrameGrounded) justSwapped = true;
 
@@ -119,7 +134,7 @@ public class TpMovement : MonoBehaviour
             rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
         }
 
-        //Debug.Log(new Vector3(rBody.velocity.x, 0f, rBody.velocity.z).magnitude);
+        Debug.Log(new Vector3(rBody.velocity.x, 0f, rBody.velocity.z).magnitude);
 
     }
 

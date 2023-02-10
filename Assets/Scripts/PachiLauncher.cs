@@ -34,7 +34,7 @@ public class PachiLauncher : MonoBehaviour
     [Header("Balls lol")]
     [SerializeField] int _maxBalls = 60;
     GameObject[] _balls; //Lol
-    public int index = 0;
+    int index = 0;
     bool _itemLimitHit;
 
     void Start()

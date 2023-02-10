@@ -294,7 +294,6 @@ MonoBehaviour:
   _launchPoint: {fileID: 1781887227}
   _projectile: {fileID: 575967481415569178, guid: bc90590a22f6f124c8ec97e336ba1547, type: 3}
   _maxBalls: 20
-  index: 0
 --- !u!4 &457568199
 Transform:
   m_ObjectHideFlags: 0
@@ -662,7 +661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8411294830436386872, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.135292
+      value: 2.1345546
       objectReference: {fileID: 0}
     - target: {fileID: 8411294830900885184, guid: 9e8f0363d92e75a43b7fb7338f4eee29, type: 3}
       propertyPath: m_LocalPosition.x

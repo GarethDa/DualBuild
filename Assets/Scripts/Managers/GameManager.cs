@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject levelManager;
     public GameObject deathZone;
     public PowerUpScript powerupManager;
+    public GameObject clientPlayer;
 
     public int playersConnected = 2;
     

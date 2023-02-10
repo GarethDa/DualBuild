@@ -129,7 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreTag: Environment
-  bounceForce: 900
+  _explosionForce: 100
+  _upwardForce: 150
 --- !u!114 &-2513019330696666690
 MonoBehaviour:
   m_ObjectHideFlags: 0

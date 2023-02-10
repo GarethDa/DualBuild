@@ -5,7 +5,8 @@ using UnityEngine;
 public class BumperScript : MonoBehaviour
 {
     [SerializeField] string ignoreTag = "Environment";
-    [SerializeField] float bounceForce = 500;
+    [SerializeField] float _explosionForce = 50f;
+    [SerializeField] float _upwardForce = 75f;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -14,7 +15,7 @@ public class BumperScript : MonoBehaviour
         {
             //Debug.Log("BOOM!");
             Rigidbody otherRB = collision.rigidbody;
-            otherRB.AddExplosionForce(bounceForce, collision.contacts[0].point, 5);
+            otherRB.AddExplosionForce(otherRB.velocity.magnitude * _explosionForce, collision.contacts[0].point, 10, _upwardForce);
         }
     }
 }

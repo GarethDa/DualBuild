@@ -134,7 +134,7 @@ public class TpMovement : MonoBehaviour
             rBody.velocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.deltaTime;
         }
 
-        Debug.Log(new Vector3(rBody.velocity.x, 0f, rBody.velocity.z).magnitude);
+        //Debug.Log(new Vector3(rBody.velocity.x, 0f, rBody.velocity.z).magnitude);
 
     }
 

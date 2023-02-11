@@ -186,7 +186,12 @@ public class CharacterAiming : MonoBehaviour
             {
                 heldProjectile.GetComponent<TrailRenderer>().time = 0.3f;
 
-                heldProjectile.GetComponent<Collider>().enabled = true;
+                //heldProjectile.GetComponent<Collider>().enabled = true;
+
+                heldProjectile.GetComponents<Collider>()[0].enabled = true;
+
+                if (heldProjectile.GetComponents<Collider>().Length > 1)
+                    heldProjectile.GetComponents<Collider>()[1].enabled = true;
 
                 animator.SetTrigger("Throw");
                 //Set the projectile back to non-kinematic
@@ -298,7 +303,12 @@ public class CharacterAiming : MonoBehaviour
         //Set the projectile to kinematic, ensuring it doesn't move while being held
         heldProjectile.GetComponent<Rigidbody>().isKinematic = true;
 
-        heldProjectile.GetComponent<Collider>().enabled = false;
+        //heldProjectile.GetComponent<Collider>().enabled = false;
+
+        heldProjectile.GetComponents<Collider>()[0].enabled = false;
+        
+        if (heldProjectile.GetComponents<Collider>().Length > 1)
+            heldProjectile.GetComponents<Collider>()[1].enabled = false;
 
         heldProjectile.GetComponent<TrailRenderer>().time = 0.1f;
     }

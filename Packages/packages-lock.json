@@ -80,6 +80,17 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.probuilder": {
+      "version": "5.0.6",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.settings-manager": "1.0.3",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.render-pipelines.core": {
       "version": "13.1.8",
       "depth": 1,
@@ -126,6 +137,15 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.shadergraph": {
+      "version": "13.1.8",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "13.1.8",
+        "com.unity.searcher": "4.9.2"
+      }
+    },
     "com.unity.splines": {
       "version": "1.0.1",
       "depth": 0,
@@ -136,15 +156,6 @@
         "com.unity.burst": "1.6.0-pre.2"
       },
       "url": "https://packages.unity.com"
-    },
-    "com.unity.shadergraph": {
-      "version": "13.1.8",
-      "depth": 1,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.render-pipelines.core": "13.1.8",
-        "com.unity.searcher": "4.9.2"
-      }
     },
     "com.unity.test-framework": {
       "version": "1.1.33",

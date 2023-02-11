@@ -115,7 +115,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 4
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &-1050591577600945527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,7 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreTag: Environment
-  bounceForce: 900
+  _explosionForce: 100
+  _upwardForce: 150
 --- !u!114 &-2513019330696666690
 MonoBehaviour:
   m_ObjectHideFlags: 0

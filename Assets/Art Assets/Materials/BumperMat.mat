@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BumperMat
-  m_Shader: {fileID: -6465566751694194690, guid: d8a19e84789d4d2448b600c78fe146eb, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: ac030a6e79c9d654381b9308e0c2ea60, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,6 +23,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_ac46e04d2b4343fbb2bcd89116968393:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_cc9d94643ccc48259f5e1411558a08bf:
+        m_Texture: {fileID: 2800000, guid: 891753f1da9addd4a9925ae4d3e9bb69, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -98,6 +106,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - Color_7b8a7a110a084231bd06c3becd83ecda: {r: 0.8862745, g: 0.8784314, b: 0, a: 0}
     - _Base_Color: {r: 0.8867924, g: 0.8793623, b: 0, a: 0}
     - _Color: {r: 0, g: 0.93333334, b: 0.89411765, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

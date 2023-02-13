@@ -184,19 +184,6 @@ public class CharacterAiming : MonoBehaviour
         if (holdingProjectile && cntxt.canceled && isAiming)
         {
             {
-                heldProjectile.GetComponent<TrailRenderer>().time = 0.3f;
-
-                //heldProjectile.GetComponent<Collider>().enabled = true;
-
-                heldProjectile.GetComponents<Collider>()[0].enabled = true;
-
-                if (heldProjectile.GetComponents<Collider>().Length > 1)
-                    heldProjectile.GetComponents<Collider>()[1].enabled = true;
-
-                animator.SetTrigger("Throw");
-                //Set the projectile back to non-kinematic
-                heldProjectile.GetComponent<Rigidbody>().isKinematic = false;
-
                 Vector3 throwDir;
 
                 RaycastHit hitInfo;
@@ -211,6 +198,19 @@ public class CharacterAiming : MonoBehaviour
                 //If the player isn't in aiming mode or if the raycast doesn't hit anything, just throw in the direction of the camera forward
                 else
                     throwDir = playerCam.transform.forward;
+
+                heldProjectile.GetComponent<TrailRenderer>().time = 0.3f;
+
+                //heldProjectile.GetComponent<Collider>().enabled = true;
+
+                heldProjectile.GetComponents<Collider>()[0].enabled = true;
+
+                if (heldProjectile.GetComponents<Collider>().Length > 1)
+                    heldProjectile.GetComponents<Collider>()[1].enabled = true;
+
+                animator.SetTrigger("Throw");
+                //Set the projectile back to non-kinematic
+                heldProjectile.GetComponent<Rigidbody>().isKinematic = false;
 
                 //If the player isn't aiming, move the ball forward a bit.
                 //This is to stop the ball from hitting the player the moment it is thrown
@@ -256,8 +256,11 @@ public class CharacterAiming : MonoBehaviour
         else if (!isAiming && cntxt.performed)
         {
 
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Throw"))
-                animator.SetTrigger("Throw");
+            if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && !animator.GetCurrentAnimatorStateInfo(1).IsName("Punch"))
+            {
+                Debug.Log("Here");
+                animator.SetTrigger("Punch");
+            }
 
             GameObject playerObj = transform.Find("PlayerObj").gameObject;
 

@@ -27,6 +27,7 @@ public class NetworkManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        return;
         if(instance == null)
         {
             instance = this;
@@ -111,6 +112,7 @@ public class NetworkManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        return;
         secondsElapsed += Time.deltaTime;
         if(secondsElapsed >= secondsBetweenUpdates)
         {

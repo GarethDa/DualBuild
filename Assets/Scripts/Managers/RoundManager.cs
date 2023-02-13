@@ -229,7 +229,7 @@ public class RoundManager : MonoBehaviour
            
             currentRounds.Add(r);
         }
-
+        
         //Camera.main.enabled = false;
        
         if (nextRoundsHaveIntermission())//if next round is intermission, go to intermission

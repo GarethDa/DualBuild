@@ -325,11 +325,8 @@ public class RoundManager : MonoBehaviour
 
     private void generateNextRoundLevels()
     {
-        if (hasModifiedLevels && skipPreview)
-        {
-            return;
-        }
-        if(levelCombinations.Count == 0 && !hasModifiedLevels)
+        
+        if(levelCombinations.Count == 0 )
         {
             //generate level combinations again
             List<roundType> possibleRounds = new List<roundType>();
@@ -405,8 +402,12 @@ public class RoundManager : MonoBehaviour
         }
         else
         {
-            addRound(playingRounds[0]);
-            addRound(playingRounds[1]);
+            if (!hasModifiedLevels)
+            {
+                addRound(playingRounds[0]);
+                addRound(playingRounds[1]);
+            }
+            
             startRound();
         }
        

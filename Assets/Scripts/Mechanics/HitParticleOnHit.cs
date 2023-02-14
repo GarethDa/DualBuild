@@ -12,15 +12,10 @@ public class HitParticleOnHit : MonoBehaviour
             {
                 ParticleManager.instance.PlayEffect(collision.contacts[0].point, "Hit");
             }
-            else
+            else if (gameObject.GetComponent<Rigidbody>().velocity.magnitude > 8)
             {
                 ParticleManager.instance.PlayEffect(collision.contacts[0].point, "HitSmall");
             }
-               
-               
-            
-            
         }
-       
     }
 }

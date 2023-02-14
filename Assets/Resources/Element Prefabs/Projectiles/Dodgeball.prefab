@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2750228519858970952}
   - component: {fileID: -5685588360524224385}
   - component: {fileID: -7639522432475266059}
+  - component: {fileID: 5443075558576408437}
   m_Layer: 0
   m_Name: Dodgeball
   m_TagString: Bullet
@@ -130,6 +131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitForce: 500
+  throwLife: 3
+  thrownMat: {fileID: 2100000, guid: d1c4253d8ab059a479586705959c80be, type: 2}
 --- !u!114 &-5685588360524224385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,7 +190,7 @@ TrailRenderer:
   m_Time: 0.5
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.6
+    widthMultiplier: 0.4
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -253,3 +256,16 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!135 &5443075558576408437
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2750228519858970950}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}

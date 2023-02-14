@@ -8,8 +8,13 @@ public class BallBehaviour : MonoBehaviour
     private bool isHeld = false;
     private bool isThrown = false;
     private GameObject playerCam;
-    private List<GameObject> playerObject = new List<GameObject>();
+    private List<GameObject> playerObjects = new List<GameObject>();
     [SerializeField] int hitForce = 500;
+    [SerializeField] float throwLife = 3f;
+    [SerializeField] Material thrownMat;
+    Material origMat;
+
+    float currentThrowLife = 0f;
 
     void Start()
     {
@@ -17,7 +22,9 @@ public class BallBehaviour : MonoBehaviour
         playerCam = GameObject.Find("Main Camera");
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
-            playerObject.Add(obj);
+            playerObjects.Add(obj);
+
+        origMat = gameObject.GetComponent<MeshRenderer>().material;
     }
 
     // Update is called once per frame
@@ -30,6 +37,24 @@ public class BallBehaviour : MonoBehaviour
 
         else
             gameObject.GetComponent<TrailRenderer>().emitting = true;
+
+        //If the ball is in thrown mode
+        if (isThrown)
+        {
+            //Update the thrown timer
+            currentThrowLife += Time.deltaTime;
+
+            //If we reached the end of the thrown period
+            if (currentThrowLife >= throwLife)
+            {
+                //Debug.Log("Ready for pickup");
+                //Switch back to normal material
+                gameObject.GetComponent<MeshRenderer>().material = origMat;
+                isThrown = false;
+
+                currentThrowLife = 0f;
+            }
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -41,12 +66,15 @@ public class BallBehaviour : MonoBehaviour
             Debug.Log("Deez");
         }
 
+        /*
         //if the ball hits the ground while not being held
         if (!isHeld && collision.gameObject.layer == LayerMask.NameToLayer("FloorLayer"))
         {
             isThrown = false;
         }
+        */
 
+        /*
         //If the player touches a ball that isn't being held, and has not been thrown, and the player isn't already holding a ball
         if (!isHeld && !isThrown && collision.gameObject.tag == "Player")
         {
@@ -59,6 +87,24 @@ public class BallBehaviour : MonoBehaviour
                 collision.gameObject.GetComponent<CharacterAiming>().SetProjectile(this.gameObject);
             }
         }
+        */
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isHeld && !isThrown && other.gameObject.tag == "Player")
+        {
+            //Debug.Log("here");
+            if (!other.transform.parent.GetComponent<CharacterAiming>().IsHoldingProj())
+                //(other.gameObject.GetComponent<CharacterAiming>() != null && !other.gameObject.GetComponent<CharacterAiming>().IsHoldingProj())
+            {
+                //Debug.Log("Here");
+                //Update the ball to be held
+                isHeld = true;
+
+                other.transform.parent.GetComponent<CharacterAiming>().SetProjectile(this.gameObject);
+            }
+        }
     }
 
     public void SetIsHeld(bool held)
@@ -69,6 +115,15 @@ public class BallBehaviour : MonoBehaviour
     public void SetIsThrown(bool thrown)
     {
         isThrown = thrown;
+
+        //If we just threw the ball
+        if (isThrown)
+        {
+            //Debug.Log("thrown");
+            currentThrowLife = 0f;
+            //Change to the thrown material
+            gameObject.GetComponent<MeshRenderer>().material = thrownMat;
+        }
     }
 
     public bool GetIsHeld()

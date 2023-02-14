@@ -9,7 +9,7 @@ public class DodgeballRound : Round
         hasMap = false;
         roundTime = 60;
         mapPrefabName = "Dodgeball";
-        tutorialText = "Push your opponents around by throwing dodgeballs at them! Walk over to one to pick it up, aim it, and throw it!";
+        tutorialText = "Throw dodgeballs to knock everyone off!";
         type = roundType.DODGEBALL;
     }
 

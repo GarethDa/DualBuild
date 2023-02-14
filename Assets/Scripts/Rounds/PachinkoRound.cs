@@ -10,7 +10,7 @@ public class PachinkoRound : Round
         roundTime = 60;
         mapPrefabName = "PachinkoBall";
         hasMap = false;
-        tutorialText = "Run for your life! The pachinko machine is shooting out pachinko balls! They will bounce off walls and bounce you up into the air!";
+        tutorialText = "Pachinko balls will bounce off objects... and players!";
 
         type = roundType.PACHINKO_BALL;
     }

@@ -9,7 +9,7 @@ public class BumperRound : Round
         hasMap = false;
         roundTime = 60;
         mapPrefabName = "Spinner";
-        tutorialText = "Looks like theres bumpers this time! But don't get too close! Bumpers will chase you if you get near them! You can shake them off if you get close to someone else!";
+        tutorialText = "Bumpers will chase you if you get too close! Stay away!";
 
         type = roundType.BUMPER;
     }

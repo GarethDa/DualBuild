@@ -25,7 +25,7 @@ public class RoundManager : MonoBehaviour
     int playersReady = 0;
     int gameRoundsCompleted = 0;
     public string gameEndSceneName;
-    public int roundsToPlay = 4;
+    public int roundsToPlay = 6;
     public Camera levelCam;
     public Camera camToDisable;
 
@@ -325,11 +325,8 @@ public class RoundManager : MonoBehaviour
 
     private void generateNextRoundLevels()
     {
-        if (hasModifiedLevels)
-        {
-            return;
-        }
-        if(levelCombinations.Count == 0)
+        
+        if(levelCombinations.Count == 0 && !hasModifiedLevels)
         {
             //generate level combinations again
             List<roundType> possibleRounds = new List<roundType>();
@@ -385,28 +382,27 @@ public class RoundManager : MonoBehaviour
                 levelCombinations.Add(randomizedCombinations[randomIndex]);
                 randomizedCombinations.RemoveAt(randomIndex);
             }
-        }
 
+            int index = gameRoundsCompleted % levelCombinations.Count;
 
+            //add preview round first
+            List<Round> playingRounds = new List<Round>();
+            playingRounds.Add(levelCombinations[index].getRoundOne());
+            playingRounds.Add(levelCombinations[index].getRoundTwo());
 
-        int index = gameRoundsCompleted % levelCombinations.Count;
-
-        //add preview round first
-        List<Round> playingRounds = new List<Round>();
-        playingRounds.Add(levelCombinations[index].getRoundOne());
-        playingRounds.Add(levelCombinations[index].getRoundTwo());
-
-        if (!skipPreview)
-        {
-            addRound(new PreviewRound(playingRounds));
-            inPreview = true;
-        }
-        else
-        {
             addRound(playingRounds[0]);
             addRound(playingRounds[1]);
             startRound();
+            return;
+
         }
+        List<Round> previewRound = new List<Round>();
+        addRound(new PreviewRound(previewRound));
+        inPreview = true;
+
+
+
+       
        
 
 
@@ -462,7 +458,7 @@ public class RoundManager : MonoBehaviour
         level.transform.SetParent(GameManager.instance.levelManager.transform);
         level.transform.position = level.transform.parent.transform.position + level.transform.position;
         deathZone.transform.SetParent(GameManager.instance.levelManager.transform);
-        deathZone.transform.position = level.transform.parent.transform.position + Vector3.up * 80;
+        deathZone.transform.position = level.transform.parent.transform.position + Vector3.up * 90;
         GameManager.instance.deathZone = deathZone;
         deathLocation = deathZone;
         return spawnPoints;

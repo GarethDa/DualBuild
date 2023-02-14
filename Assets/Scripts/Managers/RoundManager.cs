@@ -325,7 +325,10 @@ public class RoundManager : MonoBehaviour
 
     private void generateNextRoundLevels()
     {
-        
+        if (hasModifiedLevels && skipPreview)
+        {
+            return;
+        }
         if(levelCombinations.Count == 0 && !hasModifiedLevels)
         {
             //generate level combinations again
@@ -383,26 +386,29 @@ public class RoundManager : MonoBehaviour
                 randomizedCombinations.RemoveAt(randomIndex);
             }
 
-            int index = gameRoundsCompleted % levelCombinations.Count;
 
-            //add preview round first
-            List<Round> playingRounds = new List<Round>();
-            playingRounds.Add(levelCombinations[index].getRoundOne());
-            playingRounds.Add(levelCombinations[index].getRoundTwo());
+        }
 
+
+
+        int index = gameRoundsCompleted % levelCombinations.Count;
+
+        //add preview round first
+        List<Round> playingRounds = new List<Round>();
+        playingRounds.Add(levelCombinations[index].getRoundOne());
+        playingRounds.Add(levelCombinations[index].getRoundTwo());
+
+        if (!skipPreview)
+        {
+            addRound(new PreviewRound(playingRounds));
+            inPreview = true;
+        }
+        else
+        {
             addRound(playingRounds[0]);
             addRound(playingRounds[1]);
             startRound();
-            return;
-
         }
-        List<Round> previewRound = new List<Round>();
-        addRound(new PreviewRound(previewRound));
-        inPreview = true;
-
-
-
-       
        
 
 

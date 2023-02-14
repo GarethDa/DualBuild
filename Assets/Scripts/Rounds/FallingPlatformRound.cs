@@ -9,7 +9,7 @@ public class FallingPlatformRound : Round
         hasMap = true;
         roundTime = 60;
         mapPrefabName = "FallingPlatforms";
-        tutorialText = "Don't fall! Watch out for falling platforms! If you stand on one for too long, it will fall under you!";
+        tutorialText = "Don't stand too long on the falling platforms!";
 
         type = roundType.FALLING_PLATFORMS;
     }

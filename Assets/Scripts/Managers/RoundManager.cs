@@ -25,7 +25,7 @@ public class RoundManager : MonoBehaviour
     int playersReady = 0;
     int gameRoundsCompleted = 0;
     public string gameEndSceneName;
-    public int roundsToPlay = 4;
+    public int roundsToPlay = 6;
     public Camera levelCam;
     public Camera camToDisable;
 
@@ -229,7 +229,7 @@ public class RoundManager : MonoBehaviour
            
             currentRounds.Add(r);
         }
-
+        
         //Camera.main.enabled = false;
        
         if (nextRoundsHaveIntermission())//if next round is intermission, go to intermission
@@ -325,11 +325,11 @@ public class RoundManager : MonoBehaviour
 
     private void generateNextRoundLevels()
     {
-        if (hasModifiedLevels)
+        if (hasModifiedLevels && skipPreview)
         {
             return;
         }
-        if(levelCombinations.Count == 0)
+        if(levelCombinations.Count == 0 && !hasModifiedLevels)
         {
             //generate level combinations again
             List<roundType> possibleRounds = new List<roundType>();
@@ -385,6 +385,8 @@ public class RoundManager : MonoBehaviour
                 levelCombinations.Add(randomizedCombinations[randomIndex]);
                 randomizedCombinations.RemoveAt(randomIndex);
             }
+
+
         }
 
 
@@ -462,7 +464,7 @@ public class RoundManager : MonoBehaviour
         level.transform.SetParent(GameManager.instance.levelManager.transform);
         level.transform.position = level.transform.parent.transform.position + level.transform.position;
         deathZone.transform.SetParent(GameManager.instance.levelManager.transform);
-        deathZone.transform.position = level.transform.parent.transform.position + Vector3.up * 80;
+        deathZone.transform.position = level.transform.parent.transform.position + Vector3.up * 90;
         GameManager.instance.deathZone = deathZone;
         deathLocation = deathZone;
         return spawnPoints;

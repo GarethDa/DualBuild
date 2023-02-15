@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerAudioController : MonoBehaviour
 {
     public float timeBetweenFootsteps = 0.5f;
-    //float soundCounter = 0f;
+    float soundCooldown;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,17 +16,16 @@ public class PlayerAudioController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        soundCounter += Time.deltaTime;
-        if (soundCounter > timeBetweenFootsteps)
+        soundCooldown -= Time.deltaTime;
+        if (GetComponent<TpMovement>().GetIsGrounded() == true && GetComponent<Rigidbody>().velocity.magnitude > 2f && soundCooldown < 0f)
         {
-            soundCounter = 0;
-            if(GetComponent<Rigidbody>().velocity.magnitude > 0.5)
-            {
-                //GetComponent<AudioClipRandomizer>().PlaySFX();
-            }
-            
+            GetComponent<AudioClipRandomizer>().PlaySFX();
+            soundCooldown = timeBetweenFootsteps;
         }
-        */
+    }
+
+    public void Footsteps()
+    {
+        //empty for now
     }
 }

@@ -54,7 +54,7 @@ public class PachiLauncher : MonoBehaviour
         }
 
         _angle = _launcherSpinSpeed * Time.deltaTime;
-        _swivelHead.Rotate(0, _angle, 0);
+        _swivelHead.Rotate(0, 0, _angle);
 
         if (_ballLaunchRate < _maximumBallLaunchRate)
         {

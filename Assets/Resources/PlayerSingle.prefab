@@ -202,20 +202,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _arcObj: {fileID: 0}
   _audioClips:
-  - {fileID: 8300000, guid: 8039e99eb0eabdf48b7ccf144f3b5a04, type: 3}
-  - {fileID: 8300000, guid: 804f2971aaf4e0e4da9e97de54d97509, type: 3}
-  - {fileID: 8300000, guid: 6656cedb5d03bbe4d9428000aff96e0f, type: 3}
+  - {fileID: 8300000, guid: b89a457b90c3f0649a3d361a6b5a5843, type: 3}
+  - {fileID: 8300000, guid: 43290dc8d3739e443baacf869025d99e, type: 3}
+  - {fileID: 8300000, guid: 30ffd6951ddf53142ab3f312325984e2, type: 3}
+  - {fileID: 8300000, guid: e7104dc073ca36b4f893b5a677a3c0fa, type: 3}
+  - {fileID: 8300000, guid: 3821abe68fa5ba747bcbc0b88af9f1f3, type: 3}
+  - {fileID: 8300000, guid: 0ad66646fc75383438ba97b823d6b6e9, type: 3}
   _mixerGroup: {fileID: 0}
   _overrideArcSettings: 1
-  _noRepeats: 0
-  _randomPitch: 1
-  _minPitch: 0.74
-  _maxPitch: 1.26
-  _volume: 0.404
+  _noRepeats: 1
+  _randomPitch: 0
+  _minPitch: 1
+  _maxPitch: 1
+  _volume: 1
   _loop: 0
   _priority: 128
   _stereoPan: 0
-  _spatialBlend: 0
+  _spatialBlend: 1
 --- !u!114 &990621111752025097
 MonoBehaviour:
   m_ObjectHideFlags: 0

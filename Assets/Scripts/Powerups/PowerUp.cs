@@ -246,15 +246,49 @@ public class SuperJump : PowerUp
 
     void Update()
     {
-        if (hasClicked)
-        {
-            bool grounded = playerObject.GetComponent<TpMovement>().GetIsGrounded();
-            if (!grounded)
-            {
-                onEffect();
-            }
-        }
+        //does nothing since the playerJumped function calls onEffect
     }
 
 
 }
+
+public class SuperPunch : PowerUp
+{
+
+    float superPunchForce = 0f;
+    float normalPunchForce = 0f;
+    GameObject playerObject;
+
+    public void setup(float superForce, float normalForce, GameObject player)
+    {
+        superPunchForce = superForce;
+        normalPunchForce = normalForce;
+        playerObject = player;
+        type = powerUpList.SuperPunch;
+    }
+    public override void onEffect()
+    {
+        playerObject.GetComponent<CharacterAiming>().SetPunchForce(normalPunchForce);
+        onEnd();
+    }
+
+
+    public override void onUse()
+    {
+        if (hasClicked)
+        {
+            return;
+        }
+        hasClicked = true;
+        playerObject.GetComponent<CharacterAiming>().SetPunchForce(superPunchForce);
+        Debug.Log("Punch force set to " + superPunchForce);
+    }
+
+    void Update()
+    {
+        //Does nothing since CharacterAiming notifies PowerUpScript of a successful punch and calls OnEffect
+    }
+
+
+}
+

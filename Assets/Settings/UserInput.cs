@@ -756,6 +756,15 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""GiveSuperPunch"",
+                    ""type"": ""Button"",
+                    ""id"": ""d682a83e-3cc3-4a8b-bd3c-7f8ae170676e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""AddPachinko"",
                     ""type"": ""Button"",
                     ""id"": ""232c6690-0427-49e2-9c91-900ed6480b35"",
@@ -902,6 +911,17 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""action"": ""AddFallingPlatfom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""63fba89d-3b5b-4a54-8b32-37b665f7d42c"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GiveSuperPunch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1004,6 +1024,7 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         m_Editor_GiveSlowfall = m_Editor.FindAction("GiveSlowfall", throwIfNotFound: true);
         m_Editor_GiveDash = m_Editor.FindAction("GiveDash", throwIfNotFound: true);
         m_Editor_GiveBomb = m_Editor.FindAction("GiveBomb", throwIfNotFound: true);
+        m_Editor_GiveSuperPunch = m_Editor.FindAction("GiveSuperPunch", throwIfNotFound: true);
         m_Editor_AddPachinko = m_Editor.FindAction("AddPachinko", throwIfNotFound: true);
         m_Editor_AddDodgeball = m_Editor.FindAction("AddDodgeball", throwIfNotFound: true);
         m_Editor_AddBumper = m_Editor.FindAction("AddBumper", throwIfNotFound: true);
@@ -1307,6 +1328,7 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Editor_GiveSlowfall;
     private readonly InputAction m_Editor_GiveDash;
     private readonly InputAction m_Editor_GiveBomb;
+    private readonly InputAction m_Editor_GiveSuperPunch;
     private readonly InputAction m_Editor_AddPachinko;
     private readonly InputAction m_Editor_AddDodgeball;
     private readonly InputAction m_Editor_AddBumper;
@@ -1321,6 +1343,7 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         public InputAction @GiveSlowfall => m_Wrapper.m_Editor_GiveSlowfall;
         public InputAction @GiveDash => m_Wrapper.m_Editor_GiveDash;
         public InputAction @GiveBomb => m_Wrapper.m_Editor_GiveBomb;
+        public InputAction @GiveSuperPunch => m_Wrapper.m_Editor_GiveSuperPunch;
         public InputAction @AddPachinko => m_Wrapper.m_Editor_AddPachinko;
         public InputAction @AddDodgeball => m_Wrapper.m_Editor_AddDodgeball;
         public InputAction @AddBumper => m_Wrapper.m_Editor_AddBumper;
@@ -1352,6 +1375,9 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @GiveBomb.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveBomb;
                 @GiveBomb.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveBomb;
                 @GiveBomb.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveBomb;
+                @GiveSuperPunch.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveSuperPunch;
+                @GiveSuperPunch.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveSuperPunch;
+                @GiveSuperPunch.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnGiveSuperPunch;
                 @AddPachinko.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddPachinko;
                 @AddPachinko.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddPachinko;
                 @AddPachinko.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnAddPachinko;
@@ -1386,6 +1412,9 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 @GiveBomb.started += instance.OnGiveBomb;
                 @GiveBomb.performed += instance.OnGiveBomb;
                 @GiveBomb.canceled += instance.OnGiveBomb;
+                @GiveSuperPunch.started += instance.OnGiveSuperPunch;
+                @GiveSuperPunch.performed += instance.OnGiveSuperPunch;
+                @GiveSuperPunch.canceled += instance.OnGiveSuperPunch;
                 @AddPachinko.started += instance.OnAddPachinko;
                 @AddPachinko.performed += instance.OnAddPachinko;
                 @AddPachinko.canceled += instance.OnAddPachinko;
@@ -1484,6 +1513,7 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         void OnGiveSlowfall(InputAction.CallbackContext context);
         void OnGiveDash(InputAction.CallbackContext context);
         void OnGiveBomb(InputAction.CallbackContext context);
+        void OnGiveSuperPunch(InputAction.CallbackContext context);
         void OnAddPachinko(InputAction.CallbackContext context);
         void OnAddDodgeball(InputAction.CallbackContext context);
         void OnAddBumper(InputAction.CallbackContext context);

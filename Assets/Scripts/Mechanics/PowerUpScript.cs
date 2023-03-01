@@ -29,6 +29,9 @@ public class PowerUpScript : MonoBehaviour
     private bool bombEnabled = false;
     [SerializeField] private GameObject bombPrefab;
 
+    //SuperPunch Variables
+    [SerializeField] [Range(1.0f, 50.0f)] private float superPunchForce = 30f;
+
     private bool usedPowerUp = false; //if we have used our powerup
     public float powerUpDuration = 3f; //total duration of ability in seconds
     private float currentPowerUpDuration = 0f; //internal clock for powerup duration
@@ -66,7 +69,15 @@ public class PowerUpScript : MonoBehaviour
     {
        if(currentPowerUp is SuperJump && currentPowerUp.hasClicked)
         {
-            currentPowerUp.onUse();          
+            currentPowerUp.onEffect();          
+        }
+    }
+
+    public void PlayerPunched()
+    {
+        if (currentPowerUp is SuperPunch && currentPowerUp.hasClicked)
+        {
+            currentPowerUp.onEffect();
         }
     }
 
@@ -121,6 +132,11 @@ public class PowerUpScript : MonoBehaviour
             
             
         }
+        if (t == powerUpList.SuperPunch)
+        {
+            playerObject.AddComponent<SuperPunch>().setup(superPunchForce, GetComponent<CharacterAiming>().GetPunchForce(), playerObject);
+            Debug.Log("Setup assigned super force as " + superPunchForce);
+        }
         currentPowerUp = playerObject.GetComponent<PowerUp>();
         
         currentPowerUp.onPickup();
@@ -129,4 +145,4 @@ public class PowerUpScript : MonoBehaviour
 
 
 }
-public enum powerUpList { None, SuperJump, SlowFall , Dash, Bomb}
+public enum powerUpList { None, SuperJump, SlowFall , Dash, Bomb, SuperPunch}

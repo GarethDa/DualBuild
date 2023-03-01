@@ -734,6 +734,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "GiveSuperPunch",
+                    "type": "Button",
+                    "id": "d682a83e-3cc3-4a8b-bd3c-7f8ae170676e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "AddPachinko",
                     "type": "Button",
                     "id": "232c6690-0427-49e2-9c91-900ed6480b35",
@@ -878,6 +887,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "AddFallingPlatfom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "63fba89d-3b5b-4a54-8b32-37b665f7d42c",
+                    "path": "<Keyboard>/leftBracket",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GiveSuperPunch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

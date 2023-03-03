@@ -7785,7 +7785,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1325fa8923d3c0044a98aa8437a3ba93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isServer: 0
+  InstructionTypeCodes:
+  - '@'
+  - '!'
+  - '#'
+  - $
+  - +
+  isServer: 1
   secondsBetweenUpdates: 0.5
 --- !u!1001 &984509478
 PrefabInstance:

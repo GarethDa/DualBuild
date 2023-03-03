@@ -154,10 +154,12 @@ public class BumperBot : MonoBehaviour
     {
         if (collision.transform.tag == "Player")
         {
-            Debug.Log("Fart for me Google.");
             collision.rigidbody.AddExplosionForce(_speed * _explosionForce, collision.contacts[0].point, 10, _upwardForce);
         }
-
+        if(_state == BumperStates.RETURN)
+        {
+            return;
+        }
         _speed = 0;
         _rb.velocity = Vector3.zero;
         _state = BumperStates.COOLDOWN;

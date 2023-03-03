@@ -484,6 +484,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7720674078468801728}
+  - component: {fileID: 4342456307746551984}
+  - component: {fileID: 6880370268571594979}
   m_Layer: 9
   m_Name: Pachinko_Launcher
   m_TagString: Untagged
@@ -509,6 +511,32 @@ Transform:
   m_Father: {fileID: 9091331815595090644}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!65 &4342456307746551984
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6948641391618776698}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8803762, y: 0.589859, z: 0.9857591}
+  m_Center: {x: -0.01424079, y: 0.29051507, z: 0.07262886}
+--- !u!65 &6880370268571594979
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6948641391618776698}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6041014, y: 0.3477629, z: 0.5984053}
+  m_Center: {x: 0.12674421, y: 0.7590426, z: 0.22643088}
 --- !u!1 &7169959672534772207
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,6 +738,7 @@ MonoBehaviour:
   _startingBallLaunchForce: 30
   _maximumBallLaunchForce: 100
   _accelBallLaunchForce: 3
+  _stunThreshold: 10
   _swivelHead: {fileID: 5848354149633781279}
   _launchPoint: {fileID: 9091331815308803560}
   _projectile: {fileID: 575967481415569178, guid: bc90590a22f6f124c8ec97e336ba1547, type: 3}

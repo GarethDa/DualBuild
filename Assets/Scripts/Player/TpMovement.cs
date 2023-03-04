@@ -56,6 +56,8 @@ public class TpMovement : MonoBehaviour
 
     private PowerUpScript powerup;
 
+    PauseMenu settingsMenu;
+
     //UserInput inputAction;
 
     // Start is called before the first frame update
@@ -73,6 +75,75 @@ public class TpMovement : MonoBehaviour
         rBody.drag = 0f;
 
         powerup = GetComponent<PowerUpScript>();
+
+        PauseMenu[] settingsMenus = FindObjectsOfType<PauseMenu>(true);
+
+        //Debug.Log(gameObject == PlayerManager.instance.GetPlayer(1));
+
+        if (gameObject == PlayerManager.instance.GetPlayer(1))
+        {
+            foreach (PauseMenu menu in settingsMenus)
+            {
+                if (menu.transform.name.Equals("P1_UI"))
+                {
+                    Debug.Log(menu);
+                    settingsMenu = menu;
+                    break;
+                }
+            }
+        }
+
+        else if (gameObject == PlayerManager.instance.GetPlayer(2))
+        {
+            foreach (PauseMenu menu in settingsMenus)
+            {
+                if (menu.transform.name.Equals("P2_UI"))
+                {
+                    settingsMenu = menu;
+                    break;
+                }
+            }
+        }
+
+        else if (gameObject == PlayerManager.instance.GetPlayer(3))
+        {
+            foreach (PauseMenu menu in settingsMenus)
+            {
+                if (menu.transform.name.Equals("P3_UI"))
+                {
+                    settingsMenu = menu;
+                    break;
+                }
+            }
+        }
+
+        else if (gameObject == PlayerManager.instance.GetPlayer(4))
+        {
+            foreach (PauseMenu menu in settingsMenus)
+            {
+                if (menu.transform.name.Equals("P4_UI"))
+                {
+                    settingsMenu = menu;
+                    break;
+                }
+            }
+        }
+
+        /*
+        transform.parent = GameObject.Find("PlayerHolder").transform;
+
+        if (GameObject.Find("Player1") == null)
+            transform.name = "Player1";
+
+        else if (GameObject.Find("Player2") == null)
+            transform.name = "Player2";
+
+        else if (GameObject.Find("Player3") == null)
+            transform.name = "Player3";
+
+        else
+            transform.name = "Player4";
+        */
     }
 
     // Update is called once per frame
@@ -270,6 +341,11 @@ public class TpMovement : MonoBehaviour
                 powerup.PlayerJumped();
             }
         }
+    }
+
+    public void OnPause()
+    {
+        settingsMenu.OnPause();
     }
 
     //For setting the jump force

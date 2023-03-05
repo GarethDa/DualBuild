@@ -61,13 +61,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1043421110502430978}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 80.00001}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 5, z: 80}
   m_LocalScale: {x: 160, y: 20, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7526738202362733133}
-  m_RootOrder: 0
+  m_Father: {fileID: 47604690507270535}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1938342973168694540
 MeshFilter:
@@ -260,8 +260,8 @@ Transform:
   m_LocalScale: {x: 160, y: 20, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7526738202362733133}
-  m_RootOrder: 2
+  m_Father: {fileID: 47604690507270535}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -89.985, z: 0}
 --- !u!33 &5042587711887698047
 MeshFilter:
@@ -386,6 +386,41 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5272186724522304442}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3015718906716502477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 47604690507270535}
+  m_Layer: 0
+  m_Name: Walls
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &47604690507270535
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3015718906716502477}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3556652261172716786}
+  - {fileID: 8821768240065118774}
+  - {fileID: 6362015427856450946}
+  - {fileID: 7732749601583510990}
+  m_Father: {fileID: 7526738202362733133}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5598427389283904714
@@ -693,10 +728,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3556652261172716786}
-  - {fileID: 8821768240065118774}
-  - {fileID: 6362015427856450946}
-  - {fileID: 7732749601583510990}
+  - {fileID: 47604690507270535}
   - {fileID: 5272186724522304442}
   - {fileID: 2402507548466214549}
   - {fileID: 5721720971310170096}
@@ -730,13 +762,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7723768835363779994}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: -80.00001}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 5, z: -80}
   m_LocalScale: {x: 160, y: 20, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7526738202362733133}
-  m_RootOrder: 1
+  m_Father: {fileID: 47604690507270535}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7910636935430101590
 MeshFilter:
@@ -832,8 +864,8 @@ Transform:
   m_LocalScale: {x: 160, y: 20, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7526738202362733133}
-  m_RootOrder: 3
+  m_Father: {fileID: 47604690507270535}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -89.985, z: 0}
 --- !u!33 &3718740912428566821
 MeshFilter:
@@ -1111,6 +1143,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maxBalls
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchRate
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchRate
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchForce
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_Name
       value: New PachiLauncher
@@ -1238,6 +1298,34 @@ PrefabInstance:
     - target: {fileID: 9091331815595090644, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maxBalls
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchRate
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchRate
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchForce
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_Name
@@ -1686,6 +1774,34 @@ PrefabInstance:
     - target: {fileID: 9091331815595090644, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maxBalls
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchRate
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchRate
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchForce
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_Name
@@ -2583,9 +2699,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maxBalls
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchRate
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchRate
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchForce
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_Name
       value: New PachiLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -3287,9 +3435,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maxBalls
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchRate
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchRate
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchForce
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_Name
       value: New PachiLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -3351,9 +3531,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maxBalls
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchRate
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchRate
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchForce
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_Name
       value: New PachiLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -3543,9 +3755,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maxBalls
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchRate
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchRate
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchForce
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_Name
       value: New PachiLauncher
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -3606,6 +3850,34 @@ PrefabInstance:
     - target: {fileID: 9091331815595090644, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maxBalls
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchRate
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _accelBallLaunchForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchRate
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _maximumBallLaunchForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091331815595090645, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
+      propertyPath: _startingBallLaunchForce
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 9091331815595090646, guid: 4864b08e2dcfada46bc8b54f543e57cb, type: 3}
       propertyPath: m_Name

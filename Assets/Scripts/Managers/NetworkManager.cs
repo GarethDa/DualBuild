@@ -4,15 +4,19 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
 using UnityEditor;
 using UnityEngine;
+
 
 public class NetworkManager : MonoBehaviour
 {
     //misc
-    public List<string> InstructionTypeCodes = new List<string>{"@","!","#","$","+"};
-    public bool isServer = false;
+    public List<string> InstructionTypeCodes = new List<string>{"@","!","#","$","-","+","="};
+    public bool isHost = false;
     public float secondsBetweenUpdates = 0.5f;
+    float secondsSinceLastUpdate = 0f;
     public int TCPPort = 8888;
     public int UDPPort = 8889;
     public string serverIP;
@@ -20,6 +24,8 @@ public class NetworkManager : MonoBehaviour
     int playersConnected = 0;
 
     public static NetworkManager instance;
+    public string roomKey = "JOHN";
+    public string message = "";
 
   
 
@@ -33,7 +39,7 @@ public class NetworkManager : MonoBehaviour
     private static Socket TCPSocket;
     private static Socket UDPSocket;
     Dictionary<NetworkScript, List<NetworkInstruction>> queuedInstructions = new Dictionary<NetworkScript, List<NetworkInstruction>>();
-
+    Thread TCPListener;
 
     //client only
     public static EndPoint receiver;
@@ -50,58 +56,33 @@ public class NetworkManager : MonoBehaviour
     //receive functions for TCP and UDP
     private void setupUDPClient()
     {
-        if (isServer)
-        {
-            return;
-        }
+       
         
         Debug.Log("Setup UDP Client");
         setupUDP = true;
 
     }
 
-    private async void setupTCPClient()//https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/sockets/socket-services
+    public void setupTCPClient()//https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/sockets/socket-services
     {
-        if (isServer)
-        {
-            return;
-        }
+        
         
         TCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream,ProtocolType.Tcp);
-       
-        await TCPSocket.ConnectAsync(endPointTCP);
+        
+
+        TCPSocket.Connect(endPointTCP);
+
+
+        TCPListener = new Thread(TCPMessageListener);
+        TCPListener.Start();
+
         Debug.Log("Setup TCP Client");
         setupTCP = true;
         
     } 
 
-    private void setupTCPServer()
-    {
-        if(endPointTCP == null)
-        {
-            Debug.Log("ENDPOINT NULL");
-        }
-        
-        TCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream,ProtocolType.Tcp);
-
-        try
-        {
-            TCPSocket.Bind(endPointTCP);
-            TCPSocket.Listen(4);//# of players, pretty much
-            //TCPSocket.Accept(); //adding this in makes the editor always get stuck on EditorPlayMode or some crap, never add this line in here
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e.Message);
-        }
-        setupTCP = true;
-        Debug.Log("Setup TCP Server");
-    }
-    private void setupUDPServer()
-    {
-        setupUDP = true;
-        Debug.Log("Setup UDP Server");
-    }
+    
+  
 
     private void setupEndPoint()
     {
@@ -112,10 +93,7 @@ public class NetworkManager : MonoBehaviour
 
             //hostInfo = await Dns.GetHostEntryAsync(serverIP);
             ip = IPAddress.Parse(serverIP);//hostInfo.AddressList[0];
-            if (isServer)
-            {
-                ip = IPAddress.Any;//so we listen for any incoming connections
-            }
+           
             endPointUDP = new IPEndPoint(ip, UDPPort);
 
             endPointTCP = new IPEndPoint(ip, TCPPort);
@@ -167,22 +145,6 @@ public class NetworkManager : MonoBehaviour
         return o.GetInstanceID().ToString();
     }
 
-    public void waitForNewClient()
-    {
-        //Socket client = TCPSocket.Accept();//will stop here
-        TCPSocket.Accept();
-        playersConnected++;
-        //registerClient(client.)
-    }
-
-    public void registerClient(IPAddress address, Socket s, string name)
-    {
-       
-        
-          
-        
-        
-    }
 
     public void registerGameObject(GameObject g)
     {
@@ -239,34 +201,84 @@ public class NetworkManager : MonoBehaviour
         {
             return;
         }
-        if(playersConnected == 0)
+        
+
+        secondsSinceLastUpdate += Time.deltaTime;
+        if(secondsSinceLastUpdate < secondsBetweenUpdates)
         {
             return;
+           
         }
-        int recv = TCPSocket.Receive(buffer);
-        if (recv > 0)
+        secondsSinceLastUpdate = 0;
+        
+
+        
+       
+        
+    }
+
+    public void parseTCPMessage(string message)
+    {
+        List<string> sentArguments = new List<string>();//arguments will have the prefix and the data after it
+        string currentArgument = "";
+        foreach(char c in message)
         {
-            Debug.Log(Encoding.ASCII.GetString(buffer, 0, recv));
 
-            //byte[] sending = new byte[512];
-            recv = 0;
-
+            //check if c is a coded char
+            foreach(string code in InstructionTypeCodes)
+            {
+                if(code[0] == c)
+                {
+                    //its a code, so add the current string to
+                    break;
+                }
+            }
         }
+
+    }
+
+    private void TCPMessageListener()
+    {
+        while (true)
+        {
+            Debug.Log("start receiving");
+            byte[] receivedTCP = new byte[512];
+            int receivedTCPSize = TCPSocket.Receive(receivedTCP);
+            Debug.Log("Called receiving");
+            if (receivedTCPSize > 0)
+            {
+                //parse message
+                string TCPMessage = Encoding.ASCII.GetString(receivedTCP,0,receivedTCPSize);
+                Debug.Log(TCPMessage);
+                parseTCPMessage(TCPMessage);
+            }
+        }
+    }
+
+    public void sendTCPMessage(string message)
+    {
+        TCPSocket.Send(Encoding.ASCII.GetBytes(message), 0, message.Length, SocketFlags.None);
+        Debug.Log("sent message " + message);
     }
 
     public void setupNetworking()
     {
         setupEndPoint();
-        if (isServer)
-        {
-            setupTCPServer();
-            setupUDPServer();
-            return;
-        }
+       
 
 
-        setupTCPClient();
-        setupUDPClient();
+        //setupTCPClient();
+        //setupUDPClient();
+    }
+
+    public void createRoom()
+    {
+        sendTCPMessage("+");
+    }
+
+    public void joinRoom()
+    {
+        sendTCPMessage("=" + roomKey);
     }
 }
 
@@ -298,7 +310,9 @@ public enum InstructionType
     POWERUP_USE,
     TRANSFORM_CHANGE,
     VELOCITY_CHANGE,
-    REGISTER_GAMEOBJECT
+    REGISTER_GAMEOBJECT,
+    CREATE_ROOM,
+    JOIN_ROOM
 }
 /*
  * CODES FOR NETWORKED STRING
@@ -349,9 +363,24 @@ public class NetworkManagerEditor : Editor
         DrawDefaultInspector();
 
        
-        if (GUILayout.Button("Wait for client"))
+        if (GUILayout.Button("Connect to server"))
         {
-            NetworkManager.instance.waitForNewClient();
+            NetworkManager.instance.setupTCPClient();
+        }
+
+        if (GUILayout.Button("Create room"))
+        {
+            NetworkManager.instance.createRoom();
+        }
+
+        if (GUILayout.Button("Join room"))
+        {
+            NetworkManager.instance.joinRoom();
+        }
+
+        if (GUILayout.Button("Send Message"))
+        {
+            NetworkManager.instance.sendTCPMessage(NetworkManager.instance.message);
         }
     }
 }

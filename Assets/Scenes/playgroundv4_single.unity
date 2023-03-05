@@ -7791,8 +7791,13 @@ MonoBehaviour:
   - '#'
   - $
   - +
-  isServer: 1
+  isHost: 0
   secondsBetweenUpdates: 0.5
+  TCPPort: 8888
+  UDPPort: 8889
+  serverIP: 10.0.0.67
+  timeoutSeconds: 2
+  roomKey: JOHN
 --- !u!1001 &984509478
 PrefabInstance:
   m_ObjectHideFlags: 0

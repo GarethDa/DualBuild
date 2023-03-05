@@ -105,8 +105,8 @@ public class PlayerManager : MonoBehaviour
         playerInput.transform.GetComponentInChildren<Camera>().cullingMask |= 1 << layerInt;
 
         //Set the action in the custom cinemachine input script
-        playerInput.transform.GetComponentsInChildren<CMachineInput>()[0].horizontal = playerInput.actions.FindAction("Player/Look");
-        playerInput.transform.GetComponentsInChildren<CMachineInput>()[1].horizontal = playerInput.actions.FindAction("Player/Look");
+        playerInput.transform.GetComponentsInChildren<CMachineInput>()[0].horizontal = playerInput.actions.FindAction("Look");
+        playerInput.transform.GetComponentsInChildren<CMachineInput>()[1].horizontal = playerInput.actions.FindAction("Look");
         
         if (playerInputs.Count == 1)
         {

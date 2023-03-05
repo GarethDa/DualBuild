@@ -62,15 +62,20 @@ public class CharacterAiming : MonoBehaviour
 
         if (gameObject == PlayerManager.instance.GetPlayer(1))
         {
-            Debug.Log("yo mama 2");
             reticle = GameObject.Find("P1_UI").transform.Find("Reticle").GetComponent<Image>();
         }
 
         else if (gameObject == PlayerManager.instance.GetPlayer(2))
+        {
+
             reticle = GameObject.Find("P2_UI").transform.Find("Reticle").GetComponent<Image>();
+        }
 
         else if (gameObject == PlayerManager.instance.GetPlayer(3))
+        {
+
             reticle = GameObject.Find("P3_UI").transform.Find("Reticle").GetComponent<Image>();
+        }
 
         else if (gameObject == PlayerManager.instance.GetPlayer(4))
         {

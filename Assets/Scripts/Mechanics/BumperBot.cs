@@ -162,9 +162,12 @@ public class BumperBot : MonoBehaviour
         }
         _speed = 0;
         _rb.velocity = Vector3.zero;
+        if (_state == BumperStates.PATROL)
+        {
+            return;
+        }
+        _cooldownMovement = _movementCooldownTime;
         _state = BumperStates.COOLDOWN;
         _targetPlayer = null;
-        _cooldownMovement = _movementCooldownTime;
-
     }
 }

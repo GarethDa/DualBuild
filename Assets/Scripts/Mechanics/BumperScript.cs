@@ -6,7 +6,7 @@ public class BumperScript : MonoBehaviour
 {
     [SerializeField] string ignoreTag = "Environment";
     [SerializeField] float _explosionForce = 50f;
-    [SerializeField] float _upwardForce = 75f;
+    [SerializeField] float _upwardForce = 150f;
 
     private void OnCollisionEnter(Collision collision)
     {

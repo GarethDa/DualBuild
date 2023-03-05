@@ -9,7 +9,8 @@ public abstract class PowerUp : MonoBehaviour
 
     public virtual void onPickup()//when the player picks it up (add to inv and set transparency)
     {
-        UIManager.instance.setPowerUpIconImageByPowerUpType(type, 0.5f);
+        Debug.Log("Player number: " + PlayerManager.instance.GetIndex(gameObject));
+        UIManager.instance.setPowerUpIconImageByPowerUpType(type, 0.5f, PlayerManager.instance.GetIndex(gameObject));
 
     }
     public abstract void onUse();//when the player presses the use key (change transparency for some)
@@ -18,9 +19,9 @@ public abstract class PowerUp : MonoBehaviour
 
     public virtual void onEnd()//cleanup
     {
-        UIManager.instance.getOnScreenPowerUpIcon().queueFadeTransparency(0, 0.5f);
+        UIManager.instance.getOnScreenPowerUpIcon(PlayerManager.instance.GetIndex(gameObject)).queueFadeTransparency(0, 0.5f);
         EventManager.onPlayerUsePowerup?.Invoke(null, System.EventArgs.Empty);
-        GameManager.instance.powerupManager.clearPowerUp();
+        GameManager.instance.powerupManager[PlayerManager.instance.GetIndex(gameObject)].clearPowerUp();
         Destroy(this);
     }
 
@@ -83,7 +84,7 @@ public class Dash : PowerUp
     public override void onEffect()
     {
         //throw new System.NotImplementedException();
-        UIManager.instance.getOnScreenPowerUpIcon().queueFadeTransparency(0, duration);
+        UIManager.instance.getOnScreenPowerUpIcon(PlayerManager.instance.GetIndex(gameObject)).queueFadeTransparency(0, duration);
     }
 
     public override void onUse()
@@ -116,7 +117,7 @@ public class Dash : PowerUp
         used = false;
         playerObject.GetComponent<TpMovement>().SetSpeed(initialSpeed);
         EventManager.onPlayerUsePowerup?.Invoke(null, System.EventArgs.Empty);
-        GameManager.instance.powerupManager.clearPowerUp();
+        GameManager.instance.powerupManager[PlayerManager.instance.GetIndex(gameObject)].clearPowerUp();
         Destroy(this);
     }
 
@@ -157,7 +158,7 @@ public class SlowFall : PowerUp
         }
         hasClicked = true;
         usedPowerUp = true;
-        UIManager.instance.getOnScreenPowerUpIcon().queueFadeTransparency(0, duration);
+        UIManager.instance.getOnScreenPowerUpIcon(PlayerManager.instance.GetIndex(gameObject)).queueFadeTransparency(0, duration);
     }
 
     private void FixedUpdate()
@@ -206,7 +207,7 @@ public class SlowFall : PowerUp
         usedPowerUp = false;
         
         EventManager.onPlayerUsePowerup?.Invoke(null, System.EventArgs.Empty);
-        GameManager.instance.powerupManager.clearPowerUp();
+        GameManager.instance.powerupManager[PlayerManager.instance.GetIndex(gameObject)].clearPowerUp();
         Destroy(this);
 
     }

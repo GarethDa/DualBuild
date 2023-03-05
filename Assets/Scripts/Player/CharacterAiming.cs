@@ -283,7 +283,6 @@ public class CharacterAiming : MonoBehaviour
 
             if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && !animator.GetCurrentAnimatorStateInfo(1).IsName("Punch"))
             {
-                Debug.Log("Here");
                 animator.SetTrigger("Punch");
             }
 

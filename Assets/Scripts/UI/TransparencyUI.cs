@@ -25,7 +25,6 @@ public class TransparencyUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     public void setTransparencyImage(Texture image)

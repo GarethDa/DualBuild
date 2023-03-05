@@ -433,7 +433,7 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e0366cc6-e935-4865-9d79-801002774d0d"",
-                    ""path"": ""<Keyboard>/anyKey"",
+                    ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

@@ -27,14 +27,14 @@ public class SlidingTVUI : DynamicUIComponent
     public void showEase(object sender, System.EventArgs e)
     {
        // Debug.Log("UI ELEMENT SHOW " + "ISONAIR: " + isOnAir.ToString());
-        easeIn(UIManager.instance.UIOnScreen, 3f, UIManager.instance.UIOffScreen);
+        easeIn( UIOnScreen, 3f,  UIOffScreen);
     }
 
     public void hideEase(object sender, System.EventArgs e)
     {
       //  Debug.Log("UI ELEMENT HIDE " + "ISONAIR: " + isOnAir.ToString());
 
-        easeIn(UIManager.instance.UIOffScreen, 0.5f, UIManager.instance.UIOnScreen);
+        easeIn( UIOffScreen, 0.5f,  UIOnScreen);
     }
 
     public void updateClock(object sender, RoundTickArgs e)

@@ -13,7 +13,7 @@ public class RoundManager : MonoBehaviour
     int currentRoundSeconds = 0;//seconds the current round should last
     public int currentRoundSecondsElapsed = 0;//current elapsed time
 
-    public TextMeshProUGUI clockObject; //clock text on canvas
+    //public TextMeshProUGUI clockObject; //clock text on canvas
     public Transform intermissionLocation; //where to spawn players for intermission
     public Transform levelLocation; //where to spawn players when a round starts
     public GameObject deathLocation; //where players go when they die (AKA purgatory)
@@ -601,7 +601,7 @@ public class RoundManager : MonoBehaviour
 
 
 
-        clockObject.text = minutes.ToString() + ":" + extraSecondZero + seconds.ToString();
+        //clockObject.text = minutes.ToString() + ":" + extraSecondZero + seconds.ToString();
     }
 
     public powerUpList assignPowerUp(PowerupGiver g, powerUpList exclude, powerUpList give = powerUpList.None)

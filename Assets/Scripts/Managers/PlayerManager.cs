@@ -20,6 +20,10 @@ public class PlayerManager : MonoBehaviour
 
     private GameObject p1Ui;
     private GameObject p2Ui;
+    private GameObject p3Ui;
+    private GameObject p4Ui;
+
+    private List<GameObject> players = new List<GameObject>();
 
     // Start is called before the first frame update
     void Awake()
@@ -28,8 +32,12 @@ public class PlayerManager : MonoBehaviour
         {
             p1Ui = GameObject.Find("P1_UI");
             p2Ui = GameObject.Find("P2_UI");
+            p3Ui = GameObject.Find("P3_UI");
+            p4Ui = GameObject.Find("P4_UI");
             p1Ui.SetActive(false);
             p2Ui.SetActive(false);
+            p3Ui.SetActive(false);
+            p4Ui.SetActive(false);
         }
 
         if (instance == null)
@@ -37,7 +45,7 @@ public class PlayerManager : MonoBehaviour
             instance = this;
         }
 
-        playerInManager = FindObjectOfType<PlayerInputManager>();
+        //playerInManager = FindObjectOfType<PlayerInputManager>();
     }
 
     private void OnEnable()
@@ -77,7 +85,11 @@ public class PlayerManager : MonoBehaviour
 
     public void AddPlayer(PlayerInput playerInput)
     {
+        //Debug.Log(playerInput);
+
         playerInputs.Add(playerInput);
+
+        playerInput.transform.parent = GameObject.Find("PlayerHolder").transform;
 
         //Set the player's position
         playerInput.transform.position = spawnPoints[playerInputs.Count - 1].position;
@@ -95,25 +107,69 @@ public class PlayerManager : MonoBehaviour
         //Set the action in the custom cinemachine input script
         playerInput.transform.GetComponentsInChildren<CMachineInput>()[0].horizontal = playerInput.actions.FindAction("Look");
         playerInput.transform.GetComponentsInChildren<CMachineInput>()[1].horizontal = playerInput.actions.FindAction("Look");
-        
-        playerInput.transform.parent = GameObject.Find("PlayerManager").transform;
 
+        Debug.Log(playerInputs.Count);
+        
         if (playerInputs.Count == 1)
         {
-            p1Ui.SetActive(true);
-            p1Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
-            p1Ui.GetComponent<Canvas>().planeDistance = 0.5f;
+            playerInput.gameObject.name = "Player1";
 
-            playerInput.gameObject.name = "P1";
+            players.Add(playerInput.gameObject);
+
+            p1Ui.SetActive(true);
+            p1Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
+            p1Ui.GetComponent<Canvas>().planeDistance = 1f;
         }
 
         else if (playerInputs.Count == 2)
         {
-            p2Ui.SetActive(true);
-            p2Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
-            p2Ui.GetComponent<Canvas>().planeDistance = 0.5f;
+            playerInput.gameObject.name = "Player2";
+            playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
 
-            playerInput.gameObject.name = "P2";
+            players.Add(playerInput.gameObject);
+
+            p2Ui.SetActive(true);
+            p2Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
+            p2Ui.GetComponent<Canvas>().planeDistance = 1f;
+
+            p1Ui.GetComponent<CanvasScaler>().scaleFactor = 0.5f;
+            p2Ui.GetComponent<CanvasScaler>().scaleFactor = 0.5f;
         }
+
+        else if (playerInputs.Count == 3)
+        {
+            playerInput.gameObject.name = "Player3";
+            playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
+
+            players.Add(playerInput.gameObject);
+
+            p3Ui.SetActive(true);
+            p3Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
+            p3Ui.GetComponent<Canvas>().planeDistance = 1f;
+
+            p1Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
+            p2Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
+
+            GL.Clear(true, true, Color.black);
+        }
+
+        else if (playerInputs.Count == 4)
+        {
+            playerInput.gameObject.name = "Player4";
+            playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
+
+            players.Add(playerInput.gameObject);
+
+            p4Ui.SetActive(true);
+            p4Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
+            p4Ui.GetComponent<Canvas>().planeDistance = 1f;
+
+            p4Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
+        }
+    }
+
+    public GameObject GetPlayer(int playerNum)
+    {
+        return players[playerNum - 1];
     }
 }

@@ -333,6 +333,17 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""3eef50f0-d119-4367-a7ab-0ded868406fd"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""1bffe9b3-79d4-4e85-9312-b29f34ac934b"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",

@@ -27,11 +27,10 @@ public class CameraSettings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+        // Update is called once per frame
+        void FixedUpdate()
     {
         zoomedOutSensitivity = StateVariables.zoomedOutSens;
         zoomedInSensitivity = StateVariables.zoomedInSens;

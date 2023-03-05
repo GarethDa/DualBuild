@@ -62,9 +62,31 @@ public class CharacterAiming : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        if (gameObject.name == "P1") reticle = GameObject.Find("Reticle1").GetComponent<Image>();
+        if (gameObject == PlayerManager.instance.GetPlayer(1))
+        {
+            reticle = GameObject.Find("P1_UI").transform.Find("Reticle").GetComponent<Image>();
+        }
 
-        else if (gameObject.name == "P2") reticle = GameObject.Find("Reticle2").GetComponent<Image>();
+        else if (gameObject == PlayerManager.instance.GetPlayer(2))
+        {
+
+            reticle = GameObject.Find("P2_UI").transform.Find("Reticle").GetComponent<Image>();
+        }
+
+        else if (gameObject == PlayerManager.instance.GetPlayer(3))
+        {
+
+            reticle = GameObject.Find("P3_UI").transform.Find("Reticle").GetComponent<Image>();
+        }
+
+        else if (gameObject == PlayerManager.instance.GetPlayer(4))
+        {
+            reticle = GameObject.Find("P4_UI").transform.Find("Reticle").GetComponent<Image>();
+        }
+
+        //if (gameObject.name == "P1") reticle = GameObject.Find("Reticle1").GetComponent<Image>();
+
+        //else if (gameObject.name == "P2") reticle = GameObject.Find("Reticle2").GetComponent<Image>();
 
         else reticle = GameObject.Find("Reticle").GetComponent<Image>();
 

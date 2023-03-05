@@ -56,6 +56,8 @@ public class TpMovement : MonoBehaviour
 
     private PowerUpScript powerup;
 
+    PauseMenu settingsMenu;
+
     //UserInput inputAction;
 
     // Start is called before the first frame update
@@ -73,6 +75,74 @@ public class TpMovement : MonoBehaviour
         rBody.drag = 0f;
 
         powerup = GetComponent<PowerUpScript>();
+
+        PauseMenu[] settingsMenus = FindObjectsOfType<PauseMenu>(true);
+
+        //Debug.Log(gameObject == PlayerManager.instance.GetPlayer(1));
+
+        if (gameObject == PlayerManager.instance.GetPlayer(1))
+        {
+            foreach (PauseMenu menu in settingsMenus)
+            {
+                if (menu.transform.name.Equals("P1_UI"))
+                {
+                    settingsMenu = menu;
+                    break;
+                }
+            }
+        }
+
+        else if (gameObject == PlayerManager.instance.GetPlayer(2))
+        {
+            foreach (PauseMenu menu in settingsMenus)
+            {
+                if (menu.transform.name.Equals("P2_UI"))
+                {
+                    settingsMenu = menu;
+                    break;
+                }
+            }
+        }
+
+        else if (gameObject == PlayerManager.instance.GetPlayer(3))
+        {
+            foreach (PauseMenu menu in settingsMenus)
+            {
+                if (menu.transform.name.Equals("P3_UI"))
+                {
+                    settingsMenu = menu;
+                    break;
+                }
+            }
+        }
+
+        else if (gameObject == PlayerManager.instance.GetPlayer(4))
+        {
+            foreach (PauseMenu menu in settingsMenus)
+            {
+                if (menu.transform.name.Equals("P4_UI"))
+                {
+                    settingsMenu = menu;
+                    break;
+                }
+            }
+        }
+
+        /*
+        transform.parent = GameObject.Find("PlayerHolder").transform;
+
+        if (GameObject.Find("Player1") == null)
+            transform.name = "Player1";
+
+        else if (GameObject.Find("Player2") == null)
+            transform.name = "Player2";
+
+        else if (GameObject.Find("Player3") == null)
+            transform.name = "Player3";
+
+        else
+            transform.name = "Player4";
+        */
     }
 
     // Update is called once per frame
@@ -109,7 +179,7 @@ public class TpMovement : MonoBehaviour
             //physMat.dynamicFriction = 0f;
         }
 
-        if (isRunning)
+        if (isRunning /*|| (rBody.velocity.x == 0f && rBody.velocity.z == 0f)*/)
             playerObj.GetComponent<Collider>().material = physMatFrictionless;
             //physMat.dynamicFriction = 0f;
 
@@ -217,34 +287,33 @@ public class TpMovement : MonoBehaviour
     //New input system
     public void OnMove(InputAction.CallbackContext cntxt)
 	{
-        //Vector2 playerMovement = cntxt.ReadValue<Vector2>();
-
+        //Use threshold checks for shitty gamepads
         if (cntxt.action.name.Equals("Up"))
         {
-            if (cntxt.performed) upHeld = true;
+            if (cntxt.performed && cntxt.ReadValue<float>() >= 0.4f) upHeld = true;
 
-            if (cntxt.canceled) upHeld = false;
+            if (cntxt.canceled || cntxt.ReadValue<float>() < 0.4f) upHeld = false;
         }
 
         if (cntxt.action.name.Equals("Down"))
         {
-            if (cntxt.performed) downHeld = true;
+            if (cntxt.performed && cntxt.ReadValue<float>() >= 0.4f) downHeld = true;
 
-            if (cntxt.canceled) downHeld = false;
+            if (cntxt.canceled || cntxt.ReadValue<float>() < 0.4f) downHeld = false;
         }
 
         if (cntxt.action.name.Equals("Left"))
         {
-            if (cntxt.performed) leftHeld = true;
+            if (cntxt.performed && cntxt.ReadValue<float>() >= 0.4f) leftHeld = true;
 
-            if (cntxt.canceled) leftHeld = false;
+            if (cntxt.canceled || cntxt.ReadValue<float>() < 0.4f) leftHeld = false;
         }
 
         if (cntxt.action.name.Equals("Right"))
         {
-            if (cntxt.performed) rightHeld = true;
+            if (cntxt.performed && cntxt.ReadValue<float>() >= 0.4f) rightHeld = true;
 
-            if (cntxt.canceled) rightHeld = false;
+            if (cntxt.canceled || cntxt.ReadValue<float>() < 0.4f) rightHeld = false;
         }
 
         verticalInput = Convert.ToInt32(upHeld) - Convert.ToInt32(downHeld);
@@ -270,6 +339,11 @@ public class TpMovement : MonoBehaviour
                 powerup.PlayerJumped();
             }
         }
+    }
+
+    public void OnPause()
+    {
+        settingsMenu.OnPause();
     }
 
     //For setting the jump force

@@ -1,0 +1,7 @@
+X:\programs\programs\DualBuild\Assets\Scripts\Server\DebtlockedDualServer\DebtlockedDualServer\bin\Debug\DebtlockedDualServer.exe.config
+X:\programs\programs\DualBuild\Assets\Scripts\Server\DebtlockedDualServer\DebtlockedDualServer\bin\Debug\DebtlockedDualServer.exe
+X:\programs\programs\DualBuild\Assets\Scripts\Server\DebtlockedDualServer\DebtlockedDualServer\bin\Debug\DebtlockedDualServer.pdb
+X:\programs\programs\DualBuild\Assets\Scripts\Server\DebtlockedDualServer\DebtlockedDualServer\obj\Debug\DebtlockedDualServer.csprojAssemblyReference.cache
+X:\programs\programs\DualBuild\Assets\Scripts\Server\DebtlockedDualServer\DebtlockedDualServer\obj\Debug\DebtlockedDualServer.csproj.CoreCompileInputs.cache
+X:\programs\programs\DualBuild\Assets\Scripts\Server\DebtlockedDualServer\DebtlockedDualServer\obj\Debug\DebtlockedDualServer.exe
+X:\programs\programs\DualBuild\Assets\Scripts\Server\DebtlockedDualServer\DebtlockedDualServer\obj\Debug\DebtlockedDualServer.pdb

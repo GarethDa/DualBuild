@@ -5386,12 +5386,13 @@ MonoBehaviour:
   - '#'
   - $
   - +
-  isServer: 1
+  isHost: 0
   secondsBetweenUpdates: 0.5
   TCPPort: 8888
   UDPPort: 8889
-  serverIP: 127.0.0.1
+  serverIP: 10.0.0.67
   timeoutSeconds: 2
+  roomKey: JOHN
 --- !u!4 &986142324 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4652850480684431699, guid: 81d12462c23530d419318c4432dbed9f, type: 3}

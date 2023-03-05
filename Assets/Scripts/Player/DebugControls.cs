@@ -113,4 +113,14 @@ public class DebugControls : MonoBehaviour
             GetComponent<PowerUpScript>().setSelectedPowerUp(powerUpList.Bomb);
         }
     }
+
+    public void OnGiveSuperPunch(InputAction.CallbackContext cntxt)
+    {
+        if (cntxt.performed)
+        {
+            Debug.Log("Debug granted super punch");
+            GetComponent<PowerUpScript>().setSelectedPowerUp(powerUpList.SuperPunch);
+        }
+    }
+
 }

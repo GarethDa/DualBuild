@@ -38,6 +38,8 @@ public class CharacterAiming : MonoBehaviour
     float zoomCamOrigFOV;
     float returnTimeFOV = 0f;
 
+    PowerUpScript powerup;
+
     //BALLER
 
     //UserInput inputAction;
@@ -73,6 +75,7 @@ public class CharacterAiming : MonoBehaviour
         //normalCamOrigFOV = normalCam.m_Lens.FieldOfView;
         zoomCamOrigFOV = zoomCam.m_Lens.FieldOfView;
 
+        powerup = GetComponent<PowerUpScript>();
     }
 
     // Update is called once per frame
@@ -274,6 +277,7 @@ public class CharacterAiming : MonoBehaviour
                 //GameObject hitPlayer = hitInfo.collider.transform.Find("PlayerObj").gameObject;
                 hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3 (0f, punchForce, 0f), ForceMode.Impulse);
                 Debug.Log("punch");
+                powerup.PlayerPunched();
             }
         }
     }
@@ -319,5 +323,15 @@ public class CharacterAiming : MonoBehaviour
     public bool GetIsAiming()
     {
         return isAiming;
+    }
+
+    public float GetPunchForce()
+    {
+        return punchForce;
+    }
+
+    public void SetPunchForce(float newForce)
+    {
+        punchForce = newForce;
     }
 }

@@ -27,31 +27,6 @@ public class CameraSettings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CinemachineInputProvider[] providers = gameObject.GetComponentsInChildren<CinemachineInputProvider>();
-
-        if (transform.name == "Player1")
-        {
-            providers[0].PlayerIndex = 0;
-            providers[1].PlayerIndex = 0;
-        }
-
-        else if (transform.name == "Player2")
-        {
-            providers[0].PlayerIndex = 1;
-            providers[1].PlayerIndex = 1;
-        }
-
-        else if (transform.name == "Player3")
-        {
-            providers[0].PlayerIndex = 2;
-            providers[1].PlayerIndex = 2;
-        }
-
-        else if (transform.name == "Player4")
-        {
-            providers[0].PlayerIndex = 3;
-            providers[1].PlayerIndex = 3;
-        }
     }
 
         // Update is called once per frame

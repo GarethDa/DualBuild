@@ -86,7 +86,6 @@ public class TpMovement : MonoBehaviour
             {
                 if (menu.transform.name.Equals("P1_UI"))
                 {
-                    Debug.Log(menu);
                     settingsMenu = menu;
                     break;
                 }
@@ -180,7 +179,7 @@ public class TpMovement : MonoBehaviour
             //physMat.dynamicFriction = 0f;
         }
 
-        if (isRunning)
+        if (isRunning /*|| (rBody.velocity.x == 0f && rBody.velocity.z == 0f)*/)
             playerObj.GetComponent<Collider>().material = physMatFrictionless;
             //physMat.dynamicFriction = 0f;
 
@@ -288,34 +287,33 @@ public class TpMovement : MonoBehaviour
     //New input system
     public void OnMove(InputAction.CallbackContext cntxt)
 	{
-        //Vector2 playerMovement = cntxt.ReadValue<Vector2>();
-
+        //Use threshold checks for shitty gamepads
         if (cntxt.action.name.Equals("Up"))
         {
-            if (cntxt.performed) upHeld = true;
+            if (cntxt.performed && cntxt.ReadValue<float>() >= 0.4f) upHeld = true;
 
-            if (cntxt.canceled) upHeld = false;
+            if (cntxt.canceled || cntxt.ReadValue<float>() < 0.4f) upHeld = false;
         }
 
         if (cntxt.action.name.Equals("Down"))
         {
-            if (cntxt.performed) downHeld = true;
+            if (cntxt.performed && cntxt.ReadValue<float>() >= 0.4f) downHeld = true;
 
-            if (cntxt.canceled) downHeld = false;
+            if (cntxt.canceled || cntxt.ReadValue<float>() < 0.4f) downHeld = false;
         }
 
         if (cntxt.action.name.Equals("Left"))
         {
-            if (cntxt.performed) leftHeld = true;
+            if (cntxt.performed && cntxt.ReadValue<float>() >= 0.4f) leftHeld = true;
 
-            if (cntxt.canceled) leftHeld = false;
+            if (cntxt.canceled || cntxt.ReadValue<float>() < 0.4f) leftHeld = false;
         }
 
         if (cntxt.action.name.Equals("Right"))
         {
-            if (cntxt.performed) rightHeld = true;
+            if (cntxt.performed && cntxt.ReadValue<float>() >= 0.4f) rightHeld = true;
 
-            if (cntxt.canceled) rightHeld = false;
+            if (cntxt.canceled || cntxt.ReadValue<float>() < 0.4f) rightHeld = false;
         }
 
         verticalInput = Convert.ToInt32(upHeld) - Convert.ToInt32(downHeld);

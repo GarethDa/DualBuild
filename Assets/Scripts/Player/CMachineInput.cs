@@ -11,14 +11,32 @@ public class CMachineInput : MonoBehaviour, AxisState.IInputAxisProvider
 
     public float GetAxisValue(int axis)
     {
-        Debug.Log("we here");
         switch (axis)
         {
-            case 0: return horizontal.ReadValue<Vector2>().x;
-            case 1: return horizontal.ReadValue<Vector2>().y;
-            case 2: return vertical.ReadValue<float>();
-        }
+            case 0:
+                {
+                    if (horizontal.ReadValue<Vector2>().x < 0.3f && horizontal.ReadValue<Vector2>().x > -0.3f)
+                        return 0f;
+                    else
+                        return horizontal.ReadValue<Vector2>().x;
+                }
+            case 1:
+                {
+                    if (horizontal.ReadValue<Vector2>().y < 0.3f && horizontal.ReadValue<Vector2>().y > -0.3f)
+                        return 0f;
+                    else
+                        return horizontal.ReadValue<Vector2>().y;
+                }
+            case 2:
+                {
+                    if (vertical.ReadValue<float>() < 0.3f && vertical.ReadValue<float>() > -0.3f)
+                        return 0f;
+                    else
+                        return vertical.ReadValue<float>();
 
-        return 0f;
+                }
+
+            default: return 0f;
+        }
     }
 }

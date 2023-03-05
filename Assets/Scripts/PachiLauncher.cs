@@ -19,6 +19,9 @@ public class PachiLauncher : MonoBehaviour
     [SerializeField] float _maximumBallLaunchForce = 10f;
     [SerializeField] float _accelBallLaunchForce = 0.5f;
 
+    [Header("Other")]
+    [SerializeField] float _stunThreshold;
+
     [Header("References!")]
     [SerializeField] Transform _swivelHead;
     [SerializeField] Transform _launchPoint;

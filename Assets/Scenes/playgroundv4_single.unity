@@ -11783,7 +11783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6775951038103885209, guid: 0729cd4114eb87348acb08ca8624a934, type: 3}
       propertyPath: m_Name
-      value: GameWorld 1
+      value: WaitingArea
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -12248,7 +12248,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.7028302, b: 0.749471, a: 1}
+  m_Color: {r: 1, g: 0.9966544, b: 0.9098039, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30

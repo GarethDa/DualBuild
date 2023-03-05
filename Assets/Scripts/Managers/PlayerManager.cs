@@ -110,49 +110,49 @@ public class PlayerManager : MonoBehaviour
         
         if (playerInputs.Count == 1)
         {
-            p1Ui.SetActive(true);
-            p1Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
-            p1Ui.GetComponent<Canvas>().planeDistance = 0.5f;
-
             playerInput.gameObject.name = "Player1";
 
             players.Add(playerInput.gameObject);
+
+            p1Ui.SetActive(true);
+            p1Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
+            p1Ui.GetComponent<Canvas>().planeDistance = 1f;
         }
 
         else if (playerInputs.Count == 2)
         {
-            p2Ui.SetActive(true);
-            p2Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
-            p2Ui.GetComponent<Canvas>().planeDistance = 0.5f;
-
             playerInput.gameObject.name = "Player2";
             playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
 
             players.Add(playerInput.gameObject);
+
+            p2Ui.SetActive(true);
+            p2Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
+            p2Ui.GetComponent<Canvas>().planeDistance = 1f;
         }
 
         else if (playerInputs.Count == 3)
         {
-            p3Ui.SetActive(true);
-            p3Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
-            p3Ui.GetComponent<Canvas>().planeDistance = 0.5f;
-
             playerInput.gameObject.name = "Player3";
             playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
 
             players.Add(playerInput.gameObject);
+
+            p3Ui.SetActive(true);
+            p3Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
+            p3Ui.GetComponent<Canvas>().planeDistance = 1f;
         }
 
         else if (playerInputs.Count == 4)
         {
-            p4Ui.SetActive(true);
-            p4Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.GetComponentInChildren<Camera>();
-            p4Ui.GetComponent<Canvas>().planeDistance = 0.5f;
-
             playerInput.gameObject.name = "Player4";
             playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
 
             players.Add(playerInput.gameObject);
+
+            p4Ui.SetActive(true);
+            p4Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
+            p4Ui.GetComponent<Canvas>().planeDistance = 1f;
         }
     }
 

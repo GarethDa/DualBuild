@@ -8,8 +8,9 @@ public class DynamicUIComponent : MonoBehaviour
     Transform startingPos = null;
     float T = 0f;
     float secondsToMove = -1f;
-   
-    
+    [SerializeField] protected Transform UIOnScreen;
+    [SerializeField] protected Transform UIOffScreen;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,8 +47,8 @@ public class DynamicUIComponent : MonoBehaviour
 
     public virtual void onStart()
     {
-        Debug.Log(UIManager.instance.UIOffScreen.position);
-        transform.position = UIManager.instance.UIOffScreen.position;
+        Debug.Log(gameObject.transform.parent.name);
+        transform.position = UIOffScreen.position;
     }
 
     public void easeIn(Transform t, float secondsLong, Transform starting = null)

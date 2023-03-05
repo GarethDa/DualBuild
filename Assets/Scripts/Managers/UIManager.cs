@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI text;
     [SerializeField] List<Texture> powerupIcons;
     
-    [SerializeField] TransparencyUI onScreenPowerupIcon;
+    [SerializeField] List<TransparencyUI> onScreenPowerupIcon = new List<TransparencyUI>();
     // Start is called before the first frame update
     void Awake()
     {
@@ -23,29 +23,31 @@ public class UIManager : MonoBehaviour
         }
         EventManager.onRoundStart += roundStart;
         EventManager.onRoundEnd += roundEnd;
-        hideIOnScreenPowerUpIcon();
+        for (int i = 0; i < onScreenPowerupIcon.Count; i++)
+            hideIOnScreenPowerUpIcon(i);
         clearText();
     }
 
-    public TransparencyUI getOnScreenPowerUpIcon()
+    public TransparencyUI getOnScreenPowerUpIcon(int index)
     {
-        return onScreenPowerupIcon;
+        return onScreenPowerupIcon[index];
     }
 
-    public void hideIOnScreenPowerUpIcon()
+    public void hideIOnScreenPowerUpIcon(int index)
     {
         //onScreenPowerupIcon.enabled = false;
-        onScreenPowerupIcon.snapTransparency(0);
+        onScreenPowerupIcon[index].snapTransparency(0);
     }
 
-    public void showIOnScreenPowerUpIcon()
+    public void showIOnScreenPowerUpIcon(int index)
     {
-        if(GameManager.instance.powerupManager.getCurrentPowerUp() == powerUpList.None)
+        Debug.Log("Current index: " + index);
+        if(GameManager.instance.powerupManager[index].getCurrentPowerUp() == powerUpList.None)
         {
-            hideIOnScreenPowerUpIcon();
+            hideIOnScreenPowerUpIcon(index);
             return;
         }
-        onScreenPowerupIcon.snapTransparency(1);
+        onScreenPowerupIcon[index].snapTransparency(1);
         //onScreenPowerupIcon.enabled = true;
 
     }
@@ -54,36 +56,43 @@ public class UIManager : MonoBehaviour
     {
         if(e.getRound(0) == roundType.NONE)
         {
-            hideIOnScreenPowerUpIcon();
+            for (int i = 0; i < onScreenPowerupIcon.Count; i++)
+                hideIOnScreenPowerUpIcon(i);
         }
         
     }
 
     public void roundEnd(object sender, RoundArgs e)
     {
+
+        Debug.Log("Count: " + onScreenPowerupIcon.Count);
         if (e.getRound(0) == roundType.NONE)
         {
-            showIOnScreenPowerUpIcon();
+            for (int i = 0; i < onScreenPowerupIcon.Count; i++)
+            {
+                //if (!onScreenPowerupIcon[i].gameObject.activeSelf) return;
+                
+                //showIOnScreenPowerUpIcon(i);
+            }
         }
       
     }
 
-
-    public void setPowerUpIconImage(Texture image, float lengthOfPowerUp)
+    public void setPowerUpIconImage(Texture image, float lengthOfPowerUp, int index)
     {
-        if(image == null || GameManager.instance.powerupManager.getCurrentPowerUp() == powerUpList.None)
+        if(image == null || GameManager.instance.powerupManager[index].getCurrentPowerUp() == powerUpList.None)
         {
-            hideIOnScreenPowerUpIcon();
+            hideIOnScreenPowerUpIcon(index);
             return;
         }
         //showIOnScreenPowerUpIcon();
-        onScreenPowerupIcon.queueFadeTransparency(1f, 0.5f);
-        onScreenPowerupIcon.setTransparencyImage(image);
+        onScreenPowerupIcon[index].queueFadeTransparency(1f, 0.5f);
+        onScreenPowerupIcon[index].setTransparencyImage(image);
     }
 
-    public void setPowerUpIconImageByPowerUpType(powerUpList type, float length)
+    public void setPowerUpIconImageByPowerUpType(powerUpList type, float length, int index)
     {
-        setPowerUpIconImage(getPowerUpIconByType(type),length);
+        setPowerUpIconImage(getPowerUpIconByType(type),length, index);
     }
 
     public Texture getPowerUpIconByType(powerUpList type)

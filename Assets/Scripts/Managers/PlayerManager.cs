@@ -16,6 +16,9 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private List<LayerMask> playerLayers;
 
+    [SerializeField] GameObject introText;
+    [SerializeField] GameObject introCam;
+
     private PlayerInputManager playerInManager;
 
     private GameObject p1Ui;
@@ -119,6 +122,11 @@ public class PlayerManager : MonoBehaviour
             p1Ui.SetActive(true);
             p1Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
             p1Ui.GetComponent<Canvas>().planeDistance = 1f;
+
+            introText.SetActive(false);
+            introCam.SetActive(false);
+
+            GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
         }
 
         else if (playerInputs.Count == 2)
@@ -134,6 +142,8 @@ public class PlayerManager : MonoBehaviour
 
             p1Ui.GetComponent<CanvasScaler>().scaleFactor = 0.5f;
             p2Ui.GetComponent<CanvasScaler>().scaleFactor = 0.5f;
+
+            GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
         }
 
         else if (playerInputs.Count == 3)
@@ -150,7 +160,7 @@ public class PlayerManager : MonoBehaviour
             p1Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
             p2Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
 
-            GL.Clear(true, true, Color.black);
+            GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
         }
 
         else if (playerInputs.Count == 4)
@@ -165,11 +175,26 @@ public class PlayerManager : MonoBehaviour
             p4Ui.GetComponent<Canvas>().planeDistance = 1f;
 
             p4Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
+
+            GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
         }
     }
 
     public GameObject GetPlayer(int playerNum)
     {
         return players[playerNum - 1];
+    }
+
+    public int GetIndex(GameObject playerObject)
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i] == playerObject)
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

@@ -85,7 +85,7 @@ public class PlayerManager : MonoBehaviour
 
     public void AddPlayer(PlayerInput playerInput)
     {
-        Debug.Log(playerInput);
+        //Debug.Log(playerInput);
 
         playerInputs.Add(playerInput);
 
@@ -107,6 +107,8 @@ public class PlayerManager : MonoBehaviour
         //Set the action in the custom cinemachine input script
         playerInput.transform.GetComponentsInChildren<CMachineInput>()[0].horizontal = playerInput.actions.FindAction("Look");
         playerInput.transform.GetComponentsInChildren<CMachineInput>()[1].horizontal = playerInput.actions.FindAction("Look");
+
+        Debug.Log(playerInputs.Count);
         
         if (playerInputs.Count == 1)
         {
@@ -129,6 +131,9 @@ public class PlayerManager : MonoBehaviour
             p2Ui.SetActive(true);
             p2Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
             p2Ui.GetComponent<Canvas>().planeDistance = 1f;
+
+            p1Ui.GetComponent<CanvasScaler>().scaleFactor = 0.5f;
+            p2Ui.GetComponent<CanvasScaler>().scaleFactor = 0.5f;
         }
 
         else if (playerInputs.Count == 3)
@@ -141,6 +146,11 @@ public class PlayerManager : MonoBehaviour
             p3Ui.SetActive(true);
             p3Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
             p3Ui.GetComponent<Canvas>().planeDistance = 1f;
+
+            p1Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
+            p2Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
+
+            GL.Clear(true, true, Color.black);
         }
 
         else if (playerInputs.Count == 4)
@@ -153,12 +163,13 @@ public class PlayerManager : MonoBehaviour
             p4Ui.SetActive(true);
             p4Ui.GetComponent<Canvas>().worldCamera = playerInput.transform.Find("Main Camera").GetChild(0).GetComponent<Camera>();
             p4Ui.GetComponent<Canvas>().planeDistance = 1f;
+
+            p4Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
         }
     }
 
     public GameObject GetPlayer(int playerNum)
     {
-        Debug.Log(playerNum);
         return players[playerNum - 1];
     }
 }

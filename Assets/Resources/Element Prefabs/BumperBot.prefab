@@ -369,7 +369,7 @@ MonoBehaviour:
   _cooldownTargetting: 0
   _movementCooldownTime: 5
   _cooldownMovement: 0
-  _explosionForce: 75
+  _explosionForce: 150
   _upwardForce: 30
   _returnSnapDistance: 0.1
   _targetPlayer: {fileID: 0}

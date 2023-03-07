@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 using System.Threading;
 using UnityEditor;
 using UnityEngine;
-
+using Unity.Jobs;
 
 public class NetworkManager : MonoBehaviour
 {
     //misc
-    public List<string> InstructionTypeCodes = new List<string>{"@","!","#","$","-","+","="};
+    List<string> InstructionTypeCodes = new List<string>{"@","!","#","^","$", "~", "*", "=","%","&"};
     public bool isHost = false;
     public float secondsBetweenUpdates = 0.5f;
     float secondsSinceLastUpdate = 0f;
@@ -52,6 +52,77 @@ public class NetworkManager : MonoBehaviour
     bool hasSetupEndpoint = false;
     bool setupTCP = false;
     bool setupUDP = false;
+    static Queue<string> incomingInstructions = new Queue<string>();
+
+    public List<string> getCodes()
+    {
+        return InstructionTypeCodes;
+    }
+
+    public List<string> getDataFromInstruction(string instruction)
+    {
+        List<string> returner = new List<string>();
+        string data = "";
+        foreach(char c in instruction)
+        {
+            if(c == '|')
+            {
+               
+                returner.Add(data);
+                data = "";
+                continue;
+            }
+            data += c;
+        }
+        if(data.Length > 0)
+        {
+            
+            returner.Add(data);
+          
+        }
+        return returner;
+    }
+
+    public List<string> decodeInstruction(string message)
+    {//move to the client, cause the server simply sends the same message back to everyone else
+        //string specialChars = "`~!@#$%^&*()-=_+{}:<>,.;'\\[]\"/?";//| taken out cause it means separation of data within an instruction
+        string currentInstruction = "";
+        List<string> returner = new List<string>();
+        foreach (char c in message)
+        {
+            if (InstructionTypeCodes.Contains(c.ToString()))
+            {
+                //beginning of instruction, put the current instruction in the list
+                if (currentInstruction.Length > 0)
+                {
+                    returner.Add(currentInstruction);
+                    currentInstruction = "";
+                }
+               
+            }
+            currentInstruction += c;
+        }
+        //for the instruction that is at the end, it wont get added ^
+        if (currentInstruction.Length > 0)
+        {
+            returner.Add(currentInstruction);
+            currentInstruction = "";
+        }
+        return returner;
+    }
+
+    public int getModifiedGameobjectID(List<string> instructions)
+    {
+        
+        foreach(string s in instructions)
+        {
+            if(s[0].ToString() == InstructionTypeCodes[(int)InstructionType.LOCAL_GAMEOBJECT_ID])
+            {
+                return int.Parse(s.Substring(1, s.Length - 1));
+            }
+        }
+        return -1;
+    }
 
     //receive functions for TCP and UDP
     private void setupUDPClient()
@@ -82,7 +153,7 @@ public class NetworkManager : MonoBehaviour
     } 
 
     
-  
+
 
     private void setupEndPoint()
     {
@@ -210,49 +281,122 @@ public class NetworkManager : MonoBehaviour
            
         }
         secondsSinceLastUpdate = 0;
-        
 
-        
-       
-        
-    }
 
-    public void parseTCPMessage(string message)
-    {
-        List<string> sentArguments = new List<string>();//arguments will have the prefix and the data after it
-        string currentArgument = "";
-        foreach(char c in message)
+       while(incomingInstructions.Count > 0)
         {
-
-            //check if c is a coded char
-            foreach(string code in InstructionTypeCodes)
-            {
-                if(code[0] == c)
-                {
-                    //its a code, so add the current string to
-                    break;
-                }
-            }
+            Debug.Log("Received:" + incomingInstructions.Peek());
+            executeInstructions(decodeInstruction(incomingInstructions.Dequeue()));
         }
+        
+
 
     }
+
+   
 
     private void TCPMessageListener()
     {
         while (true)
         {
-            Debug.Log("start receiving");
+            //Debug.Log("start receiving");
             byte[] receivedTCP = new byte[512];
             int receivedTCPSize = TCPSocket.Receive(receivedTCP);
-            Debug.Log("Called receiving");
+            //Debug.Log("Called receiving");
             if (receivedTCPSize > 0)
             {
                 //parse message
                 string TCPMessage = Encoding.ASCII.GetString(receivedTCP,0,receivedTCPSize);
-                Debug.Log(TCPMessage);
-                parseTCPMessage(TCPMessage);
+                incomingInstructions.Enqueue(TCPMessage);
+                
             }
         }
+    }
+    char getInstructionCode(string instruction)
+    {
+        return instruction[0];
+    }
+    string getAfterInstructionCode(string instruction)
+    {
+        return instruction.Substring(1, instruction.Length-1);
+    }
+    public void executeInstructions(List<string> instructions)
+    {
+        GameObject affectedObject = null;
+        List<string> waitForAfter = new List<string>();//this is in case a transform change is before the @ for an object, we can get the @ first, and just repeat the transform change instruction after the object has been specified
+        foreach (string inst in instructions)
+        {
+            string code = getInstructionCode(inst).ToString();
+            string data = getAfterInstructionCode(inst);
+            
+            if(code == getInstructionCode(InstructionType.LOCAL_GAMEOBJECT_ID))
+            {
+                affectedObject = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(data));
+            }
+            if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
+            {
+                waitForAfter.Add(inst);
+            }
+
+            if (code == getInstructionCode(InstructionType.REGISTER_GAMEOBJECT))
+            {//will be to create an object with a string prefab
+                Debug.Log("creating object " + data);
+
+                List<string> instructionData = getDataFromInstruction(data);
+                string prefab = instructionData[0];
+                
+                string index = instructionData[1];
+                affectedObject = GameManager.createGameObject(prefab);
+                sendTCPMessage(getInstructionCode(InstructionType.CREATE_GAMEOBJECT) + index.ToString() + "|" + affectedObject.GetInstanceID().ToString());
+
+            }
+
+            if (affectedObject == null)
+            {
+                waitForAfter.Add(inst);
+                continue;
+            }
+            modifyGameObject(affectedObject, inst);
+           
+        }
+
+        if (affectedObject == null)
+        {
+            return;
+        }
+        foreach (string inst in waitForAfter)
+        {
+            modifyGameObject(affectedObject, inst);
+        }
+    }
+
+    public void modifyGameObject(GameObject g, string inst)
+    {
+        string code = getInstructionCode(inst).ToString();
+        string data = getAfterInstructionCode(inst);
+        if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
+        {//will be to create an object with a string prefab
+            Vector3 dataPosition = JsonUtility.FromJson<Vector3>(data);
+            g.transform.position = dataPosition;
+           
+        }
+
+        if (code == getInstructionCode(InstructionType.VELOCITY_CHANGE))
+        {
+            
+        }
+
+        if (code == getInstructionCode(InstructionType.POWERUP_USE))
+        {
+            //talk to the powerup script (going to wait for gareths push for this one)
+        }
+       /*
+        if (code == getInstructionCode(InstructionType.CREATE_GAMEOBJECT))
+        {
+
+        }
+       */
+
     }
 
     public void sendTCPMessage(string message)
@@ -271,14 +415,24 @@ public class NetworkManager : MonoBehaviour
         //setupUDPClient();
     }
 
+    public string getInstructionCode(InstructionType type)
+    {
+        return InstructionTypeCodes[(int)type].ToString();
+    }
+
     public void createRoom()
     {
-        sendTCPMessage("+");
+        sendTCPMessage(getInstructionCode(InstructionType.CREATE_ROOM));
     }
 
     public void joinRoom()
     {
-        sendTCPMessage("=" + roomKey);
+        sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + roomKey);
+    }
+
+    public void requestGameObjectCreation()
+    {
+        sendTCPMessage(getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + message + getInstructionCode(InstructionType.POSITION_CHANGE) + JsonUtility.ToJson(gameObject.transform.position));
     }
 }
 
@@ -299,7 +453,7 @@ public class NetworkInstruction
 
     public string getString()
     {
-        return NetworkManager.instance.InstructionTypeCodes[(int)code] + JsonUtility.ToJson(codeData);
+        return NetworkManager.instance.getCodes()[(int)code] + JsonUtility.ToJson(codeData);
     }
    
 }
@@ -308,11 +462,14 @@ public enum InstructionType
 {
     LOCAL_GAMEOBJECT_ID,
     POWERUP_USE,
-    TRANSFORM_CHANGE,
+    POSITION_CHANGE,
+    ROTATION_CHANGE,
     VELOCITY_CHANGE,
     REGISTER_GAMEOBJECT,
     CREATE_ROOM,
-    JOIN_ROOM
+    JOIN_ROOM,
+    DATA,
+    CREATE_GAMEOBJECT
 }
 /*
  * CODES FOR NETWORKED STRING
@@ -321,8 +478,8 @@ public enum InstructionType
  * # (Transform) - set transform change
  * $ (Vec3) - velocity change (for dead reckoning)
  * 
- * | - used to separate instructions
  * 
+ * TCP requests wont be replaced, UDP requests of the same type will be replaced with the latest version
  * to send data, call the function XXXX which will check if there is already an instruction to modify the same type. if there is, then it will be replaced.
  */
 
@@ -355,6 +512,9 @@ public class NetworkedClient {
     }
 }
 
+
+
+
 [CustomEditor(typeof(NetworkManager))]
 public class NetworkManagerEditor : Editor
 {
@@ -381,6 +541,11 @@ public class NetworkManagerEditor : Editor
         if (GUILayout.Button("Send Message"))
         {
             NetworkManager.instance.sendTCPMessage(NetworkManager.instance.message);
+        }
+
+        if (GUILayout.Button("Create gameobject"))
+        {
+            NetworkManager.instance.requestGameObjectCreation();
         }
     }
 }

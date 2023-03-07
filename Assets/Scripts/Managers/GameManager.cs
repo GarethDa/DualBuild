@@ -22,5 +22,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+    public static GameObject createGameObject(string prefab)
+    {
+        Debug.Log(prefab);
+        return Instantiate<GameObject>(Resources.Load<GameObject>(prefab));
+    }
+
+
 }

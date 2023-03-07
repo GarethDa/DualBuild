@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreTag: Environment
-  _explosionForce: 100
+  _explosionForce: 50
   _upwardForce: 10
 --- !u!114 &-2513019330696666690
 MonoBehaviour:

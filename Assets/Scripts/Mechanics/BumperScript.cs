@@ -15,7 +15,11 @@ public class BumperScript : MonoBehaviour
         {
             //Debug.Log("BOOM!");
             Rigidbody otherRB = collision.rigidbody;
-            otherRB.AddExplosionForce(otherRB.velocity.magnitude * _explosionForce, collision.contacts[0].point, 10, _upwardForce);
+
+            Vector3 thisVelocity = gameObject.GetComponent<Rigidbody>().velocity;
+            //otherRB.AddForce(new Vector3(thisVelocity.x, 0f, this)
+            otherRB.AddExplosionForce(GetComponent<Rigidbody>().velocity.magnitude * _explosionForce, collision.contacts[0].point, 10, _upwardForce);
         }
     }
 }
+//hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3(0f, punchForce, 0f), ForceMode.Impulse);

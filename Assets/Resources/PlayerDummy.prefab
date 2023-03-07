@@ -113,6 +113,8 @@ MonoBehaviour:
   jumpGravity: 32
   fallMultiplier: 1.5
   groundDrag: 3
+  physMatFriction: {fileID: 0}
+  physMatFrictionless: {fileID: 0}
   floorMask:
     serializedVersion: 2
     m_Bits: 64
@@ -155,9 +157,17 @@ MonoBehaviour:
   playerCam: {fileID: 8411294830145179060}
   playerObj: {fileID: 8411294830480965784}
   holdPos: {fileID: 8319145080816732317}
+  normalCam: {fileID: 0}
   zoomCam: {fileID: 8411294830436386869}
+  normalModel: {fileID: 0}
+  transparentModel: {fileID: 0}
   throwForce: 1500
+  throwUpModifier: 200
+  chargePerSec: 500
+  maxChargeTime: 3
+  maxChangeFOV: 10
   punchForce: 5
+  aimAssist: 2
 --- !u!114 &7003453695122746443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,8 +183,12 @@ MonoBehaviour:
   superjumpForce: 20
   slowfallForce: 10
   maxFallSpeed: -4
+  slowfallDuration: 3
+  dashSpeed: 30
+  dashDuration: 3
+  bombPrefab: {fileID: 0}
+  superPunchForce: 30
   powerUpDuration: 3
-  selectedPowerUp: 1
 --- !u!1 &7683467097089540674
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,7 +835,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8411294830480965784}
   - component: {fileID: 1233617177304506646}
-  m_Layer: 8
+  m_Layer: 16
   m_Name: PlayerObj
   m_TagString: Player
   m_Icon: {fileID: 0}

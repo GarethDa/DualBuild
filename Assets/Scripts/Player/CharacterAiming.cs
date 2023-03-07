@@ -23,6 +23,7 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] [Range(1f, 5f)] float maxChargeTime = 3f;
     [SerializeField] [Range(0f, 20f)] float maxChangeFOV = 10f;
     [SerializeField] [Range(1.0f, 100.0f)] float punchForce = 20f;
+    [SerializeField] [Range(0.5f, 10f)] float aimAssist = 2f;
 
     Image reticle;
 
@@ -42,6 +43,9 @@ public class CharacterAiming : MonoBehaviour
 
     PowerUpScript powerup;
 
+    GameObject aimAssistSphere;
+    int playerNum;
+
     //BALLER
 
     //UserInput inputAction;
@@ -53,6 +57,9 @@ public class CharacterAiming : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerNum = PlayerManager.instance.GetIndex(gameObject) + 1;
+        aimAssistSphere = GameObject.Find("P" + playerNum + "AssistSphere");
+        aimAssistSphere.SetActive(false);
         //inputAction = InputController.controller.inputAction;
 
         //inputAction.Player.Aim.performed += cntxt => OnAim();
@@ -105,6 +112,8 @@ public class CharacterAiming : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(playerCam.pixelHeight / 2f + "      " + playerCam.pixelWidth / 2f);
+
         if (animator != null)
         {
             animator.SetBool("isAiming", isAiming);
@@ -116,6 +125,47 @@ public class CharacterAiming : MonoBehaviour
             //If the player is aiming, set the player object's rotation around the y-axis to that of the camera
             playerObj.transform.rotation = Quaternion.Euler(new Vector3(0f, playerCam.transform.rotation.eulerAngles.y, 0f));
             //transform.Find("Orientation").rotation = Quaternion.Euler(new Vector3(0f, playerCam.transform.rotation.eulerAngles.y, 0f));
+        }
+
+        if (isAiming && holdingProjectile)
+        {
+            RaycastHit hitInfo;
+
+            if (CheckForAimAssist(out hitInfo))
+            {
+                aimAssistSphere.SetActive(true);
+                //Set the throw direction to be the vector pointing from the projectile's position to the raycast's point of contact
+                aimAssistSphere.transform.position = hitInfo.point;
+
+                Vector2 UIPoint = playerCam.WorldToViewportPoint(hitInfo.point);
+
+                reticle.gameObject.GetComponent<RectTransform>().anchorMin = UIPoint;
+                reticle.gameObject.GetComponent<RectTransform>().anchorMax = UIPoint;
+                /*
+                UIPoint.x *= reticle.gameObject.GetComponent<RectTransform>().sizeDelta.x;
+                UIPoint.y *= reticle.gameObject.GetComponent<RectTransform>().sizeDelta.y;
+
+                UIPoint.x -= reticle.gameObject.GetComponent<RectTransform>().sizeDelta.x * reticle.GetComponent<RectTransform>().pivot.x;
+                UIPoint.y -= reticle.gameObject.GetComponent<RectTransform>().sizeDelta.y * reticle.GetComponent<RectTransform>().pivot.y;
+
+                Debug.Log(UIPoint);
+                
+                reticle.gameObject.GetComponent<RectTransform>().anchoredPosition = UIPoint;
+                */
+
+                //reticle.gameObject.GetComponent<RectTransform>().position = new Vector3(hitInfo.point.x,
+                //hitInfo.point.y, 0f);
+
+                //Debug.Log(new Vector3(hitInfo.point.x,
+                //    hitInfo.point.y, 0f));
+            }
+
+            else
+            {
+                reticle.gameObject.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
+                reticle.gameObject.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
+                aimAssistSphere.SetActive(false);
+            }
         }
 
         ChargeProjectile();
@@ -185,11 +235,11 @@ public class CharacterAiming : MonoBehaviour
 
             isAiming = true;
 
-            //playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player1"));
-            //playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player1Transparent"));
-
-            //normalModel.SetActive(false);
-            //transparentModel.SetActive(true);
+            if (holdingProjectile)
+            {
+                playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Model"));
+                playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Transparent"));
+            }
 
             //ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
         }
@@ -202,9 +252,9 @@ public class CharacterAiming : MonoBehaviour
             reticle.enabled = false;
 
             isAiming = false;
-
-            //playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player1"));
-            //playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player1Transparent"));
+            
+            playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Model"));
+            playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Transparent"));
 
             //normalModel.SetActive(true);
             //transparentModel.SetActive(false);
@@ -224,10 +274,39 @@ public class CharacterAiming : MonoBehaviour
             {
                 Vector3 throwDir;
 
-                RaycastHit hitInfo;
+                reticle.gameObject.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
+                reticle.gameObject.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
+                aimAssistSphere.SetActive(false);
+
+                playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Model"));
+                playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Transparent"));
 
                 //If we are aiming and the raycast hits something
+                /*
                 if (isAiming && Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hitInfo, 100f))
+                {
+                    //Set the throw direction to be the vector pointing from the projectile's position to the raycast's point of contact
+                    throwDir = (hitInfo.point - heldProjectile.transform.position).normalized;
+                }
+                */
+
+                /*
+                if (isAiming && Physics.SphereCast(playerCam.transform.position, aimAssist, playerCam.transform.forward, out hitInfo, 100f, 
+                    ~(LayerMask.NameToLayer("Player" + playerNum) | LayerMask.NameToLayer("Player" + playerNum + "Model") | LayerMask.NameToLayer("Player" + playerNum + "Transparent"))))
+                {
+                    //Set the throw direction to be the vector pointing from the projectile's position to the raycast's point of contact
+                    throwDir = (hitInfo.point - heldProjectile.transform.position).normalized;
+                }
+                */
+                RaycastHit hitInfo;
+
+                if (CheckForAimAssist(out hitInfo))
+                {
+                    //Set the throw direction to be the vector pointing from the projectile's position to the raycast's point of contact
+                    throwDir = (hitInfo.point - heldProjectile.transform.position).normalized;
+                }
+
+                else if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hitInfo, 100f))
                 {
                     //Set the throw direction to be the vector pointing from the projectile's position to the raycast's point of contact
                     throwDir = (hitInfo.point - heldProjectile.transform.position).normalized;
@@ -329,6 +408,12 @@ public class CharacterAiming : MonoBehaviour
         holdingProjectile = true;
         heldProjectile = projectile;
 
+        if (isAiming)
+        {
+            playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Model"));
+            playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Transparent"));
+        }
+
         //Set the projectile's position to be in front of the player model, with some offset
         /*
         heldProjectile.transform.position = playerObj.transform.position 
@@ -367,5 +452,40 @@ public class CharacterAiming : MonoBehaviour
     public void SetPunchForce(float newForce)
     {
         punchForce = newForce;
+    }
+
+    private bool CheckForAimAssist(out RaycastHit hitInfo)
+    {
+        if (playerNum == 1)
+        {
+            return Physics.SphereCast(playerCam.transform.position, aimAssist, playerCam.transform.forward, out hitInfo, 100f,
+                (1 << LayerMask.NameToLayer("Player2") | 1 << LayerMask.NameToLayer("Player3") | 1 << LayerMask.NameToLayer("Player4")));
+        }
+
+        else if (playerNum == 2)
+        {
+            return Physics.SphereCast(playerCam.transform.position, aimAssist, playerCam.transform.forward, out hitInfo, 100f,
+                (1 << LayerMask.NameToLayer("Player1") | 1 << LayerMask.NameToLayer("Player3") | 1 <<LayerMask.NameToLayer("Player4")));
+        }
+
+        else if (playerNum == 3)
+        {
+            return Physics.SphereCast(playerCam.transform.position, aimAssist, playerCam.transform.forward, out hitInfo, 100f,
+                (1 << LayerMask.NameToLayer("Player1") | 1 << LayerMask.NameToLayer("Player2") | 1 << LayerMask.NameToLayer("Player4")));
+        }
+
+        else if (playerNum == 4)
+        {
+            return Physics.SphereCast(playerCam.transform.position, aimAssist, playerCam.transform.forward, out hitInfo, 100f,
+                (1 << LayerMask.NameToLayer("Player1") | 1 << LayerMask.NameToLayer("Player2") | 1 << LayerMask.NameToLayer("Player3")));
+        }
+
+        else
+        {
+            Physics.SphereCast(playerCam.transform.position, aimAssist, playerCam.transform.forward, out hitInfo, 100f);
+            Debug.Log("Spherecasting problem!!!!");
+            return false;
+        }
+
     }
 }

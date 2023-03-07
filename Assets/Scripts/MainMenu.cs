@@ -56,15 +56,15 @@ public class MainMenu : MonoBehaviour
                 InputControlPath.HumanReadableStringOptions.OmitDevice);
         }
 
-        zoomedInSensitivity.value = StateVariables.zoomedInSens;
-        zoomedOutSensitivity.value = StateVariables.zoomedOutSens;
+        zoomedInSensitivity.value = StateVariables.p1zoomedInSens;
+        zoomedOutSensitivity.value = StateVariables.p1zoomedOutSens;
     }
 
     // Update is called once per frame
     void Update()
     {
-        StateVariables.zoomedInSens = zoomedInSensitivity.value;
-        StateVariables.zoomedOutSens = zoomedOutSensitivity.value;
+        StateVariables.p1zoomedInSens = zoomedInSensitivity.value;
+        StateVariables.p1zoomedOutSens = zoomedOutSensitivity.value;
     }
 
     public void StartSingleplayer()

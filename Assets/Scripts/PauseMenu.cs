@@ -41,6 +41,8 @@ public class PauseMenu : MonoBehaviour
 
     bool paused = false;
 
+    int playerNum;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,15 +58,71 @@ public class PauseMenu : MonoBehaviour
                 InputControlPath.HumanReadableStringOptions.OmitDevice);
         }
 
-        zoomedInSensitivity.value = StateVariables.zoomedInSens;
-        zoomedOutSensitivity.value = StateVariables.zoomedOutSens;
+        for (int i = 1; i < 5; i++)
+        {
+            if (gameObject.name.Equals("P" + i + "_UI"))
+            {
+                playerNum = i;
+                break;
+            }
+
+            playerNum = -1;
+        }
+
+        if (playerNum == 1)
+        {
+            zoomedInSensitivity.value = StateVariables.p1zoomedInSens;
+            zoomedOutSensitivity.value = StateVariables.p1zoomedOutSens;
+        }
+
+        else if (playerNum == 2)
+        {
+            zoomedInSensitivity.value = StateVariables.p2zoomedInSens;
+            zoomedOutSensitivity.value = StateVariables.p2zoomedOutSens;
+        }
+
+        else if (playerNum == 3)
+        {
+            zoomedInSensitivity.value = StateVariables.p3zoomedInSens;
+            zoomedOutSensitivity.value = StateVariables.p3zoomedOutSens;
+        }
+
+        else if (playerNum == 4)
+        {
+            zoomedInSensitivity.value = StateVariables.p4zoomedInSens;
+            zoomedOutSensitivity.value = StateVariables.p4zoomedOutSens;
+        }
+
+        else
+            Debug.Log("******PROBLEM HERE******");
     }
 
     // Update is called once per frame
     void Update()
     {
-        StateVariables.zoomedInSens = zoomedInSensitivity.value;
-        StateVariables.zoomedOutSens = zoomedOutSensitivity.value;
+        if (playerNum == 1)
+        {
+            StateVariables.p1zoomedInSens = zoomedInSensitivity.value;
+            StateVariables.p1zoomedOutSens = zoomedOutSensitivity.value;
+        }
+
+        else if (playerNum == 2)
+        {
+            StateVariables.p2zoomedInSens = zoomedInSensitivity.value;
+            StateVariables.p2zoomedOutSens = zoomedOutSensitivity.value;
+        }
+
+        else if (playerNum == 3)
+        {
+            StateVariables.p3zoomedInSens = zoomedInSensitivity.value;
+            StateVariables.p3zoomedOutSens = zoomedOutSensitivity.value;
+        }
+
+        else if (playerNum == 4)
+        {
+            StateVariables.p4zoomedInSens = zoomedInSensitivity.value;
+            StateVariables.p4zoomedOutSens = zoomedOutSensitivity.value;
+        }
     }
 
     public void OnPause()

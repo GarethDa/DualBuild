@@ -24,16 +24,40 @@ public class CameraSettings : MonoBehaviour
 
     CinemachinePOV pov;
 
+    int playerNum;
+
     // Start is called before the first frame update
     void Start()
     {
+        playerNum = PlayerManager.instance.GetIndex(gameObject) + 1;
     }
 
         // Update is called once per frame
         void FixedUpdate()
     {
-        zoomedOutSensitivity = StateVariables.zoomedOutSens;
-        zoomedInSensitivity = StateVariables.zoomedInSens;
+        if (playerNum == 1)
+        {
+            zoomedInSensitivity = StateVariables.p1zoomedInSens;
+            zoomedOutSensitivity = StateVariables.p1zoomedOutSens;
+        }
+
+        else if (playerNum == 2)
+        {
+            zoomedInSensitivity = StateVariables.p2zoomedInSens;
+            zoomedOutSensitivity = StateVariables.p2zoomedOutSens;
+        }
+
+        else if (playerNum == 3)
+        {
+            zoomedInSensitivity = StateVariables.p3zoomedInSens;
+            zoomedOutSensitivity = StateVariables.p3zoomedOutSens;
+        }
+
+        else if (playerNum == 4)
+        {
+            zoomedInSensitivity = StateVariables.p4zoomedInSens;
+            zoomedOutSensitivity = StateVariables.p4zoomedOutSens;
+        }
 
         zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = zoomedOutSensitivity / verticalSensitivityDivisor;
         zoomOutCam.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = zoomedOutSensitivity;

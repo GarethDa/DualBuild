@@ -22,4 +22,3 @@ public class BumperScript : MonoBehaviour
         }
     }
 }
-//hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3(0f, punchForce, 0f), ForceMode.Impulse);

@@ -28,6 +28,8 @@ public class PlayerManager : MonoBehaviour
 
     private List<GameObject> players = new List<GameObject>();
 
+    int numPlayers = 0;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -88,6 +90,7 @@ public class PlayerManager : MonoBehaviour
 
     public void AddPlayer(PlayerInput playerInput)
     {
+        numPlayers++;
         //Debug.Log(playerInput);
 
         playerInputs.Add(playerInput);
@@ -128,8 +131,10 @@ public class PlayerManager : MonoBehaviour
 
             GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
 
-            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player1");
-            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player1Transparent");
+            playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player1Model");
+            playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player1Transparent");
+            playerInput.gameObject.transform.Find("PlayerObj").gameObject.layer = LayerMask.NameToLayer("Player1");
+
         }
 
         else if (playerInputs.Count == 2)
@@ -148,8 +153,9 @@ public class PlayerManager : MonoBehaviour
 
             GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
 
-            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player2");
-            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player2Transparent");
+            playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player2Model");
+            playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player2Transparent");
+            playerInput.gameObject.transform.Find("PlayerObj").gameObject.layer = LayerMask.NameToLayer("Player2");
         }
 
         else if (playerInputs.Count == 3)
@@ -168,8 +174,9 @@ public class PlayerManager : MonoBehaviour
 
             GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
 
-            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player3");
-            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player3Transparent");
+            playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player3Model");
+            playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player3Transparent");
+            playerInput.gameObject.transform.Find("PlayerObj").gameObject.layer = LayerMask.NameToLayer("Player3");
         }
 
         else if (playerInputs.Count == 4)
@@ -187,8 +194,9 @@ public class PlayerManager : MonoBehaviour
 
             GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
 
-            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player4");
-            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player4Transparent");
+            playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player4Model");
+            playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player4Transparent");
+            playerInput.gameObject.transform.Find("PlayerObj").gameObject.layer = LayerMask.NameToLayer("Player4");
         }
     }
 
@@ -208,5 +216,10 @@ public class PlayerManager : MonoBehaviour
         }
 
         return -1;
+    }
+
+    public int GetNumPlayers()
+    {
+        return numPlayers;
     }
 }

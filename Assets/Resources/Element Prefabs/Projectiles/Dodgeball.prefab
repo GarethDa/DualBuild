@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da7f41b0702af040aec8b4888b9bc80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitForce: 500
+  hitForce: 1500
   throwLife: 3
   thrownMat: {fileID: 2100000, guid: d1c4253d8ab059a479586705959c80be, type: 2}
 --- !u!114 &-5685588360524224385

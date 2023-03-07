@@ -62,8 +62,8 @@ public class BallBehaviour : MonoBehaviour
         //if the ball hits a player after being thrown
         if (isThrown && collision.gameObject.tag == "Player")
         {
-            collision.rigidbody.AddExplosionForce(hitForce, collision.contacts[0].point, 5, 50);
-            Debug.Log("Deez");
+            collision.rigidbody.AddExplosionForce(hitForce, collision.contacts[0].point, 10, 50);
+            //Debug.Log("Deez");
         }
 
         /*

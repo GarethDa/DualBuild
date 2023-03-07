@@ -419,6 +419,7 @@ MonoBehaviour:
   maxChargeTime: 3
   maxChangeFOV: 10
   punchForce: 20
+  aimAssist: 3
 --- !u!114 &7003453695122746443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,7 +1013,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 493535
+    m_Bits: 125831135
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

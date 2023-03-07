@@ -13,6 +13,8 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] Transform holdPos;
     [SerializeField] CinemachineVirtualCamera normalCam;
     [SerializeField] CinemachineVirtualCamera zoomCam;
+    [SerializeField] GameObject normalModel;
+    [SerializeField] GameObject transparentModel;
 
     [Header("Projectiles & Punching")]
     [SerializeField] [Range(1000.0f, 4000.0f)] float throwForce = 2000.0f;
@@ -183,7 +185,12 @@ public class CharacterAiming : MonoBehaviour
 
             isAiming = true;
 
-            
+            //playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player1"));
+            //playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player1Transparent"));
+
+            //normalModel.SetActive(false);
+            //transparentModel.SetActive(true);
+
             //ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
         }
 
@@ -195,6 +202,12 @@ public class CharacterAiming : MonoBehaviour
             reticle.enabled = false;
 
             isAiming = false;
+
+            //playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player1"));
+            //playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player1Transparent"));
+
+            //normalModel.SetActive(true);
+            //transparentModel.SetActive(false);
         }
 	}
 

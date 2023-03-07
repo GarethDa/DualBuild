@@ -127,6 +127,9 @@ public class PlayerManager : MonoBehaviour
             introCam.SetActive(false);
 
             GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
+
+            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player1");
+            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player1Transparent");
         }
 
         else if (playerInputs.Count == 2)
@@ -144,6 +147,9 @@ public class PlayerManager : MonoBehaviour
             p2Ui.GetComponent<CanvasScaler>().scaleFactor = 0.5f;
 
             GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
+
+            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player2");
+            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player2Transparent");
         }
 
         else if (playerInputs.Count == 3)
@@ -161,6 +167,9 @@ public class PlayerManager : MonoBehaviour
             p2Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
 
             GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
+
+            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player3");
+            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player3Transparent");
         }
 
         else if (playerInputs.Count == 4)
@@ -177,6 +186,9 @@ public class PlayerManager : MonoBehaviour
             p4Ui.GetComponent<CanvasScaler>().scaleFactor = 1f;
 
             GameManager.instance.powerupManager.Add(playerInput.gameObject.GetComponent<PowerUpScript>());
+
+            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player4");
+            //playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player4Transparent");
         }
     }
 

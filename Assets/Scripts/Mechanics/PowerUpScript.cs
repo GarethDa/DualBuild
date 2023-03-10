@@ -30,7 +30,7 @@ public class PowerUpScript : MonoBehaviour
     [SerializeField] private GameObject bombPrefab;
 
     //SuperPunch Variables
-    [SerializeField] [Range(1.0f, 50.0f)] private float superPunchForce = 30f;
+    [SerializeField] [Range(1.0f, 100.0f)] private float superPunchForce = 30f;
 
     private bool usedPowerUp = false; //if we have used our powerup
     public float powerUpDuration = 3f; //total duration of ability in seconds

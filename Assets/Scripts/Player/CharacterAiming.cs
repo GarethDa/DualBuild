@@ -112,7 +112,7 @@ public class CharacterAiming : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(playerCam.pixelHeight / 2f + "      " + playerCam.pixelWidth / 2f);
+        //Debug.Log(playerCam.pixelHeight / 2f + "      " + playerCam.pixelWidth / 2f);
 
         if (animator != null)
         {
@@ -378,17 +378,19 @@ public class CharacterAiming : MonoBehaviour
                 animator.SetTrigger("Punch");
             }
 
-            GameObject playerObj = transform.Find("PlayerObj").gameObject;
+            GameObject playerObj = transform.GetChild(0).gameObject;
 
             RaycastHit hitInfo;
             //Physics.Raycast(transform.position, playerObj.transform.forward, out hitInfo, 100);
 
-            Physics.BoxCast(transform.position, new Vector3(1f, 1f, .1f), playerObj.transform.forward, out hitInfo, Quaternion.identity, 4f);
+            //Physics.BoxCast(transform.position + new Vector3(0, 2, 0), new Vector3(2.5f, 1f, 0.1f), playerObj.transform.forward, out hitInfo, Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0), 5f);
+            Physics.SphereCast(playerObj.transform.position - playerObj.transform.forward * 1.5f, 
+                2f, playerObj.transform.forward, out hitInfo, 5f);
 
             if (hitInfo.collider != null && hitInfo.collider.gameObject.tag == "Player")
             {
                 //GameObject hitPlayer = hitInfo.collider.transform.Find("PlayerObj").gameObject;
-                hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3 (0f, punchForce, 0f), ForceMode.Impulse);
+                hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3 (0f, punchForce / 2, 0f), ForceMode.Impulse);
                 Debug.Log("punch");
                 powerup.PlayerPunched();
             }

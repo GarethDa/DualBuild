@@ -439,7 +439,7 @@ MonoBehaviour:
   dashSpeed: 30
   dashDuration: 3
   bombPrefab: {fileID: 2370066802426273844, guid: 405c9ea97d646494c9bc4285d04da109, type: 3}
-  superPunchForce: 30
+  superPunchForce: 80
   powerUpDuration: 3
 --- !u!114 &4218163339387787275
 MonoBehaviour:
@@ -907,7 +907,19 @@ MonoBehaviour:
     m_ActionId: 70006745-111e-418e-b2a3-332d8ef10b00
     m_ActionName: Editor/AddFallingPlatfom[/Keyboard/l]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3436805638776943962}
+        m_TargetAssemblyTypeName: DebugControls, Assembly-CSharp
+        m_MethodName: OnGiveSuperPunch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d682a83e-3cc3-4a8b-bd3c-7f8ae170676e
     m_ActionName: Editor/GiveSuperPunch[/Keyboard/leftBracket]
   m_NeverAutoSwitchControlSchemes: 0

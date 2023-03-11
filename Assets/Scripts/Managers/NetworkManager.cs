@@ -22,6 +22,7 @@ public class NetworkManager : MonoBehaviour
     public string serverIP;
     public float timeoutSeconds = 2f;
     int playersConnected = 0;
+    string identifier;
 
     public static NetworkManager instance;
     public string roomKey = "JOHN";
@@ -35,11 +36,13 @@ public class NetworkManager : MonoBehaviour
     private static IPHostEntry hostInfo;
     private static IPAddress ip;
     private static IPEndPoint endPointTCP;//the IP and port of the recipient for TCP
-    private static IPEndPoint endPointUDP;//the IP and port of the recipient for UDP
+    private static EndPoint endPointUDP;//the IP and port of the recipient for UDP
     private static Socket TCPSocket;
     private static Socket UDPSocket;
-    Dictionary<NetworkScript, List<NetworkInstruction>> queuedInstructions = new Dictionary<NetworkScript, List<NetworkInstruction>>();
+    Dictionary<NetworkScript, List<NetworkInstruction>> queuedTCPInstructions = new Dictionary<NetworkScript, List<NetworkInstruction>>();
+    Dictionary<NetworkScript, List<NetworkInstruction>> queuedUDPInstructions = new Dictionary<NetworkScript, List<NetworkInstruction>>();
     Thread TCPListener;
+    Thread UDPListener;
 
     //client only
     public static EndPoint receiver;
@@ -53,6 +56,7 @@ public class NetworkManager : MonoBehaviour
     bool setupTCP = false;
     bool setupUDP = false;
     static Queue<string> incomingInstructions = new Queue<string>();
+   
 
     public List<string> getCodes()
     {
@@ -61,6 +65,7 @@ public class NetworkManager : MonoBehaviour
 
     public List<string> getDataFromInstruction(string instruction)
     {
+        
         List<string> returner = new List<string>();
         string data = "";
         foreach(char c in instruction)
@@ -124,14 +129,15 @@ public class NetworkManager : MonoBehaviour
         return -1;
     }
 
-    //receive functions for TCP and UDP
-    private void setupUDPClient()
-    {
-       
-        
-        Debug.Log("Setup UDP Client");
-        setupUDP = true;
 
+
+    public void setupUDPClient()
+    {
+        UDPSocket = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
+        UDPSocket.Connect(endPointUDP);
+        UDPListener = new Thread(UDPMessageListener);
+        UDPListener.Start();
+        setupUDP = true;
     }
 
     public void setupTCPClient()//https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/sockets/socket-services
@@ -146,6 +152,8 @@ public class NetworkManager : MonoBehaviour
 
         TCPListener = new Thread(TCPMessageListener);
         TCPListener.Start();
+
+       
 
         Debug.Log("Setup TCP Client");
         setupTCP = true;
@@ -217,40 +225,33 @@ public class NetworkManager : MonoBehaviour
     }
 
 
-    public void registerGameObject(GameObject g)
+    public void queueTCPInstruction(NetworkScript script, NetworkInstruction instruction)
     {
-        //send request to server
-    }
-
-    public void createAndRegisterGameObject(string prefab, Transform objectTransform)
-    {
-        //create gameobject in world
-        GameObject newObject = Resources.Load<GameObject>(prefab);
-        registerGameObject(newObject);
-       
-
-
-
-
-
-    }
-
-    public void queueInstruction(NetworkScript script, NetworkInstruction instruction)
-    {
-        if (!queuedInstructions.ContainsKey(script))
+        if (!queuedTCPInstructions.ContainsKey(script))
         {
-            queuedInstructions.Add(script, new List<NetworkInstruction>());
+            queuedTCPInstructions.Add(script, new List<NetworkInstruction>());
         }
 
-        foreach(NetworkInstruction i in queuedInstructions[script])//go through all instructions queued by the script
+      
+        queuedTCPInstructions[script].Add(instruction);//at this point, there is a list of instructions made, and the type of instruction is unique, so add it in to the list
+    }
+
+    public void queueUDPInstruction(NetworkScript script, NetworkInstruction instruction)
+    {
+        if (!queuedUDPInstructions.ContainsKey(script))
         {
-            if(i.code == instruction.code)//check if an instruction with the same code has been issued
+            queuedUDPInstructions.Add(script, new List<NetworkInstruction>());
+        }
+
+        foreach (NetworkInstruction i in queuedUDPInstructions[script])//go through all instructions queued by the script
+        {
+            if (i.code == instruction.code)//check if an instruction with the same code has been issued
             {
                 i.codeData = instruction.codeData;//if so, replace it
                 return;
             }
         }
-        queuedInstructions[script].Add(instruction);//at this point, there is a list of instructions made, and the type of instruction is unique, so add it in to the list
+        queuedUDPInstructions[script].Add(instruction);//at this point, there is a list of instructions made, and the type of instruction is unique, so add it in to the list
     }
 
 
@@ -260,7 +261,9 @@ public class NetworkManager : MonoBehaviour
         {
             instance = this;
         }
-       // gameobjectIDs.Add(new List<int>());//reserve list of gameobjects at index
+        // gameobjectIDs.Add(new List<int>());//reserve list of gameobjects at index
+        identifier = Guid.NewGuid().ToString();
+        Debug.Log(identifier);
         setupNetworking();
         
     }
@@ -272,7 +275,11 @@ public class NetworkManager : MonoBehaviour
         {
             return;
         }
-        
+        while (incomingInstructions.Count > 0)
+        {
+            Debug.Log("Received:" + incomingInstructions.Peek());
+            executeInstructions(decodeInstruction(incomingInstructions.Dequeue()));
+        }
 
         secondsSinceLastUpdate += Time.deltaTime;
         if(secondsSinceLastUpdate < secondsBetweenUpdates)
@@ -282,12 +289,28 @@ public class NetworkManager : MonoBehaviour
         }
         secondsSinceLastUpdate = 0;
 
+        
+            foreach(NetworkScript key in queuedTCPInstructions.Keys)
+            {
+                foreach(NetworkInstruction instruction in queuedTCPInstructions[key])
+                {
+                    sendTCPMessage(instruction.getString()); ;
+                }
+            queuedTCPInstructions[key].Clear();
+            }
+            
+        
 
-       while(incomingInstructions.Count > 0)
-        {
-            Debug.Log("Received:" + incomingInstructions.Peek());
-            executeInstructions(decodeInstruction(incomingInstructions.Dequeue()));
+       
+            foreach (NetworkScript key in queuedUDPInstructions.Keys)
+            {
+                foreach (NetworkInstruction instruction in queuedUDPInstructions[key])
+                {
+                    sendUDPMessage(instruction.getString()); ;
+                }
+            queuedUDPInstructions[key].Clear();
         }
+
         
 
 
@@ -308,7 +331,26 @@ public class NetworkManager : MonoBehaviour
                 //parse message
                 string TCPMessage = Encoding.ASCII.GetString(receivedTCP,0,receivedTCPSize);
                 incomingInstructions.Enqueue(TCPMessage);
-                
+                Debug.Log("RECEIVED TCP MESSAGE: " + TCPMessage);
+            }
+        }
+    }
+
+    private void UDPMessageListener()
+    {
+        while (true)
+        {
+            Debug.Log("start receiving UDP");
+            byte[] receivedUDP = new byte[512];
+            int receivedUDPSize = UDPSocket.ReceiveFrom(receivedUDP,ref endPointUDP);
+            Debug.Log("Called receiving UDP");
+            if (receivedUDPSize > 0)
+            {
+                //parse message
+                string UDPMessage = Encoding.ASCII.GetString(receivedUDP, 0, receivedUDPSize);
+                incomingInstructions.Enqueue(UDPMessage);
+                Debug.Log("RECEIVED UDP MESSAGE: " + UDPMessage);
+
             }
         }
     }
@@ -328,21 +370,40 @@ public class NetworkManager : MonoBehaviour
         {
             string code = getInstructionCode(inst).ToString();
             string data = getAfterInstructionCode(inst);
-            
-            if(code == getInstructionCode(InstructionType.LOCAL_GAMEOBJECT_ID))
+            List<string> instructionData = getDataFromInstruction(data);
+            string receivedIdentifier = instructionData[instructionData.Count - 1];
+            //Debug.Log(receivedIdentifier + " " + identifier);
+            if (!receivedIdentifier.Equals(identifier))
+            {
+                
+                if (!receivedIdentifier.Equals(Guid.Empty.ToString()))
+                {
+                    Debug.Log("Not my instruction");
+                    //continue;//NOT our data and not TCP(fuck UDP)
+                }
+               
+            }
+            if (code == getInstructionCode(InstructionType.LOCAL_GAMEOBJECT_ID))
             {
                 affectedObject = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(data));
             }
-            if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
+            if (code == getInstructionCode(InstructionType.CHAT))
             {
-                waitForAfter.Add(inst);
+                Debug.Log("CHAT MESSAGE: " + instructionData[0]);
+            }
+            if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
+            {//will be to create an object with a string prefab
+                Vector3 dataPosition = JsonUtility.FromJson<Vector3>(instructionData[0]);
+                GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(instructionData[1]));
+                toAffect.GetComponent<NetworkedPosition>().setPosition(dataPosition);
+                Debug.Log("Moved GO with ID " + instructionData[1] + " to position: " + dataPosition.ToString());
             }
 
             if (code == getInstructionCode(InstructionType.REGISTER_GAMEOBJECT))
             {//will be to create an object with a string prefab
                 Debug.Log("creating object " + data);
-
-                List<string> instructionData = getDataFromInstruction(data);
+                
+               
                 string prefab = instructionData[0];
                 
                 string index = instructionData[1];
@@ -350,6 +411,8 @@ public class NetworkManager : MonoBehaviour
                 sendTCPMessage(getInstructionCode(InstructionType.CREATE_GAMEOBJECT) + index.ToString() + "|" + affectedObject.GetInstanceID().ToString());
 
             }
+
+           
 
             if (affectedObject == null)
             {
@@ -374,12 +437,8 @@ public class NetworkManager : MonoBehaviour
     {
         string code = getInstructionCode(inst).ToString();
         string data = getAfterInstructionCode(inst);
-        if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
-        {//will be to create an object with a string prefab
-            Vector3 dataPosition = JsonUtility.FromJson<Vector3>(data);
-            g.transform.position = dataPosition;
-           
-        }
+        List<string> instructionData = getDataFromInstruction(data);
+        
 
         if (code == getInstructionCode(InstructionType.VELOCITY_CHANGE))
         {
@@ -399,10 +458,31 @@ public class NetworkManager : MonoBehaviour
 
     }
 
-    public void sendTCPMessage(string message)
+    public string encodeInstruction(InstructionType type, string m)
     {
+
+        return getInstructionCode(type) + m;
+    }
+
+    public NetworkInstruction getInstruction(InstructionType type, string m)
+    {
+        NetworkInstruction instruction = new NetworkInstruction(type,m);
+        return instruction;
+    }
+
+    private void sendTCPMessage(string message)
+    {
+        message += "|" + identifier;
         TCPSocket.Send(Encoding.ASCII.GetBytes(message), 0, message.Length, SocketFlags.None);
-        Debug.Log("sent message " + message);
+        Debug.Log("sent message TCP:" + message);
+    }
+
+    private void sendUDPMessage(string message)
+    {
+        //Debug.Log("sending message UDP:" + message);
+        message += "|" + identifier;
+        UDPSocket.SendTo(Encoding.ASCII.GetBytes(message), endPointUDP);
+        Debug.Log("sent message UDP:" + message);
     }
 
     public void setupNetworking()
@@ -432,7 +512,17 @@ public class NetworkManager : MonoBehaviour
 
     public void requestGameObjectCreation()
     {
-        sendTCPMessage(getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + message + getInstructionCode(InstructionType.POSITION_CHANGE) + JsonUtility.ToJson(gameObject.transform.position));
+        sendTCPMessage(getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + message);
+    }
+
+    public void sendUDPMessage()
+    {
+        sendUDPMessage(getInstructionCode(InstructionType.CHAT) + message);
+    }
+
+    public void sendTCPMessage()
+    {
+        sendTCPMessage(message);
     }
 }
 
@@ -441,19 +531,25 @@ public class NetworkInstruction
     public string localGameObject;//the gameobject in our NVE that we want to affect
     public string localIPAddress;//for indexing the gameobject later
     public InstructionType code;
-    public object codeData; //(converted to a string later through JsonUtility)
+    public string codeData; //(converted to a string later through JsonUtility)
 
     public NetworkInstruction(GameObject affected, InstructionType instruction, object data )
     {
         localGameObject = NetworkManager.instance.getGameObjectCode(affected);
         localIPAddress = NetworkManager.instance.getIPAddress();
         code = instruction;
-        codeData = data;
+        codeData = JsonUtility.ToJson(data);
+    }
+
+    public NetworkInstruction(InstructionType type, string s)
+    {
+        code = type;
+        codeData = s;
     }
 
     public string getString()
     {
-        return NetworkManager.instance.getCodes()[(int)code] + JsonUtility.ToJson(codeData);
+        return NetworkManager.instance.getCodes()[(int)code] + codeData;
     }
    
 }
@@ -468,7 +564,7 @@ public enum InstructionType
     REGISTER_GAMEOBJECT,
     CREATE_ROOM,
     JOIN_ROOM,
-    DATA,
+    CHAT,
     CREATE_GAMEOBJECT
 }
 /*
@@ -526,6 +622,7 @@ public class NetworkManagerEditor : Editor
         if (GUILayout.Button("Connect to server"))
         {
             NetworkManager.instance.setupTCPClient();
+            NetworkManager.instance.setupUDPClient();
         }
 
         if (GUILayout.Button("Create room"))
@@ -537,16 +634,22 @@ public class NetworkManagerEditor : Editor
         {
             NetworkManager.instance.joinRoom();
         }
-
+        /*
         if (GUILayout.Button("Send Message"))
         {
-            NetworkManager.instance.sendTCPMessage(NetworkManager.instance.message);
+            NetworkManager.instance.sendTCPMessage();
         }
-
+        */
         if (GUILayout.Button("Create gameobject"))
         {
             NetworkManager.instance.requestGameObjectCreation();
         }
+        
+        if (GUILayout.Button("UDP Message"))
+        {
+            NetworkManager.instance.sendUDPMessage();
+        }
+        
     }
 }
 

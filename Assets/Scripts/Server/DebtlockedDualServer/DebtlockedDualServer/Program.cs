@@ -21,7 +21,7 @@ namespace DebtlockedDualServer
             REGISTER_GAMEOBJECT,
             CREATE_ROOM,
             JOIN_ROOM,
-            DATA,
+            CHAT,
             CREATE_GAMEOBJECT
         }
 
@@ -33,7 +33,7 @@ namespace DebtlockedDualServer
         private static IPHostEntry hostInfo;
 
         private static IPEndPoint endPointTCP;//the IP and port of the recipient for TCP
-        private static IPEndPoint endPointUDP;//the IP and port of the recipient for UDP
+        private static EndPoint endPointUDP;//the IP and port of the recipient for UDP
         private static Socket TCPSocket;
         private static Socket UDPSocket;
         static int maxPlayersPerLobby = 4;
@@ -42,108 +42,80 @@ namespace DebtlockedDualServer
 
         static Dictionary<string, Room> rooms = new Dictionary<string, Room>();
         static List<Socket> waitingRoomClients = new List<Socket>();
-        static Queue<Socket> queuedWaitingRoomClients = new Queue<Socket>();
-        public Dictionary<Socket, Queue<string>> clientMessages = Dictionary<Socket, Queue<string>>;
+        
+        public static Queue<Socket> queuedClientsTCP = new Queue<Socket>();
+        public static Queue<EndPoint> queuedClientsUDP = new Queue<EndPoint>();
+        public static Queue<ClientMessage> clientMessagesTCP = new Queue<ClientMessage>();
+        public static Queue<ClientMessage> clientMessagesUDP = new Queue<ClientMessage>();
+        public static Dictionary<Socket, string> clientRooms = new Dictionary<Socket, string>();
+
+
         static void Main(string[] args)
         {
             address = IPAddress.Parse(getIPAddress());
             setupEndPoint();
             startTCPServer();
+            startUDPServer();
+            Console.WriteLine("Started server on private IP:" + address.ToString());
+            Program p = new Program();
+            Thread clientThread = new Thread(new ThreadStart(() => p.clientConnect()));
+            clientThread.Start();
+            Console.WriteLine("Waiting for clients to connect...");
+            //start UDP server
 
             while (true)
             {
+                while (queuedClientsTCP.Count > 0)
+                {
+
+                    Socket newClient = queuedClientsTCP.Dequeue();
+                    log("creating client", newClient);
+                   
+                    
+                    Thread newClientThread = new Thread(new ThreadStart(() => p.listenForMessages(newClient)));
+                    newClientThread.Start();
+                   
+                }
                 //send info to all clients (where to send will be embeddedin the message itself)
                 //break;
+
                 List<Socket> removedFromRoom = new List<Socket>();
-                foreach (Socket s in waitingRoomClients)
+
+
+                while (clientMessagesTCP.Count>0)
                 {
-                    if (s == null)
-                    {
-                        continue;
-                    }
-                    log("waiting on", s);
-                    string data = removeGarbageCharacters(receiveTCPMessage(s));
-                    if (data == null)
-                    {
-                        continue;
-                    }
-                    //all we have to check for is if the client requests to be put in a room, or wants to make their own room.
-                    //if they dont want either, then we will just route their packets to all other clients in roomClients
-                    //put in room, add them to list of clients in room
-                    //if make new room, spin up a new thread (fuck it)
+                    ClientMessage clientM = clientMessagesTCP.Dequeue();
+                    
+                        Socket client = clientM.client;
 
-                    if (data[0].ToString() == getInstructionCode(InstructionType.CREATE_ROOM))
-                    {
-                        Console.WriteLine("Client wants to make a new room");
-                        //make new room (add to dictionary)
-                        string alphabet = "ABCDEFGHIJKLMNOPQRSTUVQXYZ";
-                        string roomCode = "";
-                        while (!rooms.Keys.Contains(roomCode) && roomCode.Length == 0)
+                        string mess = clientM.message;
+                        if(mess.Length == 0)
                         {
-                            roomCode = "";
-                            Random rand = new Random();
-                            for (int i = 0; i < codeLength; i++)
-                            {
-                                roomCode += alphabet[rand.Next(0, alphabet.Count())];
-                            }
+                            continue;
                         }
+                    List<string> instructions = decodeInstruction(mess);
 
-                        Console.WriteLine("Room code:" + roomCode + "|");
-                        rooms.Add(roomCode, new Room(maxPlayersPerLobby));
-                        if (rooms[roomCode].addPlayer(s))
-                        {
-                            removedFromRoom.Add(s);
-                            //send message back to client about their room number
-                            sendTCPMessage(getInstructionCode(InstructionType.CREATE_ROOM) + roomCode, s);
-                            Console.WriteLine("Client moved to room");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Problem adding client to room");
-                        }
-                        
-
-
-                        continue;
-                    }
-                    if (data[0].ToString() == getInstructionCode(InstructionType.JOIN_ROOM))
-                    {
-                        //join room
-
-                        string joiningRoom = data.Substring(1, 4);
-                        Console.WriteLine("Room Code:" + joiningRoom + "|");
-                        if (rooms.ContainsKey(joiningRoom))
-                        {
-                            //get index of player
-
-                            if (rooms[joiningRoom].addPlayer(s))
-                            {
-                                removedFromRoom.Add(s);
-
-                                //send message that they joined the room
-                                Console.WriteLine("Theres space in room:" + joiningRoom);
-
-                                sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + "o", s);
-                            }
-                            else
-                            {
-
-                                //send message that room is full
-                                Console.WriteLine("Theres no space in room:" + joiningRoom);
-
-                                sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + "x", s);
-
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Room doesnt exist:" + joiningRoom);
-
-                        }
-                        continue;
-                    }
-
+                    actOnInstructions(client, client.RemoteEndPoint, removedFromRoom, instructions);
                 }
+
+                while (clientMessagesUDP.Count > 0)
+                {
+                    ClientMessage clientM = clientMessagesUDP.Dequeue();
+
+                    Socket client = clientM.client;
+
+                    string mess = clientM.message;
+                    if (mess.Length == 0)
+                    {
+                        continue;
+                    }
+                    List<string> instructions = decodeInstruction(mess);
+
+                    actOnInstructions(client, client.RemoteEndPoint, removedFromRoom, instructions);
+                }
+
+
+
 
                 foreach (Socket s in removedFromRoom)
                 {
@@ -154,137 +126,278 @@ namespace DebtlockedDualServer
                 removedFromRoom.Clear();
 
 
-                while (queuedWaitingRoomClients.Count > 0)
-                {
-                    waitingRoomClients.Add(queuedWaitingRoomClients.Dequeue());
-                    Console.WriteLine("Client added to waiting room");
-
-                }
+               
 
                 //now check all the sockets in the rooms and send messages to other clients accordingly
-                foreach (string soc in rooms.Keys)
-                {
-                    Socket[] connectedPlayers = rooms[soc].connectedPlayers;
-                    Room currentRoom = rooms[soc];
-                    //check for message from all clients
-                    //if there is one, send it to everyone else
-                    //Console.Write("!");
-                    for (int i = 0; i < maxPlayersPerLobby; i++)
-                    {
-                        //Console.WriteLine(soc);
-                        if (currentRoom.connectedPlayers[i] == null)
-                        {
-                            continue;
-                        }
-                        //Console.WriteLine("player: " + i.ToString());
-                        
-
-                        Socket client = currentRoom.connectedPlayers[i];
-                        log("waiting on", client);
-                        string message = removeGarbageCharacters(receiveTCPMessage(client));
-                        if (message == null)
-                        {
-                            continue;
-                        }
-                        log("Received Message:" + message, client);
-                        //do the translation for gameobject using the table if it has the character for gameobject affected (@)
-                        List<string> instructions = decodeInstruction(message);
-                        List<Instruction> forwardInstructions = new List<Instruction>();
-                        List<string> redoingInstructions = new List<string>();
-                        int affectedObjectID = -1;
-                        foreach (string inst in instructions)
-                        {
-                            Instruction adding = new Instruction("", true);
-                            string code = getInstructionCode(inst).ToString();
-                            string data = getAfterInstructionCode(inst);
-
-
-                            if (code == getInstructionCode(InstructionType.REGISTER_GAMEOBJECT))
-                            {
-                                log("Registered Gameobject " + data, client);
-                                int registeringIndex = currentRoom.registerGameObject();
-                                adding.message  += (getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + data);
-                                adding.message  += ("|" + registeringIndex);
-                                forwardInstructions.Add(adding);
-
-                            }
-                            
-                                if (code == getInstructionCode(InstructionType.CREATE_GAMEOBJECT))
-                            {
-                                List<string> instructionData = getDataFromInstruction(data);
-                                string index = instructionData[0];
-                                string id = instructionData[1];
-
-                                int registeringIndex = int.Parse(index);//int.Parse(data.Substring(0,data.IndexOf('|')));
-                                int registeringID = int.Parse(id);
-
-                                currentRoom.GOTranslationTable[currentRoom.getIndex(client)][registeringIndex] = registeringID;
-                               
-
-                            }
-                            if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
-                            {
-                                //
-                                adding.message += (getInstructionCode(InstructionType.POSITION_CHANGE) + data);
-                                adding.shouldSendToSender = false;
-                            }
-                            if (code == getInstructionCode(InstructionType.LOCAL_GAMEOBJECT_ID))
-                            {
-                                affectedObjectID = int.Parse(data);
-                                adding.shouldSendToSender = false;
-                            }
-                        }
-
-                        foreach (string inst in redoingInstructions)
-                        {
-                            string code = getInstructionCode(inst).ToString();
-                            string data = getAfterInstructionCode(inst);
-                            Instruction adding = new Instruction("", true);
-                            
-                        }
-
-
-                        
-                        if (forwardInstructions.Count == 0)
-                        {
-                            continue;
-                        }
-                        foreach(Instruction instruction in forwardInstructions)
-                        {
-                            if(instruction.message == null)
-                            {
-                                return;
-                            }
-                            if(instruction.message.Length == 0)
-                            {
-                                return;
-                            }
-                            //send the message to all other clients
-                            for (int u = 0; u < maxPlayersPerLobby; u++)
-                            {
-                                if(currentRoom.connectedPlayers[u] == null)
-                                {
-                                    continue;
-                                }
-                                if (!instruction.shouldSendToSender)
-                                {
-                                    if (connectedPlayers[u] == client)
-                                    {
-                                        continue;
-                                    }
-                                }
-
-                                sendTCPMessage(instruction.message, connectedPlayers[u]);
-                            }
-                        }
-                        
-
-                    }
-                }
+                
 
             }
 
         }
+
+        public static void actOnInstructions(Socket client, EndPoint endPoint, List<Socket> removedFromRoom, List<string> instructions)
+        {
+           
+            foreach (string inst in instructions)
+            {
+                //Console.WriteLine("PROCESSING:" + inst);
+                Instruction adding = new Instruction("", true);
+                string code = getInstructionCode(inst).ToString();
+                string data = getAfterInstructionCode(inst);
+                List<string> dataArguments = getDataFromInstruction(data);
+                string identifier = dataArguments[dataArguments.Count - 1];
+                if (code == getInstructionCode(InstructionType.CREATE_ROOM))
+                {
+                    Console.WriteLine("Client wants to make a new room");
+                    //make new room (add to dictionary)
+                    string alphabet = "ABCDEFGHIJKLMNOPQRSTUVQXYZ";
+                    string roomKey = "";
+                    while (!rooms.Keys.Contains(roomKey) && roomKey.Length == 0)
+                    {
+                        roomKey = "";
+                        Random rand = new Random();
+                        for (int i = 0; i < codeLength; i++)
+                        {
+                            roomKey += alphabet[rand.Next(0, alphabet.Count())];
+                        }
+                    }
+
+                    Console.WriteLine("Room code:" + roomKey);
+                    rooms.Add(roomKey, new Room(maxPlayersPerLobby));
+                    if (rooms[roomKey].addPlayer(client,identifier,endPoint))
+                    {
+                        removedFromRoom.Add(client);
+                        clientRooms.Add(client, roomKey);
+                        //send message back to client about their room number
+                        Socket[] newList = { client };
+                        sendTCPMessage(getInstructionCode(InstructionType.CREATE_ROOM) + roomKey, newList,0);
+                        Console.WriteLine("Client moved to room");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Problem adding client to room");
+                    }
+
+
+
+
+                }
+
+                if (code == getInstructionCode(InstructionType.JOIN_ROOM))
+                {
+                    //join room
+
+                    string joiningRoom = dataArguments[0];
+                    Console.WriteLine("Room Code:" + joiningRoom);
+                    if (rooms.ContainsKey(joiningRoom))
+                    {
+                        //get index of player
+
+                        if (rooms[joiningRoom].addPlayer(client,identifier,endPoint))
+                        {
+                            removedFromRoom.Add(client);
+
+                            clientRooms.Add(client, joiningRoom);
+                            //send message that they joined the room
+                            Console.WriteLine("Theres space in room:" + joiningRoom);
+                            Socket[] newList = { client };
+                            sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + "o", newList,0);
+                        }
+                        else
+                        {
+
+                            //send message that room is full
+                            Console.WriteLine("Theres no space in room:" + joiningRoom);
+                            Socket[] newList = { client };
+                            sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + "x", newList,0);
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Room doesnt exist:" + joiningRoom);
+
+                    }
+                    continue;
+                }
+                //if statements
+
+                if (!clientRooms.ContainsKey(client))
+                {
+                    continue;
+                }
+                string roomCode = clientRooms[client];
+                Socket[] connectedSockets = rooms[roomCode].connectedPlayersTCP;
+                EndPoint[] connectedEndPoints = rooms[roomCode].connectedPlayersUDP;
+                Room currentRoom = rooms[roomCode];
+
+
+
+                List<Instruction> forwardInstructionsTCP = new List<Instruction>();
+                List<Instruction> forwardInstructionsUDP = new List<Instruction>();
+                List<string> redoingInstructions = new List<string>();
+                int affectedObjectID = -1;
+                List<string> instructionData = getDataFromInstruction(data);
+                if (code == getInstructionCode(InstructionType.CHAT))
+                {
+                    adding.message += getInstructionCode(InstructionType.CHAT) + data;
+                    adding.shouldSendToSender = false;
+                    forwardInstructionsUDP.Add(adding);
+                }
+
+                if (code == getInstructionCode(InstructionType.REGISTER_GAMEOBJECT))
+                {
+
+                    log("Registered Gameobject " + data, client);
+
+                    int registeringIndex = currentRoom.registerGameObject();
+                    Console.WriteLine("added -1 at index" + registeringIndex);
+                    adding.message += (getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + dataArguments[0]) + ("|" + registeringIndex) + ("|" + Guid.Empty.ToString());
+
+                    forwardInstructionsTCP.Add(adding);
+
+                }
+
+                if (code == getInstructionCode(InstructionType.CREATE_GAMEOBJECT))
+                {
+                   
+                    string index = instructionData[0];
+                    string id = instructionData[1];
+                    //Console.WriteLine("raw registered GOdata ID:" + id+ " at index: " + index);
+
+                    int registeringIndex = int.Parse(index);//int.Parse(data.Substring(0,data.IndexOf('|')));
+                    int registeringID = int.Parse(id);
+
+                    int playerIndex = currentRoom.getIndex(client);
+                    currentRoom.GOTranslationTable[playerIndex][registeringIndex] = registeringID;
+                    Console.WriteLine("registered gameobject with GOID: " + registeringID.ToString() + " at index: " + registeringIndex.ToString() + " at playerIndex: " + playerIndex.ToString());
+
+                }
+                if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
+                {
+                    int clientGameobjectID = int.Parse(instructionData[1]);
+                    string position = instructionData[0];
+
+                    int clientIndex = currentRoom.getIndex(identifier);
+                    //Console.WriteLine("Actual client index: " + clientIndex.ToString());
+                    int indexToSearchAt = getIndexByGameObjectID(clientIndex, roomCode, clientGameobjectID);
+
+                    for(int i = 0; i < maxPlayersPerLobby; i++)
+                    {
+                        if(currentRoom.GUIDs[i] == null)
+                        {
+                            continue;
+                        }
+                        if(currentRoom.GUIDs[i] == identifier)
+                        {
+                            continue;
+                        }
+                        //Console.WriteLine("I: " + i.ToString());
+                        int IDOfGOToModify = getGameObjectIDByIndex(i, roomCode, indexToSearchAt);
+                        string messageToSend = getInstructionCode(InstructionType.POSITION_CHANGE) + position + "|" + IDOfGOToModify.ToString() + "|" + currentRoom.GUIDs[i];
+                        sendUDPMessage(messageToSend, currentRoom.connectedPlayersUDP,i);
+                    }
+                }
+                if (code == getInstructionCode(InstructionType.LOCAL_GAMEOBJECT_ID))
+                {
+                    affectedObjectID = int.Parse(data);
+                    adding.shouldSendToSender = false;
+                }
+
+
+                forwardMessages(forwardInstructionsTCP, roomCode, client,true);
+                forwardMessages(forwardInstructionsUDP, roomCode, client,false);
+
+
+                
+
+            }
+        }
+
+        public static int getIndexByGameObjectID(int clientIndex, string roomCode, int ID)
+        {
+            Room currentRoom = rooms[roomCode];
+            //Console.WriteLine("Getting index: " + roomCode + " " + ID.ToString() + " client index: " + clientIndex.ToString());
+           /*
+            foreach(int i in currentRoom.GOTranslationTable[clientIndex])
+            {
+                Console.WriteLine(i);
+            }
+           */
+            return currentRoom.GOTranslationTable[clientIndex].IndexOf(ID);
+        }
+
+        public static int getGameObjectIDByIndex(int clientIndex,string roomCode, int indexInList)
+        {
+            Room currentRoom = rooms[roomCode];
+           // Console.WriteLine("Getting gameobject: " + roomCode + " " + indexInList.ToString() + " client index:" + clientIndex);
+            return currentRoom.GOTranslationTable[clientIndex][indexInList];
+        }
+
+        public static void forwardMessages(List<Instruction> forwardInstructions, string roomCode, Socket client, bool TCP = true)
+
+        {
+            Socket[] connectedSockets = rooms[roomCode].connectedPlayersTCP;
+            EndPoint[] connectedEndPoints = rooms[roomCode].connectedPlayersUDP;
+            Room currentRoom = rooms[roomCode];
+            if (forwardInstructions.Count == 0)
+            {
+                return;
+            }
+            foreach (Instruction instruction in forwardInstructions)
+            {
+                if (instruction.message == null)
+                {
+                    return;
+                }
+                if (instruction.message.Length == 0)
+                {
+                    return;
+                }
+                //send the message to all other clients
+                for (int u = 0; u < maxPlayersPerLobby; u++)
+                {
+                    if (currentRoom.connectedPlayersTCP[u] == null)
+                    {
+                        if(currentRoom.connectedPlayersUDP[u] == null)
+                        {
+                            continue;
+                        }
+                        
+                    }
+                    if (connectedSockets[u] == client)
+                    {
+                        if (!instruction.shouldSendToSender)
+                        {
+                            continue;
+                        }
+                    }
+                    if (connectedEndPoints[u] == client.RemoteEndPoint)
+                    {
+                        if (!instruction.shouldSendToSender)
+                        {
+                            continue;
+                        }
+                    }
+
+
+                    if (TCP)
+                    {
+                        
+                        sendTCPMessage(instruction.message, connectedSockets,u);
+                    }
+                    else
+                    {
+                        
+                        sendUDPMessage(instruction.message, connectedEndPoints,u);
+                    }
+                    log("Forwarded message:" + instruction.message, connectedSockets[u]);
+
+                }
+
+            }
+        }
+
 
         public static List<string> decodeInstruction(string message)
         {//move to the client, cause the server simply sends the same message back to everyone else
@@ -298,7 +411,7 @@ namespace DebtlockedDualServer
                     //beginning of instruction, put the current instruction in the list
                     if (currentInstruction.Length > 0)
                     {
-                        Console.WriteLine(currentInstruction);
+                        //Console.WriteLine(currentInstruction);
                         returner.Add(currentInstruction);
                         currentInstruction = "";
                     }
@@ -309,7 +422,7 @@ namespace DebtlockedDualServer
             //for the instruction that is at the end, it wont get added ^
             if (currentInstruction.Length > 0)
             {
-                Console.WriteLine(currentInstruction);
+                //Console.WriteLine(currentInstruction);
                 returner.Add(currentInstruction);
                 currentInstruction = "";
             }
@@ -368,30 +481,80 @@ namespace DebtlockedDualServer
                 }
                 returner += c;
             }
-            Console.WriteLine("Garbage removed data:" + returner);
+            //Console.WriteLine("Garbage removed data:" + returner);
             return returner;
         }
 
         public static string receiveTCPMessage(Socket s)
         {
-            byte[] message = new byte[512];
-            int size = s.Receive(message);
-            if (size == 0)
+            try
+            {
+                byte[] message = new byte[512];
+                int size = 0;
+                //Console.WriteLine("Listening for message...");
+
+
+                size = s.Receive(message);
+                if (size == 0)
+                {
+                    return null;
+                }
+                string data = Encoding.ASCII.GetString(message);
+                //Console.WriteLine(data);
+                return data;
+            }
+            catch(Exception e)
             {
                 return null;
             }
-            string data = Encoding.ASCII.GetString(message);
-            Console.WriteLine(data);
-            return data;
+           
         }
 
-        public static void sendTCPMessage(string message, Socket to)
+        public static string receiveUDPMessage(Socket s)
         {
+            try
+            {
+                byte[] message = new byte[512];
+                
+                int receivedBytesCount = UDPSocket.ReceiveFrom(message, ref endPointUDP);
+                
+                if (receivedBytesCount == 0)
+                {
+                    return null;
+                }
+               
+                //Console.WriteLine("Received from: {0} -> {1}", client.ToString(), Encoding.ASCII.GetString(buffer, 0, receivedBytesCount));
+                
+                string gottenData = Encoding.ASCII.GetString(message, 0, receivedBytesCount);
+                return gottenData;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+            
+        }
+
+        public static void sendTCPMessage(string message, Socket[] users, int index)
+        {
+            Socket to = users[index];
             byte[] data = new byte[512];
             data = Encoding.ASCII.GetBytes(message);
             to.Send(data, 0, data.Length, SocketFlags.None);
-            Console.WriteLine("Sending:" + message + "| to:" + ((IPEndPoint)to.RemoteEndPoint).Address.ToString());
+            Console.WriteLine("Sending TCP:" + message + "| to:" + ((IPEndPoint)to.RemoteEndPoint).Address.ToString());
         }
+
+        public static void sendUDPMessage(string message, EndPoint[] users, int index)
+        {
+            EndPoint to = users[index];
+
+            byte[] data = new byte[512];
+            data = Encoding.ASCII.GetBytes(message);            
+            UDPSocket.SendTo(data, to);
+            Console.WriteLine("Sending UDP:" + message + "| to:" + ((IPEndPoint)to).Address.ToString());
+        }
+
+
 
         public static void startTCPServer()
         {
@@ -399,11 +562,23 @@ namespace DebtlockedDualServer
             endPointTCP = new IPEndPoint(address, TCPPort);
             TCPSocket.Bind(endPointTCP);
             TCPSocket.Listen(100);
-            Console.WriteLine("Started server on private IP:" + address.ToString());
-            Program p = new Program();
-            Thread clientThread = new Thread(new ThreadStart(() => p.clientConnect()));
-            clientThread.Start();
-            Console.WriteLine("Waiting for clients to connect...");
+            
+
+        }
+
+        public static void startUDPServer()
+        {
+            UDPSocket = new Socket(address.AddressFamily, SocketType.Dgram, ProtocolType.Udp);//this is our server
+
+            endPointUDP = new IPEndPoint(IPAddress.Any, UDPPort);//can be from any ip address in the world. DNS sets the port
+            //UDPSocket.Bind(endPointUDP);
+            //UDPSocket.Listen(100);
+            UDPSocket.Bind(endPointUDP);
+          //  UDPSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(address));
+
+            UDPSocket.Blocking = false; 
+            //UDPSocket.ReceiveTimeout = 15;
+
 
         }
 
@@ -414,15 +589,23 @@ namespace DebtlockedDualServer
             {
 
 
-                Socket newSocket = default(Socket);
+                Socket newSocketTCP = default(Socket);
+                
                 
                     Console.Write(".");
-                    newSocket = TCPSocket.Accept();
-                    queuedWaitingRoomClients.Enqueue(newSocket);
-                Program p = new Program();
-                Thread clientThread = new Thread(new ThreadStart(() => p.listenForMessages(newSocket)));
-                clientThread.Start();
+                    newSocketTCP = TCPSocket.Accept();
+                newSocketTCP.Blocking = false;
+                //newSocketTCP.ReceiveTimeout = 15;
+               
+                //clientMessages.Add(newSocket, new Queue<string>());
+                queuedClientsTCP.Enqueue(newSocketTCP);
+                queuedClientsUDP.Enqueue(newSocketTCP.RemoteEndPoint);
+
                 Console.Write("Client connected");
+                Console.WriteLine("Client added to waiting room");
+
+
+               
 
                     connectedIndex++;
 
@@ -432,6 +615,30 @@ namespace DebtlockedDualServer
 
         public void listenForMessages(Socket s)
         {
+            while (s.Connected)
+            {
+                //log("start -----------------------", s);
+                string TCPdata = removeGarbageCharacters(receiveTCPMessage(s));
+                if (TCPdata != null)
+                {
+                   
+                    //log("Added TCP to queue", s);
+                    clientMessagesTCP.Enqueue(new ClientMessage(s, TCPdata));
+                }
+                //log("finished TCP", s);
+                
+                string UDPdata = removeGarbageCharacters(receiveUDPMessage(s));
+                if (UDPdata != null)
+                {
+                  
+                   // log("Added UDP to queue", s);
+                    clientMessagesUDP.Enqueue(new ClientMessage(s, UDPdata));
+                }
+                //log("finished UDP", s);
+
+            }
+            
+
 
         }
 
@@ -495,14 +702,18 @@ namespace DebtlockedDualServer
 
     public class Room
     {
-        public Socket[] connectedPlayers;
+        public Socket[] connectedPlayersTCP;
+        public EndPoint[] connectedPlayersUDP;
+        public string[] GUIDs;
         public int currentRound;//0 for intermission
         public List<List<int>> GOTranslationTable = new List<List<int>>();
         
 
         public Room(int maxPlayersInLobby)
         {
-            connectedPlayers = new Socket[maxPlayersInLobby];
+            connectedPlayersTCP = new Socket[maxPlayersInLobby];
+            connectedPlayersUDP = new EndPoint[maxPlayersInLobby];
+            GUIDs = new string[maxPlayersInLobby];
             for (int i = 0; i < maxPlayersInLobby; i++)
             {
                 GOTranslationTable.Add(new List<int>());
@@ -519,16 +730,13 @@ namespace DebtlockedDualServer
             return GOTranslationTable[0].Count-1;
         }
 
-        public void addGameObject(Socket s, int index, int id)
-        {
 
-        }
-
-        public int getIndex(Socket s)
+        public int getIndex(string ID)
         {
-            for (int i = 0; i < connectedPlayers.Length; i++)
+            for (int i = 0; i < GUIDs.Length; i++)
             {
-                if (connectedPlayers[i] == s)
+                //Console.WriteLine("searching socket... " + i.ToString()); ;
+                if (GUIDs[i] == ID)
                 {
                     return i;
                 }
@@ -536,16 +744,43 @@ namespace DebtlockedDualServer
             return -1;
         }
 
-        public bool addPlayer(Socket s)
+        public int getIndex(Socket s)
+        {
+            for (int i = 0; i < connectedPlayersTCP.Length; i++)
+            {
+                //Console.WriteLine("searching socket... " + i.ToString()); ;
+                if (connectedPlayersTCP[i] == s)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public int getIndex(EndPoint s)
+        {
+            for (int i = 0; i < connectedPlayersUDP.Length; i++)
+            {
+                //Console.WriteLine("searching socket... " + i.ToString()); ;
+                if (connectedPlayersUDP[i] == s)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public bool addPlayer(Socket s, string guid, EndPoint ep)
         {
             bool hasRoomInLobby = false;
-            for (int i = 0; i < connectedPlayers.Length; i++)
+            for (int i = 0; i < connectedPlayersTCP.Length; i++)
             {
-                if (connectedPlayers[i] == null)
+                if (connectedPlayersTCP[i] == null)
                 {
                     //theres space
-                    connectedPlayers[i] = s;
-
+                    connectedPlayersTCP[i] = s;
+                    connectedPlayersUDP[i] = ep;
+                    GUIDs[i] = guid;
                     hasRoomInLobby = true;
                     break;
                 }
@@ -568,6 +803,18 @@ namespace DebtlockedDualServer
             message = m;
            
             shouldSendToSender = fs;
+        }
+    }
+
+    public class ClientMessage
+    {
+        public string message = "";
+        public Socket client;
+
+        public ClientMessage(Socket s, string m)
+        {
+            message = m;
+            client = s;
         }
     }
 

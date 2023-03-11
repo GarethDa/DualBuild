@@ -5337,8 +5337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3210a41bf920d408c77411ff980aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIOnScreen: {fileID: 1002578714}
-  UIOffScreen: {fileID: 975764719}
+  UIOnScreen: {fileID: 0}
+  UIOffScreen: {fileID: 0}
   isOnAir: 1
   clockObject: {fileID: 2044947698}
 --- !u!114 &675562570
@@ -7723,7 +7723,7 @@ MonoBehaviour:
     m_Bits: 131072
   - serializedVersion: 2
     m_Bits: 262144
-  introText: {fileID: 1295661988}
+  introText: {fileID: 1954143228}
   introCam: {fileID: 2073271490}
 --- !u!4 &977526631
 Transform:
@@ -7785,12 +7785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1325fa8923d3c0044a98aa8437a3ba93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InstructionTypeCodes:
-  - '@'
-  - '!'
-  - '#'
-  - $
-  - +
   isHost: 0
   secondsBetweenUpdates: 0.5
   TCPPort: 8888
@@ -7798,6 +7792,7 @@ MonoBehaviour:
   serverIP: 10.0.0.67
   timeoutSeconds: 2
   roomKey: JOHN
+  message: 0
 --- !u!1001 &984509478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8367,8 +8362,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3210a41bf920d408c77411ff980aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIOnScreen: {fileID: 1842949206}
-  UIOffScreen: {fileID: 1273303822}
+  UIOnScreen: {fileID: 0}
+  UIOffScreen: {fileID: 0}
   isOnAir: 1
   clockObject: {fileID: 1459486956}
 --- !u!114 &1045599194
@@ -12605,8 +12600,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3210a41bf920d408c77411ff980aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIOnScreen: {fileID: 260449344}
-  UIOffScreen: {fileID: 157010678}
+  UIOnScreen: {fileID: 0}
+  UIOffScreen: {fileID: 0}
   isOnAir: 0
   clockObject: {fileID: 603932285}
 --- !u!114 &1427699107
@@ -16240,8 +16235,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3210a41bf920d408c77411ff980aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIOnScreen: {fileID: 260449344}
-  UIOffScreen: {fileID: 157010678}
+  UIOnScreen: {fileID: 0}
+  UIOffScreen: {fileID: 0}
   isOnAir: 1
   clockObject: {fileID: 663054135}
 --- !u!114 &1691478638
@@ -18691,11 +18686,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 1b25f0cebcf74fc4d9da81714eadf663, type: 3}
   - {fileID: 2800000, guid: a554ab2ef2044124794cba443a7949ff, type: 3}
   - {fileID: 2800000, guid: a554ab2ef2044124794cba443a7949ff, type: 3}
-  onScreenPowerupIcon:
-  - {fileID: 1801700539}
-  - {fileID: 1179934866}
-  - {fileID: 596021145}
-  - {fileID: 1321261306}
+  onScreenPowerupIcon: []
 --- !u!1 &1829205196 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6813576125040661955, guid: 83e26d7cb81ec184ca166a4224ece0fc, type: 3}
@@ -21174,8 +21165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3210a41bf920d408c77411ff980aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIOnScreen: {fileID: 1842949206}
-  UIOffScreen: {fileID: 1273303822}
+  UIOnScreen: {fileID: 0}
+  UIOffScreen: {fileID: 0}
   isOnAir: 0
   clockObject: {fileID: 1565299309}
 --- !u!114 &2043913750
@@ -22331,8 +22322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3210a41bf920d408c77411ff980aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIOnScreen: {fileID: 1002578714}
-  UIOffScreen: {fileID: 975764719}
+  UIOnScreen: {fileID: 0}
+  UIOffScreen: {fileID: 0}
   isOnAir: 0
   clockObject: {fileID: 1433801263}
 --- !u!114 &2139498868

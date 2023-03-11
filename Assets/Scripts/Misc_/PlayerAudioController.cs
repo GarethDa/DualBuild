@@ -16,6 +16,10 @@ public class PlayerAudioController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(gameObject.tag == "Untagged")
+        {
+            return;
+        }
         soundCooldown -= Time.deltaTime;
         if (GetComponent<TpMovement>().GetIsGrounded() == true && GetComponent<Rigidbody>().velocity.magnitude > 2f && soundCooldown < 0f)
         {

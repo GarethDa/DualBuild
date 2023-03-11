@@ -10,6 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using Unity.Jobs;
 
+
 public class NetworkManager : MonoBehaviour
 {
     //misc
@@ -608,7 +609,18 @@ public class NetworkedClient {
     }
 }
 
+[CustomEditor(typeof(NetworkManager))]
+public class NetworkManagerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
 
+       
+        if (GUILayout.Button("Connect to server"))
+        {
+            NetworkManager.instance.setupTCPClient();
+        }
 
 
 [CustomEditor(typeof(NetworkManager))]

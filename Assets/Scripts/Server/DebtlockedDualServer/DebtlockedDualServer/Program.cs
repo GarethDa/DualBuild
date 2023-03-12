@@ -28,14 +28,18 @@ namespace DebtlockedDualServer
         public static List<string> InstructionTypeCodes = new List<string> { "@", "!", "#", "^", "$", "~", "*", "=", "%", "&" };
         public static IPAddress address;
         public static int TCPPort = 8888;
-        public static int UDPPort = 8889;
+        public static int UDPSendingPort = 8889;
+        public static int UDPReceivingPort = 8890;
+        //static string localHost = "127.0.0.1";
         private static byte[] buffer = new byte[512];
         private static IPHostEntry hostInfo;
 
         private static IPEndPoint endPointTCP;//the IP and port of the recipient for TCP
-        private static EndPoint endPointUDP;//the IP and port of the recipient for UDP
+        public static EndPoint UDPSendingEndPoint;
+        public static EndPoint UDPReceivingEndPoint;
         private static Socket TCPSocket;
-        private static Socket UDPSocket;
+        private static Socket UDPSocketSending;
+        private static Socket UDPSocketReceiving;
         static int maxPlayersPerLobby = 4;
         static int codeLength = 4;
 
@@ -241,8 +245,17 @@ namespace DebtlockedDualServer
                 if (code == getInstructionCode(InstructionType.CHAT))
                 {
                     adding.message += getInstructionCode(InstructionType.CHAT) + data;
-                    adding.shouldSendToSender = false;
+                    adding.shouldSendToSender = true;//for testing
                     forwardInstructionsUDP.Add(adding);
+
+                    for(int i = 0; i < maxPlayersPerLobby; i++)
+                    {
+                        if(currentRoom.connectedPlayersUDP[i] == null)
+                        {
+                            continue; ;
+                        }
+                        sendUDPMessage(adding.message, currentRoom.connectedPlayersUDP, i);
+                    }
                 }
 
                 if (code == getInstructionCode(InstructionType.REGISTER_GAMEOBJECT))
@@ -388,8 +401,8 @@ namespace DebtlockedDualServer
                     }
                     else
                     {
-                        
-                        sendUDPMessage(instruction.message, connectedEndPoints,u);
+
+                        sendUDPMessage(instruction.message, connectedSockets[u]);//, connectedEndPoints,u);
                     }
                     log("Forwarded message:" + instruction.message, connectedSockets[u]);
 
@@ -516,7 +529,7 @@ namespace DebtlockedDualServer
             {
                 byte[] message = new byte[512];
                 
-                int receivedBytesCount = UDPSocket.ReceiveFrom(message, ref endPointUDP);
+                int receivedBytesCount = UDPSocketReceiving.ReceiveFrom(message, ref UDPReceivingEndPoint);
                 
                 if (receivedBytesCount == 0)
                 {
@@ -550,8 +563,21 @@ namespace DebtlockedDualServer
 
             byte[] data = new byte[512];
             data = Encoding.ASCII.GetBytes(message);            
-            UDPSocket.SendTo(data, to);
+            UDPSocketSending.SendTo(data, to);
             Console.WriteLine("Sending UDP:" + message + "| to:" + ((IPEndPoint)to).Address.ToString());
+        }
+
+        public static void sendUDPMessage(string message, Socket s)
+        {
+           
+
+            byte[] data = new byte[512];
+            IPEndPoint UDPIPAddress = (IPEndPoint)s.RemoteEndPoint;
+
+            IPEndPoint UDPEP = new IPEndPoint(UDPIPAddress.Address,UDPSendingPort);
+            data = Encoding.ASCII.GetBytes(message);
+            UDPSocketSending.SendTo(data, UDPEP);
+            Console.WriteLine("Sending UDP with socket:" + message + "| to:" + ((IPEndPoint)s.RemoteEndPoint).Address.ToString());
         }
 
 
@@ -568,15 +594,16 @@ namespace DebtlockedDualServer
 
         public static void startUDPServer()
         {
-            UDPSocket = new Socket(address.AddressFamily, SocketType.Dgram, ProtocolType.Udp);//this is our server
+            UDPSocketSending = new Socket(address.AddressFamily, SocketType.Dgram, ProtocolType.Udp);//this is our server
+            UDPSocketReceiving = new Socket(address.AddressFamily, SocketType.Dgram, ProtocolType.Udp);//this is our server
 
-            endPointUDP = new IPEndPoint(IPAddress.Any, UDPPort);//can be from any ip address in the world. DNS sets the port
-            //UDPSocket.Bind(endPointUDP);
-            //UDPSocket.Listen(100);
-            UDPSocket.Bind(endPointUDP);
-          //  UDPSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(address));
+            UDPSendingEndPoint = new IPEndPoint(IPAddress.Any, UDPSendingPort);//can be from any ip address in the world. DNS sets the port
+            UDPReceivingEndPoint = new IPEndPoint(IPAddress.Any, UDPReceivingPort);//can be from any ip address in the world. DNS sets the port
+            
+            UDPSocketSending.Blocking = false;
+            UDPSocketReceiving.Blocking = false;
 
-            UDPSocket.Blocking = false; 
+            UDPSocketReceiving.Bind(UDPReceivingEndPoint);
             //UDPSocket.ReceiveTimeout = 15;
 
 
@@ -595,7 +622,7 @@ namespace DebtlockedDualServer
                     Console.Write(".");
                     newSocketTCP = TCPSocket.Accept();
                 newSocketTCP.Blocking = false;
-                //newSocketTCP.ReceiveTimeout = 15;
+                newSocketTCP.ReceiveTimeout = 15;
                
                 //clientMessages.Add(newSocket, new Queue<string>());
                 queuedClientsTCP.Enqueue(newSocketTCP);
@@ -604,12 +631,8 @@ namespace DebtlockedDualServer
                 Console.Write("Client connected");
                 Console.WriteLine("Client added to waiting room");
 
-
-               
-
                     connectedIndex++;
 
-                
             }
         }
 
@@ -651,7 +674,8 @@ namespace DebtlockedDualServer
 
                 //hostInfo = await Dns.GetHostEntryAsync(serverIP);
 
-                endPointUDP = new IPEndPoint(address, UDPPort);
+                UDPSendingEndPoint = new IPEndPoint(address, UDPSendingPort);
+                UDPReceivingEndPoint = new IPEndPoint(address, UDPReceivingPort);
 
                 endPointTCP = new IPEndPoint(address, TCPPort);
 

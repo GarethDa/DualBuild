@@ -19,7 +19,8 @@ public class NetworkManager : MonoBehaviour
     public float secondsBetweenUpdates = 0.5f;
     float secondsSinceLastUpdate = 0f;
     public int TCPPort = 8888;
-    public int UDPPort = 8889;
+    public int UDPPortSending = 8890;
+    public int UDPPortReceiving = 8889;
     public string serverIP;
     public float timeoutSeconds = 2f;
     int playersConnected = 0;
@@ -37,9 +38,11 @@ public class NetworkManager : MonoBehaviour
     private static IPHostEntry hostInfo;
     private static IPAddress ip;
     private static IPEndPoint endPointTCP;//the IP and port of the recipient for TCP
-    private static EndPoint endPointUDP;//the IP and port of the recipient for UDP
+    public static EndPoint sendingEndPointUDP;
+    public static EndPoint receivingEndPointUDP;
     private static Socket TCPSocket;
-    private static Socket UDPSocket;
+    private static Socket UDPSocketSending;
+    private static Socket UDPSocketReceiving;
     Dictionary<NetworkScript, List<NetworkInstruction>> queuedTCPInstructions = new Dictionary<NetworkScript, List<NetworkInstruction>>();
     Dictionary<NetworkScript, List<NetworkInstruction>> queuedUDPInstructions = new Dictionary<NetworkScript, List<NetworkInstruction>>();
     Thread TCPListener;
@@ -134,8 +137,11 @@ public class NetworkManager : MonoBehaviour
 
     public void setupUDPClient()
     {
-        UDPSocket = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
-        UDPSocket.Connect(endPointUDP);
+        UDPSocketSending = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
+        UDPSocketReceiving = new Socket(ip.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
+        UDPSocketReceiving.Blocking = true;
+        UDPSocketSending.Blocking = true;
+        //UDPSocket.Connect(endPointUDP);
         UDPListener = new Thread(UDPMessageListener);
         UDPListener.Start();
         setupUDP = true;
@@ -174,7 +180,8 @@ public class NetworkManager : MonoBehaviour
             //hostInfo = await Dns.GetHostEntryAsync(serverIP);
             ip = IPAddress.Parse(serverIP);//hostInfo.AddressList[0];
            
-            endPointUDP = new IPEndPoint(ip, UDPPort);
+            sendingEndPointUDP = new IPEndPoint(ip, UDPPortSending);
+            receivingEndPointUDP = new IPEndPoint(ip, UDPPortReceiving);
 
             endPointTCP = new IPEndPoint(ip, TCPPort);
 
@@ -339,11 +346,14 @@ public class NetworkManager : MonoBehaviour
 
     private void UDPMessageListener()
     {
+        UDPSocketReceiving.Bind(receivingEndPointUDP);
         while (true)
         {
             Debug.Log("start receiving UDP");
             byte[] receivedUDP = new byte[512];
-            int receivedUDPSize = UDPSocket.ReceiveFrom(receivedUDP,ref endPointUDP);
+            //IPEndPoint serverIPEP = new IPEndPoint( ((IPEndPoint)(UDPSocket.RemoteEndPoint)).Address, UDPPortServer);
+            //EndPoint serverEP = (EndPoint)serverIPEP;
+            int receivedUDPSize = UDPSocketReceiving.ReceiveFrom(receivedUDP, ref receivingEndPointUDP);
             Debug.Log("Called receiving UDP");
             if (receivedUDPSize > 0)
             {
@@ -482,7 +492,7 @@ public class NetworkManager : MonoBehaviour
     {
         //Debug.Log("sending message UDP:" + message);
         message += "|" + identifier;
-        UDPSocket.SendTo(Encoding.ASCII.GetBytes(message), endPointUDP);
+        UDPSocketSending.SendTo(Encoding.ASCII.GetBytes(message), sendingEndPointUDP);
         Debug.Log("sent message UDP:" + message);
     }
 
@@ -608,19 +618,6 @@ public class NetworkedClient {
         return name;
     }
 }
-
-[CustomEditor(typeof(NetworkManager))]
-public class NetworkManagerEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-
-       
-        if (GUILayout.Button("Connect to server"))
-        {
-            NetworkManager.instance.setupTCPClient();
-        }
 
 
 [CustomEditor(typeof(NetworkManager))]

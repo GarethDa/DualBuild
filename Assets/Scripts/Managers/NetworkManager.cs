@@ -444,6 +444,13 @@ public class NetworkManager : MonoBehaviour
                 toAffect.GetComponent<NetworkedVelocity>().setData(dataVel);
                 Debug.Log("Changed velocity GO with ID " + instructionData[1] + " to velocity: " + dataVel.ToString());
             }
+            if (code == getInstructionCode(InstructionType.ROTATION_CHANGE))
+            {//will be to create an object with a string prefab
+                Quaternion dataRot = JsonUtility.FromJson<Quaternion>(instructionData[0]);
+                GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(instructionData[1]));
+                toAffect.GetComponent<NetworkedRotation>().setData(dataRot);
+                Debug.Log("Changed rotation GO with ID " + instructionData[1] + " to Rotation: " + dataRot.ToString());
+            }
 
             if (code == getInstructionCode(InstructionType.REGISTER_GAMEOBJECT))
             {//will be to create an object with a string prefab
@@ -461,7 +468,33 @@ public class NetworkManager : MonoBehaviour
                 sendTCPMessage(getInstructionCode(InstructionType.CREATE_GAMEOBJECT) + index.ToString() + "|" + affectedObject.GetInstanceID().ToString());
 
             }
+            if(code == getInstructionCode(InstructionType.POWERUP_USE))
+            {
+                List<float> list = JsonUtility.FromJson<List<float>>(instructionData[0]);
+                int GOID = int.Parse(instructionData[1]);
+                GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
+                powerUpList type = (powerUpList)list[0];
+                //STATUSES: 0 - pickup 1- use 2- effect 3- end
+                int status = (int)list[1];
 
+                if (type == powerUpList.Bomb)
+                {
+                    if (status == 1)
+                    {
+                        //threw the bomb
+                        //spawn new bomb locally and throw it in the direction of the affected gameobject
+                        GameObject newBomb = Instantiate(Resources.Load<GameObject>("Element Prefabs/Projectiles/Bomb"));
+                        CharacterAiming playerAiming = PlayerManager.instance.transform.GetChild(0).GetComponent<CharacterAiming>();
+                        newBomb.GetComponent<BombBehaviour>().setThrown(true);
+
+                        newBomb.transform.position += new Vector3(2 * toAffect.transform.forward.x, 0f, 2 * toAffect.transform.forward.z);
+
+                        //Throw the ball forward, multiplied by the throwing force
+                        newBomb.GetComponent<Rigidbody>().AddForce(toAffect.transform.forward * (playerAiming.throwForce + list[2]) + Vector3.up * (playerAiming.throwUpModifier));
+
+                    }
+                }
+            }
            
 
             if (affectedObject == null)

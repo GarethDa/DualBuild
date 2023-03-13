@@ -25,8 +25,15 @@ public abstract class PowerUp : MonoBehaviour
         Destroy(this);
     }
 
+    public void sendToNetworkedPowerUp(int powerupType, int status, float data)
+    {
+        if(GetComponent<NetworkedPowerUp>() != null)
+        {
+            GetComponent<NetworkedPowerUp>().setData(new List<float> {powerupType,status,data });
+        }
+    }
 }
-
+//STATUSES: 0 - pickup 1- use 2- effect 3- end
 public class Bomb : PowerUp
 {
     private GameObject bombPrefab;
@@ -56,6 +63,7 @@ public class Bomb : PowerUp
             hasClicked = true;
             GameObject bomb = Instantiate(bombPrefab, transform.position, transform.rotation);
             bomb.GetComponent<BombBehaviour>().setPlayer(playerObject);
+            sendToNetworkedPowerUp((int)powerUpList.Bomb, 1, playerObject.GetComponent<CharacterAiming>().GetPunchForce());
             onEffect();
         }
         else

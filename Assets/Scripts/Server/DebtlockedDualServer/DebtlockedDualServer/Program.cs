@@ -260,9 +260,17 @@ namespace DebtlockedDualServer
 
                     int registeringIndex = currentRoom.registerGameObject();
                     Console.WriteLine("added -1 at index" + registeringIndex);
-                    adding.message += (getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + dataArguments[0]) + ("|" + registeringIndex) ;
+                    string sendingMessage = (getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + dataArguments[0]) + ("|" + registeringIndex) ;
 
-                    forwardInstructionsTCP.Add(adding);
+                    for (int i = 0; i < maxPlayersPerLobby; i++)
+                    {
+                        if (currentRoom.GUIDs[i] == null)
+                        {
+                            continue;
+                        }
+                        sendTCPMessage(sendingMessage, currentRoom.connectedPlayersTCP[i], identifier);
+                    }
+                    //forwardInstructionsTCP.Add(adding);
 
                 }
 
@@ -277,18 +285,19 @@ namespace DebtlockedDualServer
                     int registeringID = int.Parse(id);
 
                     int playerIndex = currentRoom.getIndex(client);
-                    currentRoom.GOTranslationTable[playerIndex][registeringIndex] = registeringID;
+                    currentRoom.GOTranslationTable[identifier][registeringIndex] = registeringID;
                     Console.WriteLine("registered gameobject with GOID: " + registeringID.ToString() + " at index: " + registeringIndex.ToString() + " at playerIndex: " + playerIndex.ToString());
 
                 }
-                if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
+                if (code == getInstructionCode(InstructionType.POSITION_CHANGE) || code == getInstructionCode(InstructionType.VELOCITY_CHANGE)
+                    || code == getInstructionCode(InstructionType.ROTATION_CHANGE))
                 {
                     int clientGameobjectID = int.Parse(instructionData[1]);
                     string position = instructionData[0];
 
                     int clientIndex = currentRoom.getIndex(identifier);
                     //Console.WriteLine("Actual client index: " + clientIndex.ToString());
-                    int indexToSearchAt = getIndexByGameObjectID(clientIndex, roomCode, clientGameobjectID);
+                    int indexToSearchAt = currentRoom.getIndexOfID(identifier, clientGameobjectID);
 
                     for(int i = 0; i < maxPlayersPerLobby; i++)
                     {
@@ -296,14 +305,14 @@ namespace DebtlockedDualServer
                         {
                             continue;
                         }
-                        if(currentRoom.GUIDs[i] == identifier)
+                        if (currentRoom.GUIDs[i] == identifier)
                         {
-                            continue;
+                             continue;
                         }
-                        Console.WriteLine("I: " + i.ToString());
-                        int IDOfGOToModify = getGameObjectIDByIndex(i, roomCode, indexToSearchAt);
-                        string messageToSend = getInstructionCode(InstructionType.POSITION_CHANGE) + position + "|" + IDOfGOToModify.ToString() ;
-                        sendTCPMessage(messageToSend, client, identifier);
+                       // Console.WriteLine("I: " + i.ToString());
+                        int IDOfGOToModify = currentRoom.getIDAtIndex(currentRoom.GUIDs[i],indexToSearchAt);
+                        string messageToSend = code + position + "|" + IDOfGOToModify.ToString() ;
+                        sendTCPMessage(messageToSend, currentRoom.connectedPlayersTCP[i], identifier);
                     }
                 }
                 if (code == getInstructionCode(InstructionType.LOCAL_GAMEOBJECT_ID))
@@ -322,25 +331,7 @@ namespace DebtlockedDualServer
             }
         }
 
-        public static int getIndexByGameObjectID(int clientIndex, string roomCode, int ID)
-        {
-            Room currentRoom = rooms[roomCode];
-            Console.WriteLine("Getting index: " + roomCode + " " + ID.ToString() + " client index: " + clientIndex.ToString());
-           
-            foreach(int i in currentRoom.GOTranslationTable[clientIndex])
-            {
-                Console.WriteLine(i);
-            }
-           
-            return currentRoom.GOTranslationTable[clientIndex].IndexOf(ID);
-        }
-
-        public static int getGameObjectIDByIndex(int clientIndex,string roomCode, int indexInList)
-        {
-            Room currentRoom = rooms[roomCode];
-            Console.WriteLine("Getting gameobject: " + roomCode + " " + indexInList.ToString() + " client index:" + clientIndex);
-            return currentRoom.GOTranslationTable[clientIndex][indexInList];
-        }
+       
 
         public static void forwardMessages(List<Instruction> forwardInstructions, string roomCode, Socket client, bool TCP = true)
 
@@ -714,7 +705,7 @@ namespace DebtlockedDualServer
       
         public string[] GUIDs;
         public int currentRound;//0 for intermission
-        public List<List<int>> GOTranslationTable = new List<List<int>>();
+        public Dictionary<string, List<int>> GOTranslationTable;
         
 
         public Room(int maxPlayersInLobby)
@@ -722,20 +713,19 @@ namespace DebtlockedDualServer
             connectedPlayersTCP = new Socket[maxPlayersInLobby];
            
             GUIDs = new string[maxPlayersInLobby];
-            for (int i = 0; i < maxPlayersInLobby; i++)
-            {
-                GOTranslationTable.Add(new List<int>());
-            }
 
+            GOTranslationTable = new Dictionary<string, List<int>>();
         }
 
         public int registerGameObject()
         {
-            foreach (List<int> list in GOTranslationTable)
+            int returner = 0;
+            foreach (string key in GOTranslationTable.Keys)
             {
-                list.Add(-1);
+                GOTranslationTable[key].Add(-1);
+                returner = GOTranslationTable[key].Count - 1;
             }
-            return GOTranslationTable[0].Count-1;
+            return returner;
         }
 
 
@@ -765,7 +755,32 @@ namespace DebtlockedDualServer
             return -1;
         }
 
-       
+       public void registerGameObject(string GUID, int index, int ID)
+        {
+            if (!GOTranslationTable.ContainsKey(GUID))
+            {
+                return;
+            }
+            GOTranslationTable[GUID][index] = ID;
+        }
+
+        public int getIDAtIndex(string GUID, int index)
+        {
+            if (!GOTranslationTable.ContainsKey(GUID))
+            {
+                return -1;
+            }
+            return GOTranslationTable[GUID][index];
+        }
+
+        public int getIndexOfID(string GUID, int id)
+        {
+            if (!GOTranslationTable.ContainsKey(GUID))
+            {
+                return -1;
+            }
+            return GOTranslationTable[GUID].IndexOf(id);
+        }
 
         public bool addPlayer(Socket s, string guid, EndPoint ep)
         {
@@ -776,7 +791,7 @@ namespace DebtlockedDualServer
                 {
                     //theres space
                     connectedPlayersTCP[i] = s;
-                    
+                    GOTranslationTable.Add(guid, new List<int>());
                     GUIDs[i] = guid;
                     hasRoomInLobby = true;
                     break;

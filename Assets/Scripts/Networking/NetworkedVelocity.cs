@@ -18,12 +18,18 @@ public class NetworkedVelocity : NetworkScript
 
     protected override void applyData()
     {
-        gameObject.GetComponent<NetworkedPosition>().setData(transform.position + (newVelocity * Time.deltaTime)) ;
+        transform.position += (newVelocity * Time.deltaTime);
+        //gameObject.GetComponent<NetworkedPosition>().setData(transform.position + (newVelocity * Time.deltaTime)) ;
+    }
+
+    public override void frameAdjustment()
+    {
+        applyData();
     }
 
     protected override void sendData()
     {
-        
+        newVelocity = GetComponent<Rigidbody>().velocity;
         string data = JsonUtility.ToJson(newVelocity) + "|" + gameObject.GetInstanceID();
         NetworkManager.instance.queueTCPInstruction(this, NetworkManager.instance.getInstruction(InstructionType.VELOCITY_CHANGE, data));//.sendUDPMessage();
 

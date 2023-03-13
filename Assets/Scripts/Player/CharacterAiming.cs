@@ -15,11 +15,11 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera zoomCam;
 
     [Header("Projectiles & Punching")]
-    [SerializeField] [Range(1000.0f, 4000.0f)] float throwForce = 2000.0f;
-    [SerializeField] [Range(10f, 200f)] float throwUpModifier = 200f;
-    [SerializeField] [Range(100f, 1000f)] float chargePerSec = 500f;
-    [SerializeField] [Range(1f, 5f)] float maxChargeTime = 3f;
-    [SerializeField] [Range(0f, 20f)] float maxChangeFOV = 10f;
+    [SerializeField] [Range(1000.0f, 4000.0f)]public float throwForce = 2000.0f;
+    [SerializeField] [Range(10f, 200f)] public float throwUpModifier = 200f;
+    [SerializeField] [Range(100f, 1000f)] public float chargePerSec = 500f;
+    [SerializeField] [Range(1f, 5f)] public float maxChargeTime = 3f;
+    [SerializeField] [Range(0f, 20f)] public float maxChangeFOV = 10f;
     [SerializeField] [Range(1.0f, 100.0f)] float punchForce = 20f;
 
     Image reticle;

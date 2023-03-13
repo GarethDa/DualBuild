@@ -11,7 +11,10 @@ public class GameManager : MonoBehaviour
     public List<PowerUpScript> powerupManager = new List<PowerUpScript>();
     public GameObject clientPlayer;
 
-    public int playersConnected = 2;
+    bool isNetworked = false;
+    bool isHost = false;
+
+    public int playersConnected = 1;
     
     void Awake()
     {

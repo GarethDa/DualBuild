@@ -181,7 +181,7 @@ public class NetworkManager : MonoBehaviour
             ip = IPAddress.Parse(serverIP);//hostInfo.AddressList[0];
            
             sendingEndPointUDP = new IPEndPoint(ip, UDPPortSending);
-            receivingEndPointUDP = new IPEndPoint(ip, UDPPortReceiving);
+            receivingEndPointUDP = new IPEndPoint(IPAddress.Any, UDPPortReceiving);
 
             endPointTCP = new IPEndPoint(ip, TCPPort);
 
@@ -233,14 +233,27 @@ public class NetworkManager : MonoBehaviour
     }
 
 
-    public void queueTCPInstruction(NetworkScript script, NetworkInstruction instruction)
+    public void queueTCPInstruction(NetworkScript script, NetworkInstruction instruction, bool replace = true)
     {
         if (!queuedTCPInstructions.ContainsKey(script))
         {
             queuedTCPInstructions.Add(script, new List<NetworkInstruction>());
         }
 
-      
+        if (replace)
+        {
+            foreach (NetworkInstruction i in queuedTCPInstructions[script])//go through all instructions queued by the script
+            {
+                if (i.code == instruction.code)//check if an instruction with the same code has been issued
+                {
+                    i.codeData = instruction.codeData;//if so, replace it
+                    return;
+                }
+            }
+        }
+        
+
+
         queuedTCPInstructions[script].Add(instruction);//at this point, there is a list of instructions made, and the type of instruction is unique, so add it in to the list
     }
 
@@ -383,14 +396,14 @@ public class NetworkManager : MonoBehaviour
             string data = getAfterInstructionCode(inst);
             List<string> instructionData = getDataFromInstruction(data);
             string receivedIdentifier = instructionData[instructionData.Count - 1];
+            bool isMyInstruction = true;
             //Debug.Log(receivedIdentifier + " " + identifier);
             if (!receivedIdentifier.Equals(identifier))
             {
                 
                 if (!receivedIdentifier.Equals(Guid.Empty.ToString()))
                 {
-                    Debug.Log("Not my instruction");
-                    //continue;//NOT our data and not TCP(fuck UDP)
+                    isMyInstruction = false;
                 }
                
             }
@@ -405,9 +418,31 @@ public class NetworkManager : MonoBehaviour
             if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
             {//will be to create an object with a string prefab
                 Vector3 dataPosition = JsonUtility.FromJson<Vector3>(instructionData[0]);
-                GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(instructionData[1]));
-                toAffect.GetComponent<NetworkedPosition>().setPosition(dataPosition);
+                int GOID = int.Parse(instructionData[1]);
+                Debug.Log(GOID);
+                GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
+                if(toAffect == null)
+                {
+                    Debug.Log("GO NULL");
+                }
+                if(toAffect.GetComponent<NetworkedPosition>() == null)
+                {
+                    Debug.Log("GO COMPONENT NULL");
+                }
+                if (dataPosition == null)
+                {
+                    Debug.Log("DATA NULL");
+                }
+                toAffect.GetComponent<NetworkedPosition>().setData(dataPosition);
                 Debug.Log("Moved GO with ID " + instructionData[1] + " to position: " + dataPosition.ToString());
+            }
+
+            if (code == getInstructionCode(InstructionType.VELOCITY_CHANGE))
+            {//will be to create an object with a string prefab
+                Vector3 dataVel = JsonUtility.FromJson<Vector3>(instructionData[0]);
+                GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(instructionData[1]));
+                toAffect.GetComponent<NetworkedVelocity>().setData(dataVel);
+                Debug.Log("Changed velocity GO with ID " + instructionData[1] + " to velocity: " + dataVel.ToString());
             }
 
             if (code == getInstructionCode(InstructionType.REGISTER_GAMEOBJECT))
@@ -418,6 +453,10 @@ public class NetworkManager : MonoBehaviour
                 string prefab = instructionData[0];
                 
                 string index = instructionData[1];
+                if(prefab=="PlayerSingle" && !isMyInstruction)
+                {
+                    prefab = "PlayerNetworked";
+                }
                 affectedObject = GameManager.createGameObject(prefab);
                 sendTCPMessage(getInstructionCode(InstructionType.CREATE_GAMEOBJECT) + index.ToString() + "|" + affectedObject.GetInstanceID().ToString());
 
@@ -451,11 +490,7 @@ public class NetworkManager : MonoBehaviour
         List<string> instructionData = getDataFromInstruction(data);
         
 
-        if (code == getInstructionCode(InstructionType.VELOCITY_CHANGE))
-        {
-            
-        }
-
+        
         if (code == getInstructionCode(InstructionType.POWERUP_USE))
         {
             //talk to the powerup script (going to wait for gareths push for this one)
@@ -521,9 +556,9 @@ public class NetworkManager : MonoBehaviour
         sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + roomKey);
     }
 
-    public void requestGameObjectCreation()
+    public void requestGameObjectCreation(string prefab)
     {
-        sendTCPMessage(getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + message);
+        sendTCPMessage(getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + prefab);
     }
 
     public void sendUDPMessage()
@@ -631,33 +666,37 @@ public class NetworkManagerEditor : Editor
         if (GUILayout.Button("Connect to server"))
         {
             NetworkManager.instance.setupTCPClient();
-            NetworkManager.instance.setupUDPClient();
+           // NetworkManager.instance.setupUDPClient();
+
         }
 
         if (GUILayout.Button("Create room"))
         {
             NetworkManager.instance.createRoom();
+            
         }
 
         if (GUILayout.Button("Join room"))
         {
             NetworkManager.instance.joinRoom();
+         
         }
+
+        if (GUILayout.Button("CreatePlayer"))
+        {
+           
+            NetworkManager.instance.requestGameObjectCreation("PlayerSingle");
+        }
+
         /*
         if (GUILayout.Button("Send Message"))
         {
             NetworkManager.instance.sendTCPMessage();
         }
         */
-        if (GUILayout.Button("Create gameobject"))
-        {
-            NetworkManager.instance.requestGameObjectCreation();
-        }
-        
-        if (GUILayout.Button("UDP Message"))
-        {
-            NetworkManager.instance.sendUDPMessage();
-        }
+
+
+       
         
     }
 }

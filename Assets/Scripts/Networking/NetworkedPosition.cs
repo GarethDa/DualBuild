@@ -5,32 +5,36 @@ using UnityEngine;
 public class NetworkedPosition : NetworkScript
 {
     Vector3 oldPosition = Vector3.zero;
-    public int framesToSkipSending = 0;
+    
+   
    //moving feedback loop. must fix
 
-    public void Update()
+    protected override void sendData()
     {
-        if(framesToSkipSending > 0)
-        {
-            oldPosition = transform.position;
-            framesToSkipSending--;
-            return;
-        }
-        if(transform.position != oldPosition)
+        if (Vector3.Distance(oldPosition,transform.position) > tolerance)
         {
             //update position
             oldPosition = transform.position;
             string data = JsonUtility.ToJson(transform.position) + "|" + gameObject.GetInstanceID();
-            //Debug.Log("MOVED POSITION" + data);
-            NetworkManager.instance.queueUDPInstruction(this,NetworkManager.instance.getInstruction(InstructionType.POSITION_CHANGE, data));//.sendUDPMessage();
-        
+            NetworkManager.instance.queueTCPInstruction(this, NetworkManager.instance.getInstruction(InstructionType.POSITION_CHANGE, data));//.sendUDPMessage();
+
         }
     }
 
-    public void setPosition(Vector3 pos)
+    protected override void applyData()
     {
+        oldPosition = transform.position;
+    }
+    public override void setData(object d)
+    {
+        if(!(d is Vector3))
+        {
+            return;
+        }
+        Vector3 pos = (Vector3)d;
         transform.position = pos;
         oldPosition = pos;
         framesToSkipSending = 1;
     }
+   
 }

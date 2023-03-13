@@ -99,7 +99,7 @@ namespace DebtlockedDualServer
                         }
                     List<string> instructions = decodeInstruction(mess);
 
-                    actOnInstructions(client, client.RemoteEndPoint, removedFromRoom, instructions);
+                    actOnInstructions(client, client.LocalEndPoint, removedFromRoom, instructions);
                 }
 
                 while (clientMessagesUDP.Count > 0)
@@ -115,7 +115,7 @@ namespace DebtlockedDualServer
                     }
                     List<string> instructions = decodeInstruction(mess);
 
-                    actOnInstructions(client, client.RemoteEndPoint, removedFromRoom, instructions);
+                    actOnInstructions(client, client.LocalEndPoint, removedFromRoom, instructions);
                 }
 
 
@@ -174,7 +174,7 @@ namespace DebtlockedDualServer
                         clientRooms.Add(client, roomKey);
                         //send message back to client about their room number
                         Socket[] newList = { client };
-                        sendTCPMessage(getInstructionCode(InstructionType.CREATE_ROOM) + roomKey, newList,0);
+                        sendTCPMessage(getInstructionCode(InstructionType.CREATE_ROOM) + roomKey,client, identifier);
                         Console.WriteLine("Client moved to room");
                     }
                     else
@@ -205,15 +205,15 @@ namespace DebtlockedDualServer
                             //send message that they joined the room
                             Console.WriteLine("Theres space in room:" + joiningRoom);
                             Socket[] newList = { client };
-                            sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + "o", newList,0);
+                            sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + "o", client, identifier);
                         }
                         else
                         {
 
                             //send message that room is full
                             Console.WriteLine("Theres no space in room:" + joiningRoom);
-                            Socket[] newList = { client };
-                            sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + "x", newList,0);
+                           
+                            sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + "x", client, identifier);
 
                         }
                     }
@@ -232,7 +232,7 @@ namespace DebtlockedDualServer
                 }
                 string roomCode = clientRooms[client];
                 Socket[] connectedSockets = rooms[roomCode].connectedPlayersTCP;
-                EndPoint[] connectedEndPoints = rooms[roomCode].connectedPlayersUDP;
+               
                 Room currentRoom = rooms[roomCode];
 
 
@@ -242,20 +242,15 @@ namespace DebtlockedDualServer
                 List<string> redoingInstructions = new List<string>();
                 int affectedObjectID = -1;
                 List<string> instructionData = getDataFromInstruction(data);
-                if (code == getInstructionCode(InstructionType.CHAT))
+               
+                if (code == getInstructionCode(InstructionType.CHAT))//always UDP
                 {
-                    adding.message += getInstructionCode(InstructionType.CHAT) + data;
-                    adding.shouldSendToSender = true;//for testing
-                    forwardInstructionsUDP.Add(adding);
+                    adding.message += getInstructionCode(InstructionType.CHAT) + instructionData[0];
+                    adding.shouldSendToSender = false;//for testing
+                    adding.IP = instructionData[1];
+                    forwardInstructionsTCP.Add(adding);
 
-                    for(int i = 0; i < maxPlayersPerLobby; i++)
-                    {
-                        if(currentRoom.connectedPlayersUDP[i] == null)
-                        {
-                            continue; ;
-                        }
-                        sendUDPMessage(adding.message, currentRoom.connectedPlayersUDP, i);
-                    }
+                    
                 }
 
                 if (code == getInstructionCode(InstructionType.REGISTER_GAMEOBJECT))
@@ -265,7 +260,7 @@ namespace DebtlockedDualServer
 
                     int registeringIndex = currentRoom.registerGameObject();
                     Console.WriteLine("added -1 at index" + registeringIndex);
-                    adding.message += (getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + dataArguments[0]) + ("|" + registeringIndex) + ("|" + Guid.Empty.ToString());
+                    adding.message += (getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + dataArguments[0]) + ("|" + registeringIndex) ;
 
                     forwardInstructionsTCP.Add(adding);
 
@@ -305,10 +300,10 @@ namespace DebtlockedDualServer
                         {
                             continue;
                         }
-                        //Console.WriteLine("I: " + i.ToString());
+                        Console.WriteLine("I: " + i.ToString());
                         int IDOfGOToModify = getGameObjectIDByIndex(i, roomCode, indexToSearchAt);
-                        string messageToSend = getInstructionCode(InstructionType.POSITION_CHANGE) + position + "|" + IDOfGOToModify.ToString() + "|" + currentRoom.GUIDs[i];
-                        sendUDPMessage(messageToSend, currentRoom.connectedPlayersUDP,i);
+                        string messageToSend = getInstructionCode(InstructionType.POSITION_CHANGE) + position + "|" + IDOfGOToModify.ToString() ;
+                        sendTCPMessage(messageToSend, client, identifier);
                     }
                 }
                 if (code == getInstructionCode(InstructionType.LOCAL_GAMEOBJECT_ID))
@@ -319,7 +314,7 @@ namespace DebtlockedDualServer
 
 
                 forwardMessages(forwardInstructionsTCP, roomCode, client,true);
-                forwardMessages(forwardInstructionsUDP, roomCode, client,false);
+                //forwardMessages(forwardInstructionsUDP, roomCode, client,false);
 
 
                 
@@ -330,20 +325,20 @@ namespace DebtlockedDualServer
         public static int getIndexByGameObjectID(int clientIndex, string roomCode, int ID)
         {
             Room currentRoom = rooms[roomCode];
-            //Console.WriteLine("Getting index: " + roomCode + " " + ID.ToString() + " client index: " + clientIndex.ToString());
-           /*
+            Console.WriteLine("Getting index: " + roomCode + " " + ID.ToString() + " client index: " + clientIndex.ToString());
+           
             foreach(int i in currentRoom.GOTranslationTable[clientIndex])
             {
                 Console.WriteLine(i);
             }
-           */
+           
             return currentRoom.GOTranslationTable[clientIndex].IndexOf(ID);
         }
 
         public static int getGameObjectIDByIndex(int clientIndex,string roomCode, int indexInList)
         {
             Room currentRoom = rooms[roomCode];
-           // Console.WriteLine("Getting gameobject: " + roomCode + " " + indexInList.ToString() + " client index:" + clientIndex);
+            Console.WriteLine("Getting gameobject: " + roomCode + " " + indexInList.ToString() + " client index:" + clientIndex);
             return currentRoom.GOTranslationTable[clientIndex][indexInList];
         }
 
@@ -351,7 +346,7 @@ namespace DebtlockedDualServer
 
         {
             Socket[] connectedSockets = rooms[roomCode].connectedPlayersTCP;
-            EndPoint[] connectedEndPoints = rooms[roomCode].connectedPlayersUDP;
+            
             Room currentRoom = rooms[roomCode];
             if (forwardInstructions.Count == 0)
             {
@@ -372,10 +367,9 @@ namespace DebtlockedDualServer
                 {
                     if (currentRoom.connectedPlayersTCP[u] == null)
                     {
-                        if(currentRoom.connectedPlayersUDP[u] == null)
-                        {
+                       
                             continue;
-                        }
+                        
                         
                     }
                     if (connectedSockets[u] == client)
@@ -385,25 +379,14 @@ namespace DebtlockedDualServer
                             continue;
                         }
                     }
-                    if (connectedEndPoints[u] == client.RemoteEndPoint)
-                    {
-                        if (!instruction.shouldSendToSender)
-                        {
-                            continue;
-                        }
-                    }
+                   
 
 
-                    if (TCP)
-                    {
+                    
                         
-                        sendTCPMessage(instruction.message, connectedSockets,u);
-                    }
-                    else
-                    {
-
-                        sendUDPMessage(instruction.message, connectedSockets[u]);//, connectedEndPoints,u);
-                    }
+                        sendTCPMessage(instruction.message, connectedSockets[u],currentRoom.GUIDs[u]);
+                    
+                    
                     log("Forwarded message:" + instruction.message, connectedSockets[u]);
 
                 }
@@ -513,7 +496,7 @@ namespace DebtlockedDualServer
                     return null;
                 }
                 string data = Encoding.ASCII.GetString(message);
-                //Console.WriteLine(data);
+               
                 return data;
             }
             catch(Exception e)
@@ -547,40 +530,40 @@ namespace DebtlockedDualServer
             }
             
         }
-
+/*
         public static void sendTCPMessage(string message, Socket[] users, int index)
         {
             Socket to = users[index];
             byte[] data = new byte[512];
             data = Encoding.ASCII.GetBytes(message);
             to.Send(data, 0, data.Length, SocketFlags.None);
-            Console.WriteLine("Sending TCP:" + message + "| to:" + ((IPEndPoint)to.RemoteEndPoint).Address.ToString());
+            Console.WriteLine("Sending TCP:" + message + "| to:" + ((IPEndPoint)to.LocalEndPoint).Address.ToString());
         }
-
-        public static void sendUDPMessage(string message, EndPoint[] users, int index)
+*/
+        public static void sendTCPMessage(string message, Socket users, string ID)
         {
-            EndPoint to = users[index];
-
+            message += "|" + ID;
             byte[] data = new byte[512];
-            data = Encoding.ASCII.GetBytes(message);            
-            UDPSocketSending.SendTo(data, to);
-            Console.WriteLine("Sending UDP:" + message + "| to:" + ((IPEndPoint)to).Address.ToString());
+            data = Encoding.ASCII.GetBytes(message);
+            users.Send(data, 0, data.Length, SocketFlags.None);
+            Console.WriteLine("Sending TCP:" + message + "| to:" + ((IPEndPoint)users.LocalEndPoint).Address.ToString());
         }
 
-        public static void sendUDPMessage(string message, Socket s)
+        /*
+        public static void sendUDPMessage(string message, string IP)
         {
            
 
             byte[] data = new byte[512];
-            IPEndPoint UDPIPAddress = (IPEndPoint)s.RemoteEndPoint;
+           
 
-            IPEndPoint UDPEP = new IPEndPoint(UDPIPAddress.Address,UDPSendingPort);
+            IPEndPoint UDPEP = new IPEndPoint(IPAddress.Parse(IP),UDPSendingPort);
             data = Encoding.ASCII.GetBytes(message);
-            UDPSocketSending.SendTo(data, UDPEP);
-            Console.WriteLine("Sending UDP with socket:" + message + "| to:" + ((IPEndPoint)s.RemoteEndPoint).Address.ToString());
+            UDPSocketSending.SendTo(data, data.Length,SocketFlags.None, UDPEP);
+            Console.WriteLine("Sending UDP with IP:" + message + "| to:" + IP.ToString());
         }
 
-
+        */
 
         public static void startTCPServer()
         {
@@ -604,7 +587,8 @@ namespace DebtlockedDualServer
             UDPSocketReceiving.Blocking = false;
 
             UDPSocketReceiving.Bind(UDPReceivingEndPoint);
-            //UDPSocket.ReceiveTimeout = 15;
+            UDPSocketReceiving.ReceiveTimeout = 15;
+            UDPSocketSending.ReceiveTimeout = 15;
 
 
         }
@@ -626,7 +610,7 @@ namespace DebtlockedDualServer
                
                 //clientMessages.Add(newSocket, new Queue<string>());
                 queuedClientsTCP.Enqueue(newSocketTCP);
-                queuedClientsUDP.Enqueue(newSocketTCP.RemoteEndPoint);
+                queuedClientsUDP.Enqueue(newSocketTCP.LocalEndPoint);
 
                 Console.Write("Client connected");
                 Console.WriteLine("Client added to waiting room");
@@ -644,7 +628,7 @@ namespace DebtlockedDualServer
                 string TCPdata = removeGarbageCharacters(receiveTCPMessage(s));
                 if (TCPdata != null)
                 {
-                   
+                    log("Received TCP: " + TCPdata, s);
                     //log("Added TCP to queue", s);
                     clientMessagesTCP.Enqueue(new ClientMessage(s, TCPdata));
                 }
@@ -727,7 +711,7 @@ namespace DebtlockedDualServer
     public class Room
     {
         public Socket[] connectedPlayersTCP;
-        public EndPoint[] connectedPlayersUDP;
+      
         public string[] GUIDs;
         public int currentRound;//0 for intermission
         public List<List<int>> GOTranslationTable = new List<List<int>>();
@@ -736,7 +720,7 @@ namespace DebtlockedDualServer
         public Room(int maxPlayersInLobby)
         {
             connectedPlayersTCP = new Socket[maxPlayersInLobby];
-            connectedPlayersUDP = new EndPoint[maxPlayersInLobby];
+           
             GUIDs = new string[maxPlayersInLobby];
             for (int i = 0; i < maxPlayersInLobby; i++)
             {
@@ -781,18 +765,7 @@ namespace DebtlockedDualServer
             return -1;
         }
 
-        public int getIndex(EndPoint s)
-        {
-            for (int i = 0; i < connectedPlayersUDP.Length; i++)
-            {
-                //Console.WriteLine("searching socket... " + i.ToString()); ;
-                if (connectedPlayersUDP[i] == s)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
+       
 
         public bool addPlayer(Socket s, string guid, EndPoint ep)
         {
@@ -803,7 +776,7 @@ namespace DebtlockedDualServer
                 {
                     //theres space
                     connectedPlayersTCP[i] = s;
-                    connectedPlayersUDP[i] = ep;
+                    
                     GUIDs[i] = guid;
                     hasRoomInLobby = true;
                     break;
@@ -821,12 +794,18 @@ namespace DebtlockedDualServer
         public string message = "";
         //if its added to the list, it will be forwarded
         public bool shouldSendToSender = true;
+        public string IP = "";
 
         public Instruction(string m, bool fs)
         {
             message = m;
            
             shouldSendToSender = fs;
+        }
+
+        public string getIP()
+        {
+            return IP;
         }
     }
 

@@ -292,6 +292,10 @@ namespace DebtlockedDualServer
                 if (code == getInstructionCode(InstructionType.POSITION_CHANGE) || code == getInstructionCode(InstructionType.VELOCITY_CHANGE)
                     || code == getInstructionCode(InstructionType.ROTATION_CHANGE))
                 {
+                    if(instructionData.Count < 2)
+                    {
+                        continue;
+                    }
                     int clientGameobjectID = int.Parse(instructionData[1]);
                     string position = instructionData[0];
 

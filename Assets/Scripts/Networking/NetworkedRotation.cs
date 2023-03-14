@@ -10,11 +10,12 @@ public class NetworkedRotation : NetworkScript
     
     public override void setData(object d)
     {
-        if (!(d is Quaternion))
+        if (!(d is Vector4))
         {
             return;
         }
-        Quaternion rot = (Quaternion)d;
+        Vector4 dv = (Vector4)d;
+        Quaternion rot = new Quaternion(dv.x, dv.y, dv.z, dv.w);
         transform.rotation = rot;
         oldRoation = rot;
         framesToSkipSending = 1;
@@ -44,8 +45,9 @@ public class NetworkedRotation : NetworkScript
             //update position
             oldRoation = transform.rotation;
             lastKnownRotation = transform.rotation;
-            
-            string data = JsonUtility.ToJson(transform.rotation) + "|" + gameObject.GetInstanceID();
+            Quaternion q = transform.rotation;
+            Vector4 sending = new Vector4(q.x, q.y, q.z, q.w);
+            string data = JsonUtility.ToJson(sending) + "|" + gameObject.GetInstanceID();
             NetworkManager.instance.queueTCPInstruction(this, NetworkManager.instance.getInstruction(InstructionType.ROTATION_CHANGE, data));//.sendUDPMessage();
 
         }

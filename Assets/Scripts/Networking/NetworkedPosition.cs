@@ -5,9 +5,30 @@ using UnityEngine;
 public class NetworkedPosition : NetworkScript
 {
     Vector3 oldPosition = Vector3.zero;
-    
-   
-   //moving feedback loop. must fix
+    int objectsColliding = 0;
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == 6)
+        {
+            return;
+        }
+        sendAnyways = true;
+        objectsColliding++;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            return;
+        }
+        objectsColliding--;
+        if(objectsColliding == 0)
+        {
+            sendAnyways = false;
+        }
+    }
 
     protected override void sendData()
     {

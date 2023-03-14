@@ -446,7 +446,7 @@ public class NetworkManager : MonoBehaviour
             }
             if (code == getInstructionCode(InstructionType.ROTATION_CHANGE))
             {//will be to create an object with a string prefab
-                Quaternion dataRot = JsonUtility.FromJson<Quaternion>(instructionData[0]);
+                Vector4 dataRot = JsonUtility.FromJson<Vector4>(instructionData[0]);
                 GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(instructionData[1]));
                 toAffect.GetComponent<NetworkedRotation>().setData(dataRot);
                 Debug.Log("Changed rotation GO with ID " + instructionData[1] + " to Rotation: " + dataRot.ToString());

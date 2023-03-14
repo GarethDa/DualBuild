@@ -12,7 +12,9 @@ public class GameManager : MonoBehaviour
     public GameObject clientPlayer;
 
     public int playersConnected = 2;
-    
+
+    public bool isHost = false;
+    public bool isNetworked = false;
     void Awake()
     {
         if(instance == null)
@@ -21,6 +23,6 @@ public class GameManager : MonoBehaviour
 
         }
     }
-
+    
     
 }

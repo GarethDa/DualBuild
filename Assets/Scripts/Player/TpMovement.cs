@@ -258,7 +258,7 @@ public class TpMovement : MonoBehaviour
                 onRamp = true;
                 moveDir = Vector3.ProjectOnPlane(moveDir, rayHit.normal).normalized;
                 rBody.useGravity = false;
-                Debug.Log("Ramp Velocity: " + rBody.velocity.magnitude);
+                //Debug.Log("Ramp Velocity: " + rBody.velocity.magnitude);
 
                 if (rBody.velocity.y > 0)
                 {
@@ -268,7 +268,7 @@ public class TpMovement : MonoBehaviour
 
             else
             {
-                Debug.Log("Original velocity: " + rBody.velocity.magnitude);
+                //Debug.Log("Original velocity: " + rBody.velocity.magnitude);
                 rBody.useGravity = true;
             }
         }

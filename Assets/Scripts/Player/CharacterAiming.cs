@@ -466,6 +466,16 @@ public class CharacterAiming : MonoBehaviour
         punchForce = newForce;
     }
 
+    public float getThrowForce()
+    {
+        return throwForce;
+    }
+
+    public float getThrowModifier()
+    {
+        return throwUpModifier;
+    }
+
     private bool CheckForAimAssist(out RaycastHit hitInfo)
     {
         if (playerNum == 1)

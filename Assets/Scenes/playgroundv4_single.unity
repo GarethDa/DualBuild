@@ -1753,6 +1753,8 @@ MonoBehaviour:
   powerupManager: []
   clientPlayer: {fileID: 1682029003}
   playersConnected: 0
+  isHost: 0
+  isNetworked: 0
 --- !u!114 &158365057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2549,6 +2551,7 @@ Transform:
   - {fileID: 158365052}
   - {fileID: 2654424}
   - {fileID: 980973570}
+  - {fileID: 1818008985}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4130,7 +4133,7 @@ GameObject:
   - component: {fileID: 431119979}
   m_Layer: 0
   m_Name: P3
-  m_TagString: Untagged
+  m_TagString: LevelPersistent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8103,7 +8106,7 @@ GameObject:
   - component: {fileID: 859670916}
   m_Layer: 0
   m_Name: P1
-  m_TagString: Untagged
+  m_TagString: LevelPersistent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9091,8 +9094,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1325fa8923d3c0044a98aa8437a3ba93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isServer: 0
+  isHost: 0
   secondsBetweenUpdates: 0.5
+  TCPPort: 8888
+  UDPPortSending: 8890
+  UDPPortReceiving: 8889
+  serverIP: 10.0.0.67
+  timeoutSeconds: 2
+  roomKey: JOHN
+  message: 
 --- !u!1001 &984509478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11379,7 +11389,7 @@ GameObject:
   - component: {fileID: 1189241689}
   m_Layer: 0
   m_Name: P6
-  m_TagString: Untagged
+  m_TagString: LevelPersistent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11802,7 +11812,7 @@ GameObject:
   - component: {fileID: 1205926175}
   m_Layer: 0
   m_Name: P4
-  m_TagString: Untagged
+  m_TagString: LevelPersistent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12346,7 +12356,7 @@ GameObject:
   - component: {fileID: 1285521109}
   m_Layer: 0
   m_Name: P2
-  m_TagString: Untagged
+  m_TagString: LevelPersistent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13052,7 +13062,7 @@ GameObject:
   - component: {fileID: 1317419891}
   m_Layer: 0
   m_Name: P5
-  m_TagString: Untagged
+  m_TagString: LevelPersistent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15001,7 +15011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897688907854404653, guid: 81d12462c23530d419318c4432dbed9f, type: 3}
       propertyPath: m_Duration
-      value: 10.583908
+      value: 10.58391
       objectReference: {fileID: 0}
     - target: {fileID: 3535864371597269720, guid: 81d12462c23530d419318c4432dbed9f, type: 3}
       propertyPath: m_Duration
@@ -15013,7 +15023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4307973234661825205, guid: 81d12462c23530d419318c4432dbed9f, type: 3}
       propertyPath: m_Duration
-      value: 7.603753
+      value: 7.603752
       objectReference: {fileID: 0}
     - target: {fileID: 4311288967052324799, guid: 81d12462c23530d419318c4432dbed9f, type: 3}
       propertyPath: m_Duration
@@ -20063,7 +20073,6 @@ Transform:
   - {fileID: 986142324}
   - {fileID: 1350329765}
   - {fileID: 1770189936}
-  - {fileID: 1818008985}
   m_Father: {fileID: 216861611}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20636,7 +20645,7 @@ GameObject:
   - component: {fileID: 1805790205}
   m_Layer: 0
   m_Name: P0
-  m_TagString: Untagged
+  m_TagString: LevelPersistent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21278,7 +21287,7 @@ GameObject:
   - component: {fileID: 1818008985}
   m_Layer: 0
   m_Name: Cam
-  m_TagString: Untagged
+  m_TagString: LevelPersistent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21290,8 +21299,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818008984}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1437, y: -13.181147, z: 142.84697}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21303,7 +21312,7 @@ Transform:
   - {fileID: 1317419890}
   - {fileID: 1189241688}
   - {fileID: 1909848876}
-  m_Father: {fileID: 1754841251}
+  m_Father: {fileID: 216861611}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1819173799
@@ -22356,7 +22365,7 @@ GameObject:
   - component: {fileID: 1909848877}
   m_Layer: 0
   m_Name: P7
-  m_TagString: Untagged
+  m_TagString: LevelPersistent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

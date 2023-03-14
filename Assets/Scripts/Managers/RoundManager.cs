@@ -219,7 +219,8 @@ public class RoundManager : MonoBehaviour
                 toLoad += (int)preview.nextRounds[0].getType();
                 toLoad += (int)preview.nextRounds[1].getType();
                 roundSeconds += preview.getRoundTime();
-
+                Debug.Log(preview.nextRounds[0].getType().ToString());
+                Debug.Log(preview.nextRounds[1].getType().ToString());
                 Debug.Log("adding here");
                 sendToLevel = false;
 
@@ -474,7 +475,7 @@ public class RoundManager : MonoBehaviour
             spawnPoints.Add(levelSpawnParent.GetChild(i));
         }
         level.transform.SetParent(GameManager.instance.levelManager.transform);
-        level.transform.position = level.transform.parent.transform.position + level.transform.position;
+        level.transform.position = levelLocation.transform.position + level.transform.position;
         deathZone.transform.SetParent(GameManager.instance.levelManager.transform);
         deathZone.transform.position = level.transform.parent.transform.position + Vector3.up * 90;
         GameManager.instance.deathZone = deathZone;

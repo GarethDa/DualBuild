@@ -7,13 +7,15 @@ public class NetworkedPosition : NetworkScript
     Vector3 oldPosition = Vector3.zero;
     int objectsColliding = 0;
 
+   
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer == 6)
         {
             return;
         }
-        sendAnyways = true;
+        //sendAnyways = true;
         objectsColliding++;
     }
 
@@ -26,12 +28,13 @@ public class NetworkedPosition : NetworkScript
         objectsColliding--;
         if(objectsColliding == 0)
         {
-            sendAnyways = false;
+            //sendAnyways = false;
         }
     }
 
     protected override void sendData()
     {
+        Debug.Log("sending POSITION");
         if (Vector3.Distance(oldPosition,transform.position) > tolerance)
         {
             //update position

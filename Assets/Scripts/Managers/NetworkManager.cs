@@ -235,6 +235,7 @@ public class NetworkManager : MonoBehaviour
 
     public void queueTCPInstruction(NetworkScript script, NetworkInstruction instruction, bool replace = true)
     {
+        Debug.Log("Queued instruction " + instruction.getString());
         if (!queuedTCPInstructions.ContainsKey(script))
         {
             queuedTCPInstructions.Add(script, new List<NetworkInstruction>());

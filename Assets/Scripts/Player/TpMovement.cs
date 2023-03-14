@@ -287,6 +287,11 @@ public class TpMovement : MonoBehaviour
     //New input system
     public void OnMove(InputAction.CallbackContext cntxt)
 	{
+        if (settingsMenu.GetIsPaused())
+        {
+            return;
+        }
+
         //Use threshold checks for shitty gamepads
         if (cntxt.action.name.Equals("Up"))
         {
@@ -330,6 +335,11 @@ public class TpMovement : MonoBehaviour
     //New input system
     public void OnJump(InputAction.CallbackContext cntxt)
     {
+        if (settingsMenu.GetIsPaused())
+        {
+            return;
+        }
+
         if (cntxt.performed)
         {
             if (isGrounded)

@@ -143,6 +143,11 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public bool GetIsPaused()
+    {
+        return paused;
+    }
+
     public void StartRebinding(int index)
     {
         //Hide the control text and show the waiting for input text

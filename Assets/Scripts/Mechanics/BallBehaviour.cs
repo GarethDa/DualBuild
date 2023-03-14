@@ -51,7 +51,6 @@ public class BallBehaviour : MonoBehaviour
                 //Switch back to normal material
                 gameObject.GetComponent<MeshRenderer>().material = origMat;
                 isThrown = false;
-
                 currentThrowLife = 0f;
             }
         }

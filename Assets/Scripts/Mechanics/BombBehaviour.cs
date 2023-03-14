@@ -57,6 +57,8 @@ public class BombBehaviour : MonoBehaviour
 
             }
             ParticleManager.instance.PlayEffect(transform.position, "ExplosionParticles");
+            GetComponentInChildren<AssetAudioController>().BombSFX();
+            gameObject.transform.DetachChildren();
             Destroy(gameObject);
         }
         

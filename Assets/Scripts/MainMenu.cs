@@ -16,10 +16,13 @@ public class MainMenu : MonoBehaviour
         public InputActionReference actionReference;
         public GameObject actionButton;
     }
+    
 
     [Header("Scene/Screen switching")]
+   
     [SerializeField] private string singlePlayer;
     [SerializeField] private string multiPlayer;
+    [SerializeField] private GameObject mainScreen;
     [SerializeField] private GameObject settingsScreen;
 
     [Header("Control rebinding")]
@@ -80,11 +83,13 @@ public class MainMenu : MonoBehaviour
     public void OpenOptions()
     {
         settingsScreen.SetActive(true);
+        mainScreen.SetActive(false);
     }
 
     public void CloseOptions()
     {
         settingsScreen.SetActive(false);
+        mainScreen.SetActive(true);
     }
 
     public void QuitGame()

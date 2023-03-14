@@ -154,7 +154,9 @@ public class TpMovement : MonoBehaviour
     private void FixedUpdate()
     {
         //if you control THAT character
-        /*        if (view.IsMine)        {
+        /*
+        if (view.IsMine)
+        {
         this is where photon stuff goes if put back in
         }
         

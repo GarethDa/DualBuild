@@ -113,13 +113,14 @@ public class CharacterAiming : MonoBehaviour
     void Update()
     {
         Debug.Log(playerCam.pixelHeight / 2f + "      " + playerCam.pixelWidth / 2f);
-
+        
         if (animator != null)
         {
             animator.SetBool("isAiming", isAiming);
             animator.SetBool("hasBall", holdingProjectile);
         }
         
+
         if (isAiming)
         {
             //If the player is aiming, set the player object's rotation around the y-axis to that of the camera
@@ -165,6 +166,11 @@ public class CharacterAiming : MonoBehaviour
                 reticle.gameObject.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
                 reticle.gameObject.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
                 aimAssistSphere.SetActive(false);
+            }
+            if (animator != null)
+            {
+                animator.SetBool("isAiming", isAiming);
+                animator.SetBool("hasBall", holdingProjectile);
             }
         }
 
@@ -240,7 +246,7 @@ public class CharacterAiming : MonoBehaviour
                 playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Model"));
                 playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Transparent"));
             }
-
+            Debug.Log("Has ball: " + holdingProjectile);
             //ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
         }
 
@@ -258,6 +264,7 @@ public class CharacterAiming : MonoBehaviour
 
             //normalModel.SetActive(true);
             //transparentModel.SetActive(false);
+            Debug.Log("Has ball: " + holdingProjectile);
         }
 	}
 
@@ -326,6 +333,7 @@ public class CharacterAiming : MonoBehaviour
                     heldProjectile.GetComponents<Collider>()[1].enabled = true;
 
                 animator.SetTrigger("Throw");
+
                 //Set the projectile back to non-kinematic
                 heldProjectile.GetComponent<Rigidbody>().isKinematic = false;
 
@@ -347,6 +355,8 @@ public class CharacterAiming : MonoBehaviour
 
                 //The player is no longer holding a projectile
                 holdingProjectile = false;
+                animator.SetBool("hasBall", holdingProjectile);
+                Debug.Log("Has ball: " + holdingProjectile);
 
                 //The ball shouldn't be a child of the player model anymore
                 heldProjectile.transform.SetParent(null);

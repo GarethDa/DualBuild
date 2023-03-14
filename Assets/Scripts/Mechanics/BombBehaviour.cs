@@ -19,7 +19,7 @@ public class BombBehaviour : MonoBehaviour
     void Start()
     {
        
-       radius =  outCollider.bounds.size.x;
+       radius =  outCollider.bounds.size.x / 2;
         
 
     }
@@ -44,7 +44,7 @@ public class BombBehaviour : MonoBehaviour
 
         Debug.Log("HIT GROUND");
         //check for floor or player and explode
-        if(collision.gameObject.tag == "Player" || collision.gameObject.layer == 6)
+        if(collision.gameObject.tag == "Player" || collision.gameObject.layer == 6 || collision.gameObject.layer == 9)
         {
             foreach (Rigidbody g in affectedObjects)
             {
@@ -52,7 +52,7 @@ public class BombBehaviour : MonoBehaviour
                 //Vector3 toMove = transform.position - g.gameObject.transform.position;
                 //Vector3 newForce = (radius - Vector3.Distance(transform.position, g.transform.position)) * toMove.normalized * bombForce;
                 // g.AddForce(newForce, ForceMode.Impulse);
-                rg.AddExplosionForce(bombForce, transform.position, radius, 3.0F);
+                rg.AddExplosionForce(bombForce, transform.position, bombRadius, 3.0F, ForceMode.Impulse);
                 Debug.Log(rg.gameObject.name);
 
             }
@@ -69,21 +69,21 @@ public class BombBehaviour : MonoBehaviour
         if (other.gameObject.GetComponentInParent<Rigidbody>() != null)
         {
             affectedObjects.Add(other.gameObject.GetComponentInParent<Rigidbody>());
-            Debug.Log("ADDED");
+            Debug.Log("ADDED " + other.gameObject.name);
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
         
-        if (other.gameObject.GetComponent<Rigidbody>() != null)
+        if (other.gameObject.GetComponentInParent<Rigidbody>() != null)
         {
-            if (!affectedObjects.Contains(other.gameObject.GetComponent<Rigidbody>()))
+            if (!affectedObjects.Contains(other.gameObject.GetComponentInParent<Rigidbody>()))
             {
                 return;
             }
-            affectedObjects.Remove(other.gameObject.GetComponent<Rigidbody>());
-            Debug.Log("REMOVED");
+            affectedObjects.Remove(other.gameObject.GetComponentInParent<Rigidbody>());
+            Debug.Log("REMOVED " + other.gameObject.name);
 
         }
     }

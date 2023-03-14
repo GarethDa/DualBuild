@@ -32,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2370066802426273844}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.54, y: -3.33, z: 161.59}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -130,8 +130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4f4629bd0c0b546affd87b8809a0b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bombForce: 861
-  bombRadius: 80
+  bombForce: 30
+  bombRadius: 100
   outCollider: {fileID: 4235221282667964771}
 --- !u!135 &4235221282667964771
 SphereCollider:
@@ -144,7 +144,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 49.58
+  m_Radius: 35
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4869308585840518608
 MonoBehaviour:

@@ -20324,7 +20324,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 399a7b10f73314348a7f4ff29c223942, type: 3}
   - {fileID: 2800000, guid: 1b25f0cebcf74fc4d9da81714eadf663, type: 3}
   - {fileID: 2800000, guid: a554ab2ef2044124794cba443a7949ff, type: 3}
-  - {fileID: 2800000, guid: a554ab2ef2044124794cba443a7949ff, type: 3}
+  - {fileID: 2800000, guid: ab8f806d4f8f36c46a1a2fa06c218b66, type: 3}
   onScreenPowerupIcon:
   - {fileID: 1801700539}
   - {fileID: 1179934866}

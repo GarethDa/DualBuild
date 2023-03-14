@@ -363,8 +363,8 @@ MonoBehaviour:
   _state: 0
   _rb: {fileID: 9157067621577518660}
   _speed: 0
-  _acceleration: 0.8
-  _maxSpeed: 30
+  _acceleration: 2.5
+  _maxSpeed: 50
   _targettingCooldownTime: 5
   _cooldownTargetting: 0
   _movementCooldownTime: 5
@@ -372,6 +372,11 @@ MonoBehaviour:
   _explosionForce: 75
   _upwardForce: 30
   _returnSnapDistance: 0.1
+  _avoidanceDistance: 5
+  _maxAvoidanceForce: 1000
+  _nonPlayerLayers:
+    serializedVersion: 2
+    m_Bits: 1663
   _targetPlayer: {fileID: 0}
 --- !u!4 &3094839145500324732 stripped
 Transform:

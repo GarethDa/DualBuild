@@ -34,6 +34,11 @@ public class BumperBot : MonoBehaviour
 
     [SerializeField] float _returnSnapDistance = 0.1f;
 
+    [SerializeField] float _avoidanceDistance = 5f;
+    [SerializeField] float _maxAvoidanceForce = 10f;
+
+    [SerializeField] LayerMask _nonPlayerLayers;
+
     [SerializeField] GameObject _targetPlayer;
 
     float loopPerc; //Whole Number represents number of loops completed, decimal the percentage of current loop complete.
@@ -58,11 +63,13 @@ public class BumperBot : MonoBehaviour
             case BumperStates.CHASE_LOCK:
                 Accelerate();
                 Chase(_targetPlayer.transform.position, Vector3.up * 2);
+                Avoid();
                 CooldownTargetting();
                 break;
             case BumperStates.CHASE_SEARCH:
                 Accelerate();
                 Chase(_targetPlayer.transform.position, Vector3.up * 2);
+                Avoid();
                 break;
             case BumperStates.COOLDOWN:
                 CooldownMovement();
@@ -97,6 +104,22 @@ public class BumperBot : MonoBehaviour
     {
         transform.LookAt(target + offset);
         _rb.velocity = transform.forward * _speed;
+    }
+
+    void Avoid()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, _avoidanceDistance, _nonPlayerLayers))
+        {
+            // Calculate the avoidance force based on the distance to the obstacle
+            float distance = hit.distance;
+            float force = Mathf.Lerp(_maxAvoidanceForce, 0f, distance / _avoidanceDistance);
+            Vector3 avoidanceDirection = Vector3.Cross(transform.up, hit.normal);
+            Vector3 avoidanceForce = avoidanceDirection * force;
+
+            // Apply the avoidance force to the rigidbody
+            _rb.AddForce(avoidanceForce);
+        }
     }
 
     /// <summary>

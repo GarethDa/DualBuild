@@ -112,7 +112,7 @@ public class CharacterAiming : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(playerCam.pixelHeight / 2f + "      " + playerCam.pixelWidth / 2f);
+        //Debug.Log(playerCam.pixelHeight / 2f + "      " + playerCam.pixelWidth / 2f);
 
         if (animator != null)
         {

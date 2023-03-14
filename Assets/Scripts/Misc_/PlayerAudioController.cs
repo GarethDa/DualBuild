@@ -7,13 +7,14 @@ public class PlayerAudioController : MonoBehaviour
 {
     public float timeBetweenFootsteps = 0.5f;
     float soundCooldown;
-    // Start is called before the first frame update
+    bool holding = false;
+    AudioSource audioData;
+
     void Start()
     {
-        
+        audioData = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         soundCooldown -= Time.deltaTime;
@@ -22,6 +23,21 @@ public class PlayerAudioController : MonoBehaviour
             GetComponent<AudioClipRandomizer>().PlaySFX();
             soundCooldown = timeBetweenFootsteps;
         }
+
+        //When player grabs ball and continues to hold onto it
+        if (GetComponent<CharacterAiming>().IsHoldingProj() == true && holding == false)
+        {
+            holding = true;
+        }
+
+        //When player lets go of it, and no longer holds it
+        if (GetComponent<CharacterAiming>().IsHoldingProj() == false && holding == true)
+        {
+            audioData.Play(0);
+            holding = false;
+            Debug.Log("BALLING");
+        }
+
     }
 
     public void Footsteps()

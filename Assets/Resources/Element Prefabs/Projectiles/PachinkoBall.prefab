@@ -15,9 +15,11 @@ GameObject:
   - component: {fileID: 575967481415569179}
   - component: {fileID: -1050591577600945527}
   - component: {fileID: -2513019330696666690}
+  - component: {fileID: -1104832278000154545}
+  - component: {fileID: 3245556322903733237}
   m_Layer: 9
   m_Name: PachinkoBall
-  m_TagString: Untagged
+  m_TagString: Pachinko
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,3 +145,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5061e97201eb88e4ca0f5054c988ded4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-1104832278000154545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575967481415569178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58bfe7fa1c53ed42a9df536a21e5fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3245556322903733237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575967481415569178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d582541dd1aa69c459a6a8f1cae8ff08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _arcObj: {fileID: 0}
+  _audioClips:
+  - {fileID: 8300000, guid: 4e483916dc0036f449b38ed1137f7502, type: 3}
+  _mixerGroup: {fileID: 0}
+  _overrideArcSettings: 1
+  _noRepeats: 1
+  _randomPitch: 1
+  _minPitch: 0.5
+  _maxPitch: 1.5
+  _volume: 0.6
+  _loop: 0
+  _priority: 128
+  _stereoPan: 0
+  _spatialBlend: 1

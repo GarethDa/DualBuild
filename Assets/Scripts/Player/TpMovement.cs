@@ -232,9 +232,49 @@ public class TpMovement : MonoBehaviour
     //For moving the player object when the player inputs a direction
     private void MovePlayer()
     {
-       
+        //rBody.useGravity = true;
+
         //Calculate direction
         moveDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+        bool onRamp = false;
+
+        if (Physics.Raycast(transform.position, Vector3.down, out rayHit, 1f))
+        {
+            //Create a quaternion that holds the rotation from up to along the ramp
+            float groundRot = Vector3.Angle(Vector3.up, rayHit.normal);
+
+            //Create a new velocity by multiplying the rotation quaternion with the current velocity
+            //Vector3 newVelocity = groundRot * rBody.velocity;
+
+            //If the y component of the velocity is less than 0, meaning the player is going down a ramp,
+            //then set the velocity to the new velocity
+            //if (newVelocity.y < 0) rBody.velocity = newVelocity;
+
+            if (groundRot > 0)
+            {
+                onRamp = true;
+                moveDir = Vector3.ProjectOnPlane(moveDir, rayHit.normal).normalized;
+                rBody.useGravity = false;
+                Debug.Log("Ramp Velocity: " + rBody.velocity.magnitude);
+
+                if (rBody.velocity.y > 0)
+                {
+                    rBody.AddForce(Vector3.down * 80f, ForceMode.Force);
+                }
+            }
+
+            else
+            {
+                Debug.Log("Original velocity: " + rBody.velocity.magnitude);
+                rBody.useGravity = true;
+            }
+        }
+
+        else
+        {
+            rBody.useGravity = true;
+        }
 
         rBody.AddForce(moveDir.normalized * moveSpeed * 5f, ForceMode.Force);
 
@@ -243,14 +283,17 @@ public class TpMovement : MonoBehaviour
             rBody.AddForce(new Vector3(0f, -jumpGravity, 0f), ForceMode.Force);
         }
 
-        if (justSwapped)
+        if (justSwapped && !onRamp)
         {
             rBody.velocity = new Vector3(rBody.velocity.x, 0f, rBody.velocity.z);
         }
 
+        /*
+        //Debug.Log("Original velocity: " + rBody.velocity.magnitude);
+
         //This code is for keeping the player on a ramp while they are doing down it.
         //Raycast downwards to see what the player is standing on.
-        if (Physics.Raycast(feetTransform.position, -transform.up, out rayHit, 0.1f))
+        if (Physics.Raycast(transform.position, -transform.up, out rayHit, 0.5f))
         {
             //Create a quaternion that holds the rotation from up to along the ramp
             Quaternion groundRot = Quaternion.FromToRotation(Vector3.up, rayHit.normal);
@@ -261,7 +304,10 @@ public class TpMovement : MonoBehaviour
             //If the y component of the velocity is less than 0, meaning the player is going down a ramp,
             //then set the velocity to the new velocity
             if (newVelocity.y < 0) rBody.velocity = newVelocity;
+
+            Debug.Log("Ramp Velocity: " + rBody.velocity.magnitude);
         }
+        */
     }
 
     private void LimitSpeed()

@@ -170,6 +170,7 @@ MonoBehaviour:
   tolerance: 1
   sendAnyways: 0
   framesToSkipSending: 0
+  affectingTransform: {fileID: 8411294830480965784}
 --- !u!1 &7683467097089540674
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,7 +5,8 @@ using UnityEngine;
 public class NetworkedRotation : NetworkScript
 {
     Quaternion oldRoation = Quaternion.identity;
-    Quaternion lastKnownRotation = Quaternion.identity;
+    Quaternion difference = Quaternion.identity;
+    public Transform affectingTransform;
     float t = 0f;
     
     public override void setData(object d)
@@ -16,7 +17,9 @@ public class NetworkedRotation : NetworkScript
         }
         Vector4 dv = (Vector4)d;
         Quaternion rot = new Quaternion(dv.x, dv.y, dv.z, dv.w);
-        transform.rotation = rot;
+        difference = affectingTransform.rotation * Quaternion.Inverse(rot);
+        affectingTransform.rotation = rot;
+        
         oldRoation = rot;
         framesToSkipSending = 1;
         t = 0;
@@ -24,28 +27,30 @@ public class NetworkedRotation : NetworkScript
 
     protected override void applyData()
     {
-        transform.rotation = oldRoation;
-    }
-    public override void frameAdjustment()
-    {
-        applyData();
-        return;
-        t += Time.deltaTime * NetworkManager.instance.secondsBetweenUpdates;
-        if(t > 1)
+        if (isHost)
         {
             return;
         }
-        transform.rotation = Quaternion.Slerp(lastKnownRotation, oldRoation, t);
+        affectingTransform.rotation = oldRoation;
+    }
+    public override void frameAdjustment()//https://forum.unity.com/threads/get-the-difference-between-two-quaternions-and-add-it-to-another-quaternion.513187/
+    {
+        if (isHost)
+        {
+            return;
+        }
+        Quaternion perFrame = Quaternion.Slerp(Quaternion.identity, difference, Time.deltaTime);
+        affectingTransform.rotation = affectingTransform.rotation * perFrame;
     }
     protected override void sendData()
     {
         tolerance = 0.1f;
-        if(1 - Mathf.Abs(Quaternion.Dot(oldRoation, transform.rotation)) < tolerance)
+        //if(1 - Mathf.Abs(Quaternion.Dot(oldRoation, affectingTransform.rotation)) < tolerance)
         {
             //update position
-            oldRoation = transform.rotation;
-            lastKnownRotation = transform.rotation;
-            Quaternion q = transform.rotation;
+            oldRoation = affectingTransform.rotation;
+            //lastKnownRotation = affectingTransform.rotation;
+            Quaternion q = affectingTransform.rotation;
             Vector4 sending = new Vector4(q.x, q.y, q.z, q.w);
             string data = JsonUtility.ToJson(sending) + "|" + gameObject.GetInstanceID();
             NetworkManager.instance.queueTCPInstruction(this, NetworkManager.instance.getInstruction(InstructionType.ROTATION_CHANGE, data));//.sendUDPMessage();

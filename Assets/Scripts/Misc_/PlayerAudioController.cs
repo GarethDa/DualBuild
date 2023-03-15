@@ -8,11 +8,12 @@ public class PlayerAudioController : MonoBehaviour
     public float timeBetweenFootsteps = 0.5f;
     float soundCooldown;
     bool holding = false;
-    AudioSource audioData;
-
+    public AudioSource audio1;
+    public AudioSource audio2;
+    public AudioSource audio3;
     void Start()
     {
-        audioData = GetComponent<AudioSource>();
+
     }
 
     void Update()
@@ -33,15 +34,35 @@ public class PlayerAudioController : MonoBehaviour
         //When player lets go of it, and no longer holds it
         if (GetComponent<CharacterAiming>().IsHoldingProj() == false && holding == true)
         {
-            audioData.Play(0);
+            audio1.Play();
             holding = false;
             Debug.Log("BALLING");
         }
 
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if ((collision.gameObject.layer == 6 || collision.gameObject.layer == 6) && GetComponent<TpMovement>().GetGroundPos() < GetComponent<TpMovement>().GetJumpPos())
+        {
+            audio3.Play();
+            GetComponent<TpMovement>().SetGroundPos(0f);
+            GetComponent<TpMovement>().SetJumpPos(0f);
+        }
+    }
+
     public void Footsteps()
     {
         //empty for now
+    }
+
+    public void jumpSFX()
+    {
+        audio2.Play();
+    }
+
+    public void landingSFX()
+    {
+        audio3.Play();
     }
 }

@@ -33,6 +33,9 @@ public class TpMovement : MonoBehaviour
     float horizontalInput;
     float verticalInput;
 
+    float jumpPos;
+    float groundPos;
+
     Vector3 moveDir;
 
     Rigidbody rBody;
@@ -392,11 +395,21 @@ public class TpMovement : MonoBehaviour
         {
             if (isGrounded)
             {
+                groundPos = gameObject.transform.position.y;
+                GetComponent<PlayerAudioController>().jumpSFX();
                 rBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 //ParticleManager.instance.PlayEffect(transform.position, "WhiteParticles");
                 powerup.PlayerJumped();
+                StartCoroutine(CheckJump());
             }
         }
+    }
+
+    //Check if the player jumped
+    IEnumerator CheckJump()
+    {
+        yield return new WaitForSeconds(0.8f);
+        jumpPos = gameObject.transform.position.y;
     }
 
     public void OnPause()
@@ -427,6 +440,26 @@ public class TpMovement : MonoBehaviour
         return moveSpeed;
     }
 
+    public void SetJumpPos(float newPos)
+    {
+        jumpPos = newPos;
+    }
+
+    public float GetJumpPos()
+    {
+        return jumpPos;
+    }
+
+    public void SetGroundPos(float newPos)
+    {
+        groundPos = newPos;
+    }
+
+    public float GetGroundPos()
+    {
+        return groundPos;
+    }
+    
     public bool GetIsGrounded()
     {
         return isGrounded;

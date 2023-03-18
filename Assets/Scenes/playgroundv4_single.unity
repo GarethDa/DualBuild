@@ -4229,6 +4229,24 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &459900896 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8022487627391779582, guid: 0729cd4114eb87348acb08ca8624a934, type: 3}
+  m_PrefabInstance: {fileID: 1807696010}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &459900900
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459900896}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.4735004, y: 0, z: 1.2794979}
+  m_Center: {x: -0.000000044703484, y: -0.008141669, z: -0.00000020861626}
 --- !u!224 &460756808 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 653447911536125438, guid: 94286b62930a144448dc602f62898eba, type: 3}
@@ -15011,7 +15029,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897688907854404653, guid: 81d12462c23530d419318c4432dbed9f, type: 3}
       propertyPath: m_Duration
-      value: 10.58391
+      value: 10.399229
       objectReference: {fileID: 0}
     - target: {fileID: 3535864371597269720, guid: 81d12462c23530d419318c4432dbed9f, type: 3}
       propertyPath: m_Duration
@@ -15023,7 +15041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4307973234661825205, guid: 81d12462c23530d419318c4432dbed9f, type: 3}
       propertyPath: m_Duration
-      value: 7.603752
+      value: 7.463698
       objectReference: {fileID: 0}
     - target: {fileID: 4311288967052324799, guid: 81d12462c23530d419318c4432dbed9f, type: 3}
       propertyPath: m_Duration
@@ -21205,6 +21223,10 @@ PrefabInstance:
     - target: {fileID: 7831803770958041921, guid: 0729cd4114eb87348acb08ca8624a934, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022487627391779582, guid: 0729cd4114eb87348acb08ca8624a934, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8532424988590475278, guid: 0729cd4114eb87348acb08ca8624a934, type: 3}
       propertyPath: m_Size.y

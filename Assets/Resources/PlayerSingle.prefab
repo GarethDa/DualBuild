@@ -2107,7 +2107,7 @@ Transform:
   - {fileID: 8411294830900885184}
   - {fileID: 8411294830436386872}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &6164643919393318175
 Rigidbody:
@@ -2734,6 +2734,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: d682a83e-3cc3-4a8b-bd3c-7f8ae170676e
     m_ActionName: Editor/GiveSuperPunch[/Keyboard/leftBracket]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 78a7372d-30c8-4ec0-a3c5-3d32cc128c66
+    m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows1/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows1/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows1/leftStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows1/leftStick/right,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

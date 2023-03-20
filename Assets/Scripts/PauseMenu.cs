@@ -27,6 +27,8 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Slider zoomedInSensitivity;
     [SerializeField] private Slider zoomedOutSensitivity;
 
+    [SerializeField] GameObject settingsFirst;
+
     //[SerializeField] private PlayerInput pInput;
     //A list of texts which display the current binding of each action
     private List<TMP_Text> bindingTexts = new List<TMP_Text>();
@@ -42,6 +44,8 @@ public class PauseMenu : MonoBehaviour
     bool paused = false;
 
     int playerNum;
+
+    float rebindTime = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -95,6 +99,16 @@ public class PauseMenu : MonoBehaviour
 
         else
             Debug.Log("******PROBLEM HERE******");
+
+        if (gameObject.name.Equals("P1_UI"))
+        {
+            GameObject.Find("Player1").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
+        }
+
+        if (gameObject.name.Equals("P2_UI"))
+        {
+            GameObject.Find("Player2").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
+        }
     }
 
     // Update is called once per frame
@@ -123,6 +137,8 @@ public class PauseMenu : MonoBehaviour
             StateVariables.p4zoomedInSens = zoomedInSensitivity.value;
             StateVariables.p4zoomedOutSens = zoomedOutSensitivity.value;
         }
+
+        rebindTime += Time.deltaTime;
     }
 
     public void OnPause()
@@ -134,12 +150,34 @@ public class PauseMenu : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+
+            settingsFirst.GetComponent<Button>().Select();
+
+            if (gameObject.name.Equals("P1_UI"))
+            {
+                GameObject.Find("Player1").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Enable();
+            }
+
+            else if (gameObject.name.Equals("P2_UI"))
+            {
+                GameObject.Find("Player2").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Enable();
+            }
         }
 
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            if (gameObject.name.Equals("P1_UI"))
+            {
+                GameObject.Find("Player1").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
+            }
+
+            else if (gameObject.name.Equals("P2_UI"))
+            {
+                GameObject.Find("Player2").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
+            }
         }
     }
 
@@ -150,14 +188,17 @@ public class PauseMenu : MonoBehaviour
 
     public void StartRebinding(int index)
     {
-        //Hide the control text and show the waiting for input text
-        rebindTextObjects[index].SetActive(false);
-        waitingTextObjects[index].SetActive(true);
+        if (rebindTime >= 0.5f)
+        {
+            //Hide the control text and show the waiting for input text
+            rebindTextObjects[index].SetActive(false);
+            waitingTextObjects[index].SetActive(true);
 
-        inputInfoList[index].actionReference.action.Disable();
+            inputInfoList[index].actionReference.action.Disable();
 
-        rebindingOperation = inputInfoList[index].actionReference.action.PerformInteractiveRebinding()
-            .OnMatchWaitForAnother(0.1f).OnComplete(operation => RebindComplete(index)).Start();
+            rebindingOperation = inputInfoList[index].actionReference.action.PerformInteractiveRebinding()
+                .OnComplete(operation => RebindComplete(index)).Start();
+        }
     }
 
     private void RebindComplete(int index)
@@ -174,6 +215,6 @@ public class PauseMenu : MonoBehaviour
         rebindTextObjects[index].SetActive(true);
         waitingTextObjects[index].SetActive(false);
 
-
+        rebindTime = 0f;
     }
 }

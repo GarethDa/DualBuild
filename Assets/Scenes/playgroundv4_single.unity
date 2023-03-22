@@ -1302,6 +1302,8 @@ MonoBehaviour:
   lastPlacePowerupGiver: {fileID: 502713321}
   mainPowerupGiver: {fileID: 1716207587}
   givingPowerup: 0
+  roundOne: 1
+  roundTwo: 1
 --- !u!114 &158365054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6510,6 +6512,7 @@ MonoBehaviour:
   timeoutSeconds: 2
   roomKey: JOHN
   message: 
+  username: John Gaming
 --- !u!4 &986142324 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4652850480684431699, guid: 81d12462c23530d419318c4432dbed9f, type: 3}

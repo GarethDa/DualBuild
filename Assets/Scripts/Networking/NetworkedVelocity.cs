@@ -24,6 +24,9 @@ public class NetworkedVelocity : NetworkScript
 
     public override void frameAdjustment()
     {
+        if (isHost)
+            return;
+
         applyData();
     }
 

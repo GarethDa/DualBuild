@@ -1962,9 +1962,10 @@ GameObject:
   - component: {fileID: -3279306053602616019}
   - component: {fileID: -7062352685105583130}
   - component: {fileID: 3820082027862429319}
+  - component: {fileID: 9020320187774852272}
   m_Layer: 8
   m_Name: PlayerNetworked
-  m_TagString: Untagged
+  m_TagString: NetworkedPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2039,6 +2040,7 @@ MonoBehaviour:
   isHost: 0
   tolerance: 1
   sendAnyways: 0
+  sendDataPeriodically: 1
   framesToSkipSending: 0
 --- !u!114 &-3279306053602616019
 MonoBehaviour:
@@ -2055,6 +2057,7 @@ MonoBehaviour:
   isHost: 0
   tolerance: 1
   sendAnyways: 0
+  sendDataPeriodically: 1
   framesToSkipSending: 0
 --- !u!114 &-7062352685105583130
 MonoBehaviour:
@@ -2071,6 +2074,7 @@ MonoBehaviour:
   isHost: 0
   tolerance: 1
   sendAnyways: 0
+  sendDataPeriodically: 1
   framesToSkipSending: 0
   affectingTransform: {fileID: 8411294830480965784}
 --- !u!114 &3820082027862429319
@@ -2088,6 +2092,24 @@ MonoBehaviour:
   isHost: 0
   tolerance: 1
   sendAnyways: 0
+  sendDataPeriodically: 1
+  framesToSkipSending: 0
+--- !u!114 &9020320187774852272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164643919393318149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92be4fb6a78c444428555165dd761a9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHost: 1
+  tolerance: 1
+  sendAnyways: 0
+  sendDataPeriodically: 0
   framesToSkipSending: 0
 --- !u!1 &6276606703702759537
 GameObject:

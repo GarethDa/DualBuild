@@ -383,7 +383,7 @@ public class CharacterAiming : MonoBehaviour
         else if (!isAiming && cntxt.performed)
         {
 
-            if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && !animator.GetCurrentAnimatorStateInfo(1).IsName("Punch"))
+            if (animator != null && !animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && !animator.GetCurrentAnimatorStateInfo(1).IsName("Punch"))
             {
                 animator.SetTrigger("Punch");
             }

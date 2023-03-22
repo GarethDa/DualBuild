@@ -13,7 +13,7 @@ public class PauseMenu : MonoBehaviour
     [Serializable]
     private struct InputInfoStruct
     {
-        public InputActionReference actionReference;
+        public InputAction actionReference;
         public GameObject actionButton;
     }
 
@@ -21,7 +21,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject pauseScreen;
 
     [Header("Control rebinding")]
-    [SerializeField] private List<InputInfoStruct> inputInfoList;
+    [SerializeField] private List<InputInfoStruct> inputInfoList = new List<InputInfoStruct>();
 
     [Header("Sliders")]
     [SerializeField] private Slider zoomedInSensitivity;
@@ -50,18 +50,27 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerNum = PlayerManager.instance.GetIndex(gameObject.transform.parent.gameObject) + 1;
+
+        //Debug.Log("Player: " + PlayerManager.instance.GetIndex(gameObject.transform.parent.gameObject) + 1);
+        SetRebindButtons(playerNum);
+
+        Debug.Log("Count:" + inputInfoList.Count);
+
         for (int i = 0; i < inputInfoList.Count; i++)
         {
             bindingTexts.Add(inputInfoList[i].actionButton.transform.Find("ControlText").GetComponent<TMP_Text>());
             rebindTextObjects.Add(inputInfoList[i].actionButton.transform.Find("ControlText").gameObject);
             waitingTextObjects.Add(inputInfoList[i].actionButton.transform.Find("InputText").gameObject);
 
-            int bindingIndex = inputInfoList[i].actionReference.action.GetBindingIndexForControl(inputInfoList[i].actionReference.action.controls[0]);
+            Debug.Log("i: " + i);
 
-            bindingTexts[bindingTexts.Count - 1].text = InputControlPath.ToHumanReadableString(inputInfoList[i].actionReference.action.bindings[bindingIndex].effectivePath,
+            int bindingIndex = inputInfoList[i].actionReference.GetBindingIndexForControl(inputInfoList[i].actionReference.controls[0]);
+
+            bindingTexts[bindingTexts.Count - 1].text = InputControlPath.ToHumanReadableString(inputInfoList[i].actionReference.bindings[bindingIndex].effectivePath,
                 InputControlPath.HumanReadableStringOptions.OmitDevice);
         }
-
+        /*
         for (int i = 1; i < 5; i++)
         {
             if (gameObject.name.Equals("P" + i + "_UI"))
@@ -72,6 +81,7 @@ public class PauseMenu : MonoBehaviour
 
             playerNum = -1;
         }
+        */
 
         if (playerNum == 1)
         {
@@ -100,15 +110,8 @@ public class PauseMenu : MonoBehaviour
         else
             Debug.Log("******PROBLEM HERE******");
 
-        if (gameObject.name.Equals("P1_UI"))
-        {
-            GameObject.Find("Player1").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
-        }
-
-        if (gameObject.name.Equals("P2_UI"))
-        {
-            GameObject.Find("Player2").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
-        }
+        GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
+        GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("UI/Submit").Disable();
     }
 
     // Update is called once per frame
@@ -151,17 +154,10 @@ public class PauseMenu : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            settingsFirst.GetComponent<Button>().Select();
+            //settingsFirst.GetComponent<Button>().Select();
 
-            if (gameObject.name.Equals("P1_UI"))
-            {
-                GameObject.Find("Player1").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Enable();
-            }
-
-            else if (gameObject.name.Equals("P2_UI"))
-            {
-                GameObject.Find("Player2").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Enable();
-            }
+            GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Enable();
+            GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("UI/Submit").Enable();
         }
 
         else
@@ -169,15 +165,8 @@ public class PauseMenu : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            if (gameObject.name.Equals("P1_UI"))
-            {
-                GameObject.Find("Player1").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
-            }
-
-            else if (gameObject.name.Equals("P2_UI"))
-            {
-                GameObject.Find("Player2").GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
-            }
+            GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("UI/Navigate").Disable();
+            GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("UI/Submit").Disable();
         }
     }
 
@@ -194,27 +183,75 @@ public class PauseMenu : MonoBehaviour
             rebindTextObjects[index].SetActive(false);
             waitingTextObjects[index].SetActive(true);
 
-            inputInfoList[index].actionReference.action.Disable();
+            inputInfoList[index].actionReference.Disable();
 
-            rebindingOperation = inputInfoList[index].actionReference.action.PerformInteractiveRebinding()
+            rebindingOperation = inputInfoList[index].actionReference.PerformInteractiveRebinding()
                 .OnComplete(operation => RebindComplete(index)).Start();
         }
     }
 
     private void RebindComplete(int index)
     {
-        int bindingIndex = inputInfoList[index].actionReference.action.GetBindingIndexForControl(inputInfoList[index].actionReference.action.controls[0]);
+        int bindingIndex = inputInfoList[index].actionReference.GetBindingIndexForControl(inputInfoList[index].actionReference.controls[0]);
 
-        bindingTexts[index].text = InputControlPath.ToHumanReadableString(inputInfoList[index].actionReference.action.bindings[bindingIndex].effectivePath,
+        bindingTexts[index].text = InputControlPath.ToHumanReadableString(inputInfoList[index].actionReference.bindings[bindingIndex].effectivePath,
             InputControlPath.HumanReadableStringOptions.OmitDevice);
 
         rebindingOperation.Dispose();
 
-        inputInfoList[index].actionReference.action.Enable();
+        inputInfoList[index].actionReference.Enable();
 
         rebindTextObjects[index].SetActive(true);
         waitingTextObjects[index].SetActive(false);
 
         rebindTime = 0f;
+    }
+
+    private void SetRebindButtons(int playerNum)
+    {
+        for (int i = 0; i < inputInfoList.Count; i++)
+        {
+            var tempInfo = inputInfoList[i];
+
+            if (tempInfo.actionButton.name.Equals("JumpRebind(0)"))
+            {
+                tempInfo.actionReference = GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("Player/Jump");
+            }
+
+            else if (tempInfo.actionButton.name.Equals("AimRebind(1)"))
+            {
+                tempInfo.actionReference = GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("Player/Aim");
+            }
+
+            else if (tempInfo.actionButton.name.Equals("ThrowRebind(2)"))
+            {
+                tempInfo.actionReference = GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("Player/Fire");
+            }
+
+            else if (tempInfo.actionButton.name.Equals("UpRebind(3)"))
+            {
+                tempInfo.actionReference = GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("Player/Up");
+            }
+
+            else if (tempInfo.actionButton.name.Equals("DownRebind(4)"))
+            {
+                tempInfo.actionReference = GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("Player/Down");
+            }
+
+            else if (tempInfo.actionButton.name.Equals("LeftRebind(5)"))
+            {
+                tempInfo.actionReference = GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("Player/Left");
+            }
+
+            else if (tempInfo.actionButton.name.Equals("RightRebind(6)"))
+            {
+                tempInfo.actionReference = GameObject.Find("Player" + playerNum).GetComponent<PlayerInput>().actions.FindAction("Player/Right");
+            }
+
+            else
+                Debug.Log("Problem here!!!!!");
+
+            inputInfoList[i] = tempInfo;
+        }
     }
 }

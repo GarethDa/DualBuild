@@ -47,7 +47,7 @@ public class DynamicUIComponent : MonoBehaviour
 
     public virtual void onStart()
     {
-        Debug.Log(gameObject.transform.parent.name);
+        //Debug.Log(gameObject.transform.parent.name);
         transform.position = UIOffScreen.position;
     }
 

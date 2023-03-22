@@ -11,12 +11,12 @@ public class buttonHovering : MonoBehaviour, IPointerEnterHandler, IDeselectHand
 {
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!EventSystem.current.alreadySelecting)
-            EventSystem.current.SetSelectedGameObject(this.gameObject);
+        //if (!EventSystem.current.alreadySelecting)
+        //    EventSystem.current.SetSelectedGameObject(this.gameObject);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        this.GetComponent<Selectable>().OnPointerExit(null);
+        //this.GetComponent<Selectable>().OnPointerExit(null);
     }
 }

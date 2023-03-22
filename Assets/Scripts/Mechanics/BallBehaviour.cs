@@ -64,7 +64,14 @@ public class BallBehaviour : MonoBehaviour
             collision.rigidbody.AddExplosionForce(hitForce, collision.contacts[0].point, 10, 50);
             //Debug.Log("Deez");
         }
-
+        if (isThrown && collision.gameObject.tag == "NetworkedPlayer")
+        {
+            //collision.rigidbody.AddExplosionForce(hitForce, collision.contacts[0].point, 10, 50);
+            Vector3 offset = collision.contacts[0].point - collision.transform.position;
+            collision.gameObject.GetComponent<NetworkedPhysics>().sendCurrentDataExplosion(offset, hitForce,50,10);
+            
+            //Debug.Log("Deez");
+        }
         /*
         //if the ball hits the ground while not being held
         if (!isHeld && collision.gameObject.layer == LayerMask.NameToLayer("FloorLayer"))

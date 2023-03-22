@@ -19,10 +19,21 @@ public static class EventManager
     public static EventHandler<PlayerArgs> onPlayerFell;
     public static EventHandler<CollectableArgs> onPlayerCollect;
     public static EventHandler onPlayerUsePowerup;
+    public static EventHandler<StringArgs> onGetRoomKey;
+    public static EventHandler<StringArgs> onNewPlayerJoined;
 
     
 }
 
+
+public class StringArgs : EventArgs
+{
+    public string str;
+    public StringArgs(string s)
+    {
+        str = s;
+    }
+}
 public class RoundArgs : EventArgs
 {
     roundType[] rounds = new roundType[2];

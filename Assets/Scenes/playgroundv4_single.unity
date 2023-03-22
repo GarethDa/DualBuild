@@ -1754,7 +1754,7 @@ MonoBehaviour:
   clientPlayer: {fileID: 1682029003}
   playersConnected: 0
   isHost: 0
-  isNetworked: 0
+  isNetworked: 1
 --- !u!114 &158365057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9095,7 +9095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHost: 0
-  secondsBetweenUpdates: 0.5
+  secondsBetweenUpdates: 0.2
   TCPPort: 8888
   UDPPortSending: 8890
   UDPPortReceiving: 8889

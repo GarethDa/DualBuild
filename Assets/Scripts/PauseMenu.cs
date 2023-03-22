@@ -46,6 +46,12 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (GameManager.instance.isNetworked)
+        {
+            SwappableUIManager.instance.UICam.enabled = false;
+            SwappableUIManager.instance.hideAll();
+        }
+        
         for (int i = 0; i < inputInfoList.Count; i++)
         {
             bindingTexts.Add(inputInfoList[i].actionButton.transform.Find("ControlText").GetComponent<TMP_Text>());

@@ -11,15 +11,35 @@ using UnityEngine;
 using Unity.Jobs;
 
 
+public enum InstructionType
+{
+    LOCAL_GAMEOBJECT_ID,
+    POWERUP_USE,
+    POSITION_CHANGE,
+    ROTATION_CHANGE,
+    VELOCITY_CHANGE,
+    REGISTER_GAMEOBJECT,
+    CREATE_ROOM,
+    JOIN_ROOM,
+    CHAT,
+    CREATE_GAMEOBJECT,
+    APPLY_PHYSICS,
+    START_GAME,
+    READY,
+    REQUEST_LEVEL
+}
+
+
 public class NetworkManager : MonoBehaviour
 {
+    
     //misc
-    List<string> InstructionTypeCodes = new List<string>{"@","!","#","^","$", "~", "*", "=","%","&"};
+    List<string> InstructionTypeCodes = new List<string>{"@","!","#","^","$", "~", "*", "=","%","&","?", "<", ">", "`" };
     public bool isHost = false;
     public float secondsBetweenUpdates = 0.5f;
     float secondsSinceLastUpdate = 0f;
     public int TCPPort = 8888;
-    public int UDPPortSending = 8890;
+    public int UDPPortSending = 8889;
     public int UDPPortReceiving = 8889;
     public string serverIP;
     public float timeoutSeconds = 2f;
@@ -27,9 +47,9 @@ public class NetworkManager : MonoBehaviour
     string identifier;
 
     public static NetworkManager instance;
-    public string roomKey = "JOHN";
+    public string roomKey = "";
     public string message = "";
-
+    public string username = "John Gaming";
   
 
 
@@ -147,30 +167,38 @@ public class NetworkManager : MonoBehaviour
         setupUDP = true;
     }
 
-    public void setupTCPClient()//https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/sockets/socket-services
+    public bool setupTCPClient()//https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/sockets/socket-services
     {
+
+        try
+        {
+            TCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+
+            TCPSocket.Connect(endPointTCP);
+
+
+            TCPListener = new Thread(TCPMessageListener);
+            TCPListener.Start();
+
+
+
+            Debug.Log("Setup TCP Client");
+            setupTCP = true;
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
         
-        
-        TCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream,ProtocolType.Tcp);
-        
-
-        TCPSocket.Connect(endPointTCP);
-
-
-        TCPListener = new Thread(TCPMessageListener);
-        TCPListener.Start();
-
-       
-
-        Debug.Log("Setup TCP Client");
-        setupTCP = true;
         
     } 
 
     
 
 
-    private void setupEndPoint()
+    private bool setupEndPoint()
     {
         //https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/sockets/socket-services
         try
@@ -188,6 +216,7 @@ public class NetworkManager : MonoBehaviour
             hasSetupEndpoint = true;
            
             Debug.Log("Setup endpoint");
+            return true;
         }
         catch (Exception e)
         {
@@ -200,6 +229,7 @@ public class NetworkManager : MonoBehaviour
             {
                 Debug.LogError(e.Message);
             }
+            return false;
         }
         
         
@@ -416,6 +446,35 @@ public class NetworkManager : MonoBehaviour
             {
                 Debug.Log("CHAT MESSAGE: " + instructionData[0]);
             }
+            if (code == getInstructionCode(InstructionType.START_GAME))
+            {
+                requestGameObjectCreation("PlayerSingle");
+            }
+            if (code == getInstructionCode(InstructionType.CREATE_ROOM))
+            {
+                EventManager.onGetRoomKey?.Invoke(null,new StringArgs(instructionData[0]));
+            }
+            if (code == getInstructionCode(InstructionType.JOIN_ROOM))
+            {
+                if(instructionData.Count == 0)
+                {
+                    //could not join room
+                    Debug.Log("EMPTY");
+                    continue;
+                }
+                EventManager.onNewPlayerJoined?.Invoke(null, new StringArgs(instructionData[0]));
+
+            }
+            if (code == getInstructionCode(InstructionType.APPLY_PHYSICS))
+            {
+                Debug.Log("APPLY PHYSICS ");
+                NetworkPhysicsData dataPhysics = JsonUtility.FromJson<NetworkPhysicsData>(instructionData[0]);
+                int GOID = int.Parse(instructionData[1]);
+                Debug.Log(GOID);
+                GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
+                toAffect.GetComponent<NetworkedPhysics>().setData(dataPhysics);
+
+            }
             if (code == getInstructionCode(InstructionType.POSITION_CHANGE))
             {//will be to create an object with a string prefab
                 Vector3 dataPosition = JsonUtility.FromJson<Vector3>(instructionData[0]);
@@ -565,9 +624,9 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("sent message UDP:" + message);
     }
 
-    public void setupNetworking()
+    public bool setupNetworking()
     {
-        setupEndPoint();
+        return setupEndPoint();
        
 
 
@@ -582,12 +641,12 @@ public class NetworkManager : MonoBehaviour
 
     public void createRoom()
     {
-        sendTCPMessage(getInstructionCode(InstructionType.CREATE_ROOM));
+        sendTCPMessage(getInstructionCode(InstructionType.CREATE_ROOM) + username);
     }
 
     public void joinRoom()
     {
-        sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + roomKey);
+        sendTCPMessage(getInstructionCode(InstructionType.JOIN_ROOM) + roomKey + "|" + username);
     }
 
     public void requestGameObjectCreation(string prefab)
@@ -595,14 +654,21 @@ public class NetworkManager : MonoBehaviour
         sendTCPMessage(getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + prefab);
     }
 
-    public void sendUDPMessage()
+    public void startGame()
     {
-        sendUDPMessage(getInstructionCode(InstructionType.CHAT) + message);
+        sendTCPMessage(getInstructionCode(InstructionType.START_GAME));
     }
 
-    public void sendTCPMessage()
+    public bool connectToServer()
     {
-        sendTCPMessage(message);
+        if (setupNetworking())
+        {
+            if (setupTCPClient())
+            {
+                return true;
+            }        
+        }
+        return false;
     }
 }
 
@@ -634,30 +700,7 @@ public class NetworkInstruction
    
 }
 
-public enum InstructionType
-{
-    LOCAL_GAMEOBJECT_ID,
-    POWERUP_USE,
-    POSITION_CHANGE,
-    ROTATION_CHANGE,
-    VELOCITY_CHANGE,
-    REGISTER_GAMEOBJECT,
-    CREATE_ROOM,
-    JOIN_ROOM,
-    CHAT,
-    CREATE_GAMEOBJECT
-}
-/*
- * CODES FOR NETWORKED STRING
- * @ (int) - gameobject ID to modify
- * ! (powerupType) - powerup used (giving powerups can be local) (called in onUse for powerups)
- * # (Transform) - set transform change
- * $ (Vec3) - velocity change (for dead reckoning)
- * 
- * 
- * TCP requests wont be replaced, UDP requests of the same type will be replaced with the latest version
- * to send data, call the function XXXX which will check if there is already an instruction to modify the same type. if there is, then it will be replaced.
- */
+
 
 public class NetworkedClient {
     IPAddress address;
@@ -699,7 +742,7 @@ public class NetworkManagerEditor : Editor
        
         if (GUILayout.Button("Connect to server"))
         {
-            NetworkManager.instance.setupTCPClient();
+            
            // NetworkManager.instance.setupUDPClient();
 
         }

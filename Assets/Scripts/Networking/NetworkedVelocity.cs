@@ -29,6 +29,7 @@ public class NetworkedVelocity : NetworkScript
 
     protected override void sendData()
     {
+        Debug.Log("sending velocity");
         newVelocity = GetComponent<Rigidbody>().velocity;
         string data = JsonUtility.ToJson(newVelocity) + "|" + gameObject.GetInstanceID();
         NetworkManager.instance.queueTCPInstruction(this, NetworkManager.instance.getInstruction(InstructionType.VELOCITY_CHANGE, data));//.sendUDPMessage();

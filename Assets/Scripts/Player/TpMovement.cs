@@ -56,7 +56,7 @@ public class TpMovement : MonoBehaviour
 
     private PowerUpScript powerup;
 
-    PauseMenu settingsMenu;
+    public PauseMenu settingsMenu;
 
     //UserInput inputAction;
 
@@ -76,57 +76,9 @@ public class TpMovement : MonoBehaviour
 
         powerup = GetComponent<PowerUpScript>();
 
-        PauseMenu[] settingsMenus = FindObjectsOfType<PauseMenu>(true);
+        settingsMenu = gameObject.transform.Find("P1_UI").GetComponent<PauseMenu>();
 
-        //Debug.Log(gameObject == PlayerManager.instance.GetPlayer(1));
-
-        if (gameObject == PlayerManager.instance.GetPlayer(1))
-        {
-            foreach (PauseMenu menu in settingsMenus)
-            {
-                if (menu.transform.name.Equals("P1_UI"))
-                {
-                    settingsMenu = menu;
-                    break;
-                }
-            }
-        }
-
-        else if (gameObject == PlayerManager.instance.GetPlayer(2))
-        {
-            foreach (PauseMenu menu in settingsMenus)
-            {
-                if (menu.transform.name.Equals("P2_UI"))
-                {
-                    settingsMenu = menu;
-                    break;
-                }
-            }
-        }
-
-        else if (gameObject == PlayerManager.instance.GetPlayer(3))
-        {
-            foreach (PauseMenu menu in settingsMenus)
-            {
-                if (menu.transform.name.Equals("P3_UI"))
-                {
-                    settingsMenu = menu;
-                    break;
-                }
-            }
-        }
-
-        else if (gameObject == PlayerManager.instance.GetPlayer(4))
-        {
-            foreach (PauseMenu menu in settingsMenus)
-            {
-                if (menu.transform.name.Equals("P4_UI"))
-                {
-                    settingsMenu = menu;
-                    break;
-                }
-            }
-        }
+        
 
         /*
         transform.parent = GameObject.Find("PlayerHolder").transform;

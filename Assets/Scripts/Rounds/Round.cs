@@ -54,6 +54,7 @@ public enum roundType {
        FALLING_PLATFORMS = 4,
        PACHINKO_BALL = 8,
        BUMPER = 16,
-       DODGEBALL = 32
+       DODGEBALL = 32,
+       ENDING = 64
 }
 

@@ -73,7 +73,7 @@ public class TpMovement : MonoBehaviour
         //screenTutorial = GetComponent<onScreenTutorialText>();
         //Freeze the rotation of the rigid body, ensuring it doesn't fall over
         rBody.freezeRotation = true;
-
+        RoundManager.instance.totalPlayers++;
         animator = GetComponent<Animator>();
 
         //GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled = false;

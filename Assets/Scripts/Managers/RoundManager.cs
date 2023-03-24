@@ -55,7 +55,7 @@ public class RoundManager : MonoBehaviour
         {
             return;
         }
-
+        totalPlayers = 0;
         instance = this;
         gameRoundsCompleted = 0;
     }
@@ -150,9 +150,9 @@ public class RoundManager : MonoBehaviour
         {
             return;
         }
-        if (playersReady != totalPlayers)
+        if (playersReady != totalPlayers && secondsToAddBack != 0)
         {
-
+           
             setRoundTime(secondsToAddBack);
             EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
             EventManager.onOnAirHideEvent?.Invoke(null, System.EventArgs.Empty);

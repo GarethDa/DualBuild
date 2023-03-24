@@ -1281,7 +1281,7 @@ MonoBehaviour:
   deathLocation: {fileID: 0}
   currentPlayers: []
   deadPlayers: 0
-  totalPlayers: 3
+  totalPlayers: 1
   gameEndSceneName: EndGame
   roundsToPlay: 4
   levelCam: {fileID: 637954489}

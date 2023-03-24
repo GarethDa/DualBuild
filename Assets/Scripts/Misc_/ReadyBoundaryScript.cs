@@ -11,7 +11,7 @@ public class ReadyBoundaryScript : MonoBehaviour
             return;
         }
         Debug.Log("ENTER");
-        
+        //check if its networked and send it to the server otherwise
         RoundManager.instance.onPlayerEnterReadyZone();
     }
 

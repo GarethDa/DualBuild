@@ -70,6 +70,8 @@ public class RoundManager : MonoBehaviour
         lastPlacePowerupGiver.setPowerup(powerUpList.None);
         addRound(new Intermission());
         startRound("Game starting");
+        
+        
     }
 
     public void addPachinko(InputAction.CallbackContext cntxt)
@@ -346,17 +348,17 @@ public class RoundManager : MonoBehaviour
         hasModifiedLevels = false;
     }
 
-    private void generateNextRoundLevels()
+    private void generateNextRoundLevels(int offset = 0)
     {
         if (levelCombinations.Count == 0)
         {
             //generate level combinations again
             List<roundType> possibleRounds = new List<roundType>();
 
-            /*
+            
             foreach (roundType r in System.Enum.GetValues(typeof(roundType)))//make a list of all roundTypes
             {
-                if (r == roundType.NONE || r == roundType.INTERMISSION)
+                if (r == roundType.NONE || r == roundType.INTERMISSION || r == roundType.ENDING)
                 {
                     continue;
                 }
@@ -391,7 +393,7 @@ public class RoundManager : MonoBehaviour
                     }
                 }
             }
-            */
+            
 
             List<roundPair> randomizedCombinations = new List<roundPair>();
             foreach (roundPair roundPair in levelCombinations)
@@ -411,13 +413,36 @@ public class RoundManager : MonoBehaviour
 
 
 
-        int index = gameRoundsCompleted % levelCombinations.Count;
+        int index = (gameRoundsCompleted+offset) % levelCombinations.Count;
 
         //add preview round first
         List<Round> playingRounds = new List<Round>();
         playingRounds.Add(levelCombinations[index].getRoundOne());
         playingRounds.Add(levelCombinations[index].getRoundTwo());
 
+        bool contained = false;
+        int a = (int)levelCombinations[index].getRoundOne().getType();
+        int b = (int)levelCombinations[index].getRoundTwo().getType();
+        Debug.Log(a + b);
+        int[] possibleLevels = { 12, 20, 36, 24, 40, 48 };
+        for(int i = 0; i < 6; i++)
+        {
+            
+
+            if (possibleLevels[i] == (a + b))
+            {
+                contained = true;
+               
+                break;
+            }
+        }
+        if (!contained)
+        {
+            Debug.Log("NOT A VALID LEVEL");
+            generateNextRoundLevels(1+offset);
+            return;
+        }
+       
         if (!skipPreview && !hasModifiedLevels)
         {
             addRound(new PreviewRound(playingRounds));

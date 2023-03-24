@@ -45,6 +45,7 @@ public class TpMovement : MonoBehaviour
     bool isGrounded;
     bool lastFrameGrounded = true;
     bool justSwapped = false;
+    bool delayGrounded = false;
 
     RaycastHit rayHit;
 
@@ -80,24 +81,6 @@ public class TpMovement : MonoBehaviour
         powerup = GetComponent<PowerUpScript>();
 
         settingsMenu = gameObject.transform.Find("P1_UI").GetComponent<PauseMenu>();
-
-        
-
-        /*
-        transform.parent = GameObject.Find("PlayerHolder").transform;
-
-        if (GameObject.Find("Player1") == null)
-            transform.name = "Player1";
-
-        else if (GameObject.Find("Player2") == null)
-            transform.name = "Player2";
-
-        else if (GameObject.Find("Player3") == null)
-            transform.name = "Player3";
-
-        else
-            transform.name = "Player4";
-        */
     }
 
     // Update is called once per frame
@@ -145,6 +128,13 @@ public class TpMovement : MonoBehaviour
             //physMat.dynamicFriction = 3.5f;
 
         if (isGrounded && !lastFrameGrounded) justSwapped = true;
+
+        /*
+        if (!isGrounded && lastFrameGrounded && )
+        {
+
+        }
+        */
 
         RotatePlayer();
         MovePlayer();
@@ -422,24 +412,4 @@ public class TpMovement : MonoBehaviour
     {
         return isGrounded;
     }
-
-    /*
-    void OnEnableUI()
-    {
-        GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled = !GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled;
-
-        editing = !editing;
-
-        playerCam.GetComponent<CinemachineBrain>().enabled = !playerCam.GetComponent<CinemachineBrain>().enabled;
-
-        Cursor.visible = !Cursor.visible;
-
-        if (editing) Cursor.lockState = CursorLockMode.None;
-
-        else Cursor.lockState = CursorLockMode.Locked;
-
-        //spawnerUI.enabled = !spawnerUI.enabled;
-    }
-    */
-
 }

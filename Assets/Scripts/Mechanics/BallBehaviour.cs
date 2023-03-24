@@ -109,6 +109,8 @@ public class BallBehaviour : MonoBehaviour
                 isHeld = true;
 
                 other.transform.parent.GetComponent<CharacterAiming>().SetProjectile(this.gameObject);
+                Debug.Log(other.transform.parent.Find("Orientation").name);
+                other.transform.parent.Find("Orientation").GetComponent<tutorialShower>().hideTutorial();
             }
         }
     }

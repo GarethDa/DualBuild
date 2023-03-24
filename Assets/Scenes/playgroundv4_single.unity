@@ -1323,7 +1323,7 @@ MonoBehaviour:
   clientPlayer: {fileID: 1682029003}
   playersConnected: 0
   isHost: 0
-  isNetworked: 1
+  isNetworked: 0
 --- !u!114 &158365057
 MonoBehaviour:
   m_ObjectHideFlags: 0

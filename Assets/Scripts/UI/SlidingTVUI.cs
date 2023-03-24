@@ -37,6 +37,7 @@ public class SlidingTVUI : DynamicUIComponent
       //  Debug.Log("UI ELEMENT HIDE " + "ISONAIR: " + isOnAir.ToString());
 
         easeIn( UIOffScreen, 0.5f,  UIOnScreen);
+        audio1.Play();
     }
 
     public void updateClock(object sender, RoundTickArgs e)

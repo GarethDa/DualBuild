@@ -7,6 +7,7 @@ public class SlidingTVUI : DynamicUIComponent
 {
     public bool isOnAir = false;
     public TextMeshProUGUI clockObject;//clock text on canvas
+    public AudioSource audio1;
     public override void onStart()
     {
         if (isOnAir)
@@ -28,6 +29,7 @@ public class SlidingTVUI : DynamicUIComponent
     {
        // Debug.Log("UI ELEMENT SHOW " + "ISONAIR: " + isOnAir.ToString());
         easeIn( UIOnScreen, 3f,  UIOffScreen);
+        audio1.Play();
     }
 
     public void hideEase(object sender, System.EventArgs e)

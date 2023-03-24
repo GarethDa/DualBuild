@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
 
@@ -31,6 +32,10 @@ public class MainMenu : MonoBehaviour
     [Header("Sliders")]
     [SerializeField] private Slider zoomedInSensitivity;
     [SerializeField] private Slider zoomedOutSensitivity;
+
+    [Header("First highlighted buttons")]
+    [SerializeField] GameObject mainMenuFirst;
+    [SerializeField] GameObject settingsFirst;
     
     //[SerializeField] private PlayerInput pInput;
     //A list of texts which display the current binding of each action
@@ -43,6 +48,8 @@ public class MainMenu : MonoBehaviour
     private List<GameObject> waitingTextObjects = new List<GameObject>();
 
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
+
+    private float rebindTime = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +75,8 @@ public class MainMenu : MonoBehaviour
     {
         StateVariables.p1zoomedInSens = zoomedInSensitivity.value;
         StateVariables.p1zoomedOutSens = zoomedOutSensitivity.value;
+
+        rebindTime += Time.deltaTime;
     }
 
     public void StartSingleplayer()
@@ -84,12 +93,16 @@ public class MainMenu : MonoBehaviour
     {
         settingsScreen.SetActive(true);
         mainScreen.SetActive(false);
+
+        settingsFirst.GetComponent<Button>().Select();
     }
 
     public void CloseOptions()
     {
         settingsScreen.SetActive(false);
         mainScreen.SetActive(true);
+
+        mainMenuFirst.GetComponent<Button>().Select();
     }
 
     public void QuitGame()
@@ -97,16 +110,19 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
         Debug.Log("Game Quit");
     }
+
     public void StartRebinding(int index)
     {
-        //Hide the control text and show the waiting for input text
-        rebindTextObjects[index].SetActive(false);
-        waitingTextObjects[index].SetActive(true);
+        if (rebindTime >= 0.5f)
+        {
+            //Hide the control text and show the waiting for input text
+            rebindTextObjects[index].SetActive(false);
+            waitingTextObjects[index].SetActive(true);
 
-        inputInfoList[index].actionReference.action.Disable();
+            inputInfoList[index].actionReference.action.Disable();
 
-        rebindingOperation = inputInfoList[index].actionReference.action.PerformInteractiveRebinding()
-            .OnMatchWaitForAnother(0.1f).OnComplete(operation => RebindComplete(index)).Start();
+            rebindingOperation = inputInfoList[index].actionReference.action.PerformInteractiveRebinding().OnComplete(operation => RebindComplete(index)).Start();
+        }
         
     }
 
@@ -123,5 +139,7 @@ public class MainMenu : MonoBehaviour
 
         rebindTextObjects[index].SetActive(true);
         waitingTextObjects[index].SetActive(false);
+
+        rebindTime = 0f;
     }
 }

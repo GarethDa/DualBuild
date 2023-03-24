@@ -56,15 +56,18 @@ public class TpMovement : MonoBehaviour
 
     private PowerUpScript powerup;
 
-    PauseMenu settingsMenu;
+    public PauseMenu settingsMenu;
 
+
+    public onScreenTutorialText screenTutorial;
     //UserInput inputAction;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         rBody = GetComponent<Rigidbody>();
-       
+        //screenTutorial = GetComponent<onScreenTutorialText>();
         //Freeze the rotation of the rigid body, ensuring it doesn't fall over
         rBody.freezeRotation = true;
 
@@ -76,57 +79,9 @@ public class TpMovement : MonoBehaviour
 
         powerup = GetComponent<PowerUpScript>();
 
-        PauseMenu[] settingsMenus = FindObjectsOfType<PauseMenu>(true);
+        settingsMenu = gameObject.transform.Find("P1_UI").GetComponent<PauseMenu>();
 
-        //Debug.Log(gameObject == PlayerManager.instance.GetPlayer(1));
-
-        if (gameObject == PlayerManager.instance.GetPlayer(1))
-        {
-            foreach (PauseMenu menu in settingsMenus)
-            {
-                if (menu.transform.name.Equals("P1_UI"))
-                {
-                    settingsMenu = menu;
-                    break;
-                }
-            }
-        }
-
-        else if (gameObject == PlayerManager.instance.GetPlayer(2))
-        {
-            foreach (PauseMenu menu in settingsMenus)
-            {
-                if (menu.transform.name.Equals("P2_UI"))
-                {
-                    settingsMenu = menu;
-                    break;
-                }
-            }
-        }
-
-        else if (gameObject == PlayerManager.instance.GetPlayer(3))
-        {
-            foreach (PauseMenu menu in settingsMenus)
-            {
-                if (menu.transform.name.Equals("P3_UI"))
-                {
-                    settingsMenu = menu;
-                    break;
-                }
-            }
-        }
-
-        else if (gameObject == PlayerManager.instance.GetPlayer(4))
-        {
-            foreach (PauseMenu menu in settingsMenus)
-            {
-                if (menu.transform.name.Equals("P4_UI"))
-                {
-                    settingsMenu = menu;
-                    break;
-                }
-            }
-        }
+        
 
         /*
         transform.parent = GameObject.Find("PlayerHolder").transform;
@@ -213,6 +168,9 @@ public class TpMovement : MonoBehaviour
     //For rotating the player object when the player inputs a direction
 	private void RotatePlayer()
 	{
+        
+        
+
         //Rotate orientation
 
         Vector3 viewDir;
@@ -235,7 +193,7 @@ public class TpMovement : MonoBehaviour
     private void MovePlayer()
     {
         //rBody.useGravity = true;
-
+        
         //Calculate direction
         moveDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
@@ -331,15 +289,43 @@ public class TpMovement : MonoBehaviour
 
         rBody.AddForce(dragForce, ForceMode.Force);
     }
+    public void OnAim(InputAction.CallbackContext cntxt)
+    {
+        if (cntxt.action.name.Equals("Look"))
+        {
+            if (!screenTutorial.hasShownTutorialType[(int)currentTutorialType.LOOK])
+            {
+                if(screenTutorial.getAnalogueName(screenTutorial.getButtonString("Player/Up")).Contains("stick"))
+                    {
+                    screenTutorial.show("Use " + screenTutorial.getAnalogueName(screenTutorial.getButtonString("Player/Up"))+
+                     " to move around");
+                }
+                else
+                {
+                    screenTutorial.show("Use " + screenTutorial.getActualButtonName(screenTutorial.getButtonString("Player/Up")) + "/"
+                    + screenTutorial.getActualButtonName(screenTutorial.getButtonString("Player/Left")) + "/"
+                    + screenTutorial.getActualButtonName(screenTutorial.getButtonString("Player/Down")) + "/"
+                    + screenTutorial.getActualButtonName(screenTutorial.getButtonString("Player/Right")) + " to move around");
+                }
+                
+                screenTutorial.hideTutorial(currentTutorialType.LOOK);
+            }
+        }
+    }
 
-    //New input system
-    public void OnMove(InputAction.CallbackContext cntxt)
+    
+        //New input system
+        public void OnMove(InputAction.CallbackContext cntxt)
 	{
         if (settingsMenu.GetIsPaused())
         {
             return;
         }
-
+        if (!screenTutorial.hasShownTutorialType[(int)currentTutorialType.MOVE])
+        {
+            screenTutorial.show("Use " + screenTutorial.getActualButtonName(screenTutorial.getButtonString("Player/Jump")) + " to jump");
+            screenTutorial.hideTutorial(currentTutorialType.MOVE);
+        }
         //Use threshold checks for shitty gamepads
         if (cntxt.action.name.Equals("Up"))
         {
@@ -387,7 +373,12 @@ public class TpMovement : MonoBehaviour
         {
             return;
         }
+        if (!screenTutorial.hasShownTutorialType[(int)currentTutorialType.JUMP])
+        {
+            
 
+            screenTutorial.hideTutorial(currentTutorialType.JUMP);
+        }
         if (cntxt.performed)
         {
             if (isGrounded)

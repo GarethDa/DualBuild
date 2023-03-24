@@ -24,11 +24,15 @@ public class NetworkedVelocity : NetworkScript
 
     public override void frameAdjustment()
     {
+        if (isHost)
+            return;
+
         applyData();
     }
 
     protected override void sendData()
     {
+        Debug.Log("sending velocity");
         newVelocity = GetComponent<Rigidbody>().velocity;
         string data = JsonUtility.ToJson(newVelocity) + "|" + gameObject.GetInstanceID();
         NetworkManager.instance.queueTCPInstruction(this, NetworkManager.instance.getInstruction(InstructionType.VELOCITY_CHANGE, data));//.sendUDPMessage();

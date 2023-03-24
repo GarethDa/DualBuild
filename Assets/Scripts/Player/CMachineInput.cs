@@ -9,8 +9,13 @@ public class CMachineInput : MonoBehaviour, AxisState.IInputAxisProvider
     [HideInInspector] public InputAction horizontal;
     [HideInInspector] public InputAction vertical;
 
+    [SerializeField] PauseMenu pauseMenu; 
+
     public float GetAxisValue(int axis)
     {
+        if (pauseMenu.GetIsPaused())
+            return 0f;
+
         switch (axis)
         {
             case 0:

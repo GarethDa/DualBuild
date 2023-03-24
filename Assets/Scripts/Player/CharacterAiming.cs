@@ -15,6 +15,7 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera zoomCam;
     [SerializeField] GameObject normalModel;
     [SerializeField] GameObject transparentModel;
+    [SerializeField] onScreenTutorialText onScreenTutorial;
 
     [Header("Projectiles & Punching")]
     [SerializeField] [Range(1000.0f, 4000.0f)] float throwForce = 2000.0f;
@@ -235,6 +236,8 @@ public class CharacterAiming : MonoBehaviour
         //If the player is aiming, prioritize the zoomed in camera and enable to reticle
         if (cntxt.performed)
         {
+            
+
             zoomCam.Priority += 10;
 
             reticle.enabled = true;
@@ -246,6 +249,15 @@ public class CharacterAiming : MonoBehaviour
                 playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Model"));
                 playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Transparent"));
             }
+            if (holdingProjectile)
+            {
+                onScreenTutorial.showButton("Hold ", "Player/Fire", " to throw");
+            }
+            else
+            {
+                onScreenTutorial.show("");
+            }
+            
             Debug.Log("Has ball: " + holdingProjectile);
             //ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
         }
@@ -258,7 +270,15 @@ public class CharacterAiming : MonoBehaviour
             reticle.enabled = false;
 
             isAiming = false;
-            
+            if(holdingProjectile)
+            {
+                onScreenTutorial.showButton("Hold ", "Player/Aim", " to aim");
+            }
+            else
+            {
+                onScreenTutorial.show("");
+            }
+           
             playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Model"));
             playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Transparent"));
 
@@ -272,7 +292,7 @@ public class CharacterAiming : MonoBehaviour
     {
         if (cntxt.performed && holdingProjectile && isAiming)
             charging = true;
-
+        onScreenTutorial.show("");
         //Debug.Log(charging);
 
         //If the player is holding a projectile and releases the throw button, then go through the steps to throw it
@@ -383,7 +403,7 @@ public class CharacterAiming : MonoBehaviour
         else if (!isAiming && cntxt.performed)
         {
 
-            if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && !animator.GetCurrentAnimatorStateInfo(1).IsName("Punch"))
+            if (animator != null && !animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && !animator.GetCurrentAnimatorStateInfo(1).IsName("Punch"))
             {
                 animator.SetTrigger("Punch");
             }
@@ -419,11 +439,12 @@ public class CharacterAiming : MonoBehaviour
         //Set holding projectile to true, and save the projectile being held
         holdingProjectile = true;
         heldProjectile = projectile;
-
+        onScreenTutorial.showButton("Hold ", "Player/Aim", " to aim");
         if (isAiming)
         {
             playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Model"));
             playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Transparent"));
+           
         }
 
         //Set the projectile's position to be in front of the player model, with some offset
@@ -476,6 +497,11 @@ public class CharacterAiming : MonoBehaviour
         return throwUpModifier;
     }
 
+
+    public GameObject getHeldProjectile()
+    {
+        return heldProjectile;
+    }
     private bool CheckForAimAssist(out RaycastHit hitInfo)
     {
         if (playerNum == 1)

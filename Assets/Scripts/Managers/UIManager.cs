@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI text;
     [SerializeField] List<Texture> powerupIcons;
     
-    [SerializeField] List<TransparencyUI> onScreenPowerupIcon = new List<TransparencyUI>();
+    public List<TransparencyUI> onScreenPowerupIcon = new List<TransparencyUI>();
     // Start is called before the first frame update
     void Awake()
     {
@@ -107,7 +107,7 @@ public class UIManager : MonoBehaviour
 
     public void setText(string s)
     {
-        text.text = s;
+        //text.text = s;
     }
     public void clearText()
     {

@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] GameObject introText;
     [SerializeField] GameObject introCam;
+    [SerializeField] GameObject eventsystem;
 
     private PlayerInputManager playerInManager;
 
@@ -35,14 +36,14 @@ public class PlayerManager : MonoBehaviour
     {
         if (GameObject.Find("P1_UI") != null)
         {
-            p1Ui = GameObject.Find("P1_UI");
-            p2Ui = GameObject.Find("P2_UI");
-            p3Ui = GameObject.Find("P3_UI");
-            p4Ui = GameObject.Find("P4_UI");
-            p1Ui.SetActive(false);
-            p2Ui.SetActive(false);
-            p3Ui.SetActive(false);
-            p4Ui.SetActive(false);
+            //p1Ui = GameObject.Find("P1_UI");
+            //p2Ui = GameObject.Find("P2_UI");
+            //p3Ui = GameObject.Find("P3_UI");
+            //p4Ui = GameObject.Find("P4_UI");
+            //p1Ui.SetActive(false);
+            //p2Ui.SetActive(false);
+            //p3Ui.SetActive(false);
+            //p4Ui.SetActive(false);
         }
 
         if (instance == null)
@@ -115,10 +116,19 @@ public class PlayerManager : MonoBehaviour
         playerInput.transform.GetComponentsInChildren<CMachineInput>()[1].horizontal = playerInput.actions.FindAction("Look");
 
         Debug.Log(playerInputs.Count);
-        
+
+        UIManager.instance.onScreenPowerupIcon.Add(playerInput.transform.Find("PlayerUI").GetComponentInChildren<TransparencyUI>());
+
+        playerInput.transform.Find("PlayerUI").GetComponentInChildren<TransparencyUI>().snapTransparency(0);
+
         if (playerInputs.Count == 1)
         {
+            eventsystem.SetActive(false);
+
             playerInput.gameObject.name = "Player1";
+
+            p1Ui = playerInput.gameObject.transform.Find("PlayerUI").gameObject;
+            p1Ui.name = "P1_UI";
 
             players.Add(playerInput.gameObject);
 
@@ -134,13 +144,15 @@ public class PlayerManager : MonoBehaviour
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player1Model");
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player1Transparent");
             playerInput.gameObject.transform.Find("PlayerObj").gameObject.layer = LayerMask.NameToLayer("Player1");
-
         }
 
         else if (playerInputs.Count == 2)
         {
             playerInput.gameObject.name = "Player2";
             playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
+
+            p2Ui = playerInput.gameObject.transform.Find("PlayerUI").gameObject;
+            p2Ui.name = "P2_UI";
 
             players.Add(playerInput.gameObject);
 
@@ -163,6 +175,9 @@ public class PlayerManager : MonoBehaviour
             playerInput.gameObject.name = "Player3";
             playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
 
+            p3Ui = playerInput.gameObject.transform.Find("PlayerUI").gameObject;
+            p3Ui.name = "P3_UI";
+
             players.Add(playerInput.gameObject);
 
             p3Ui.SetActive(true);
@@ -183,6 +198,9 @@ public class PlayerManager : MonoBehaviour
         {
             playerInput.gameObject.name = "Player4";
             playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
+
+            p4Ui = playerInput.gameObject.transform.Find("PlayerUI").gameObject;
+            p4Ui.name = "P4_UI";
 
             players.Add(playerInput.gameObject);
 

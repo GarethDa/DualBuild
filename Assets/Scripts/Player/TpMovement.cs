@@ -82,7 +82,7 @@ public class TpMovement : MonoBehaviour
 
         powerup = GetComponent<PowerUpScript>();
 
-        settingsMenu = gameObject.transform.Find("P1_UI").GetComponent<PauseMenu>();
+        //settingsMenu = gameObject.transform.Find("P1_UI").GetComponent<PauseMenu>();
 
         
 

@@ -46,8 +46,8 @@ public class RoundManager : MonoBehaviour
     bool skipPreview = false;
     bool hasModifiedLevels = false;
 
-    public roundType roundOne = roundType.NONE;
-    public roundType roundTwo = roundType.NONE;
+    //public roundType roundOne = roundType.NONE;
+    //public roundType roundTwo = roundType.NONE;
 
     private void Awake() //singleton
     {
@@ -175,7 +175,7 @@ public class RoundManager : MonoBehaviour
     {
         deadPlayers++;
         //Debug.log("$ONDEWATH" + deadPlayers.ToString() + " " + (totalPlayers - 1).ToString());
-        if (deadPlayers > totalPlayers - 1)
+        if (deadPlayers >= totalPlayers - 1)
         {
             endRound("All players died");
             deadPlayers = 0;
@@ -202,6 +202,7 @@ public class RoundManager : MonoBehaviour
             SceneManager.LoadScene(gameEndSceneName);
             return;
         }
+        /*
         if(roundOne != roundType.NONE)
         {
             nextRounds.Clear();
@@ -209,6 +210,7 @@ public class RoundManager : MonoBehaviour
             nextRounds.Add(getRoundByRoundType(roundTwo));
             nextRounds.Add(new PreviewRound(nextRounds));
         }
+        */
         //Debug.log("$-------------");
         currentRoundSeconds = 0;//reset time of rounds
         currentRoundSecondsElapsed = 0;
@@ -250,7 +252,7 @@ public class RoundManager : MonoBehaviour
         }
 
         //Camera.main.enabled = false;
-        toLoad = 24;
+        //toLoad = 24;
         if (nextRoundsHaveIntermission())//if next round is intermission, go to intermission
         {
             //Debug.log("$START HAS INTERMISSION");
@@ -346,13 +348,12 @@ public class RoundManager : MonoBehaviour
 
     private void generateNextRoundLevels()
     {
-
         if (levelCombinations.Count == 0)
         {
             //generate level combinations again
             List<roundType> possibleRounds = new List<roundType>();
 
-
+            /*
             foreach (roundType r in System.Enum.GetValues(typeof(roundType)))//make a list of all roundTypes
             {
                 if (r == roundType.NONE || r == roundType.INTERMISSION)
@@ -390,6 +391,7 @@ public class RoundManager : MonoBehaviour
                     }
                 }
             }
+            */
 
             List<roundPair> randomizedCombinations = new List<roundPair>();
             foreach (roundPair roundPair in levelCombinations)
@@ -476,6 +478,7 @@ public class RoundManager : MonoBehaviour
 
     public List<Transform> loadLevel(int number)
     {//instantiate from resources/load
+        Debug.Log(number);
         GameObject level = Instantiate(Resources.Load<GameObject>("Levels/" + number.ToString()));
         GameObject deathZone = Instantiate(Resources.Load<GameObject>("Levels/DeathZone"));
         List<Transform> spawnPoints = new List<Transform>();

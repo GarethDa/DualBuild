@@ -2179,9 +2179,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8411294830480965784}
   - {fileID: 1921731056999116858}
   - {fileID: 8411294830860781003}
-  - {fileID: 8411294830480965784}
   - {fileID: 8411294830836906980}
   - {fileID: 8411294830298292762}
   - {fileID: 8411294830145179057}
@@ -2269,7 +2269,7 @@ MonoBehaviour:
   orientation: {fileID: 8411294830836906980}
   playerObj: {fileID: 8411294830480965784}
   playerCam: {fileID: 8411294830145179060}
-  settingsMenu: {fileID: 0}
+  settingsMenu: {fileID: 1921731056999116860}
   screenTutorial: {fileID: 3444362764882923777}
 --- !u!95 &6164643919393318173
 Animator:

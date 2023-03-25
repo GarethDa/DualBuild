@@ -12,6 +12,10 @@ public class BallBehaviour : MonoBehaviour
     [SerializeField] int hitForce = 500;
     [SerializeField] float throwLife = 3f;
     [SerializeField] Material thrownMat;
+
+    [SerializeField] private Color notThrownColour;
+    [SerializeField] private Color thrownColour;
+
     Material origMat;
 
     float currentThrowLife = 0f;
@@ -25,6 +29,10 @@ public class BallBehaviour : MonoBehaviour
             playerObjects.Add(obj);
 
         origMat = gameObject.GetComponent<MeshRenderer>().material;
+
+        gameObject.GetComponent<TrailRenderer>().startColor = notThrownColour + new Color(0, 0, 0, 1);
+
+        //gameObject.GetComponent<MeshRenderer>().material.color = notThrownColour;
     }
 
     // Update is called once per frame
@@ -47,6 +55,7 @@ public class BallBehaviour : MonoBehaviour
             //If we reached the end of the thrown period
             if (currentThrowLife >= throwLife)
             {
+                gameObject.GetComponent<TrailRenderer>().startColor = notThrownColour + new Color(0, 0, 0, 1);
                 //Debug.Log("Ready for pickup");
                 //Switch back to normal material
                 gameObject.GetComponent<MeshRenderer>().material = origMat;
@@ -118,6 +127,12 @@ public class BallBehaviour : MonoBehaviour
     public void SetIsHeld(bool held)
     {
         isHeld = held;
+
+        if (held)
+        {
+            gameObject.GetComponent<MeshRenderer>().material = thrownMat;
+            gameObject.GetComponent<TrailRenderer>().startColor = thrownColour + new Color(0, 0, 0, 1);
+        }    
     }
 
     public void SetIsThrown(bool thrown)
@@ -131,6 +146,7 @@ public class BallBehaviour : MonoBehaviour
             currentThrowLife = 0f;
             //Change to the thrown material
             gameObject.GetComponent<MeshRenderer>().material = thrownMat;
+            gameObject.GetComponent<TrailRenderer>().startColor = thrownColour + new Color(0, 0, 0, 1);
         }
     }
 

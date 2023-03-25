@@ -2264,6 +2264,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 576
   feetTransform: {fileID: 8411294830860781003}
+  coyoteTime: 1
   orientation: {fileID: 8411294830836906980}
   playerObj: {fileID: 8411294830480965784}
   playerCam: {fileID: 8411294830145179060}

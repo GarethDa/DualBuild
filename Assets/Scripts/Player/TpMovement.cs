@@ -21,6 +21,7 @@ public class TpMovement : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] private LayerMask floorMask;
     [SerializeField] private Transform feetTransform;
+    [SerializeField] [Range(0f, 1f)] private float coyoteTime = 0.2f;
 
     [Header("Rotation")]
     [SerializeField] private Transform orientation;
@@ -45,7 +46,8 @@ public class TpMovement : MonoBehaviour
     bool isGrounded;
     bool lastFrameGrounded = true;
     bool justSwapped = false;
-    bool delayGrounded = false;
+
+    float coyoteTimer = 0f;
 
     RaycastHit rayHit;
 
@@ -91,31 +93,23 @@ public class TpMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if you control THAT character
-        /*
-        if (view.IsMine)
-        {
-        this is where photon stuff goes if put back in
-        }
-        
-        else
-        {
-            GetComponent<TpMovement>().enabled = false;
-        }
-        */
-
         isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
-        animator.SetBool("isGrounded", isGrounded);
+        animator.SetBool("isGrounded", coyoteTimer > 0f);
 
         if (isGrounded)
         {
             rBody.drag = groundDrag;
+
+            coyoteTimer = coyoteTime;
             //physMat.dynamicFriction = 3.5f;
         }
 
         else
         {
             rBody.drag = 0f;
+
+            coyoteTimer -= Time.deltaTime;
+
             //physMat.dynamicFriction = 0f;
         }
 
@@ -128,13 +122,6 @@ public class TpMovement : MonoBehaviour
             //physMat.dynamicFriction = 3.5f;
 
         if (isGrounded && !lastFrameGrounded) justSwapped = true;
-
-        /*
-        if (!isGrounded && lastFrameGrounded && )
-        {
-
-        }
-        */
 
         RotatePlayer();
         MovePlayer();
@@ -363,19 +350,21 @@ public class TpMovement : MonoBehaviour
         {
             return;
         }
+
         if (!screenTutorial.hasShownTutorialType[(int)currentTutorialType.JUMP])
         {
-            
-
             screenTutorial.hideTutorial(currentTutorialType.JUMP);
         }
+
         if (cntxt.performed)
         {
-            if (isGrounded)
+            if (coyoteTimer > 0f)
             {
                 rBody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 //ParticleManager.instance.PlayEffect(transform.position, "WhiteParticles");
                 powerup.PlayerJumped();
+
+                coyoteTimer = 0f;
             }
         }
     }

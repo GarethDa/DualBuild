@@ -17,6 +17,7 @@ public class TpMovement : MonoBehaviour
     [SerializeField] [Range(0f, 10.0f)] private float groundDrag = 1.0f;
     [SerializeField] PhysicMaterial physMatFriction;
     [SerializeField] PhysicMaterial physMatFrictionless;
+    [SerializeField] [Range(1.0f, 5.0f)] float airControlDivisor = 2.0f;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask floorMask;
@@ -29,6 +30,7 @@ public class TpMovement : MonoBehaviour
 
     [Header("Camera")]
 	[SerializeField] private Camera playerCam;
+    [SerializeField] private PauseMenu settingsMenu;
 
     Vector2 moveInput;
     float horizontalInput;
@@ -48,6 +50,7 @@ public class TpMovement : MonoBehaviour
     bool justSwapped = false;
 
     float coyoteTimer = 0f;
+    float jumpTimer = 0f;
 
     RaycastHit rayHit;
 
@@ -58,8 +61,6 @@ public class TpMovement : MonoBehaviour
     private Animator animator;
 
     private PowerUpScript powerup;
-
-    public PauseMenu settingsMenu;
 
 
     public onScreenTutorialText screenTutorial;
@@ -82,7 +83,9 @@ public class TpMovement : MonoBehaviour
 
         powerup = GetComponent<PowerUpScript>();
 
-        settingsMenu = gameObject.transform.Find("P1_UI").GetComponent<PauseMenu>();
+        //settingsMenu = gameObject.transform.Find("P1_UI").GetComponent<PauseMenu>();
+
+        jumpTimer = coyoteTime;
     }
 
     // Update is called once per frame
@@ -96,7 +99,9 @@ public class TpMovement : MonoBehaviour
         isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
         animator.SetBool("isGrounded", coyoteTimer > 0f);
 
-        if (isGrounded)
+        jumpTimer += Time.deltaTime;
+
+        if (isGrounded && jumpTimer >= coyoteTime)
         {
             rBody.drag = groundDrag;
 
@@ -213,12 +218,16 @@ public class TpMovement : MonoBehaviour
             rBody.useGravity = true;
         }
 
-        rBody.AddForce(moveDir.normalized * moveSpeed * 5f, ForceMode.Force);
 
-        if (!isGrounded)
+        if (coyoteTimer <= 0)
         {
+            rBody.AddForce(moveDir.normalized * moveSpeed * 5f / airControlDivisor, ForceMode.Force);
+
             rBody.AddForce(new Vector3(0f, -jumpGravity, 0f), ForceMode.Force);
         }
+
+        else
+            rBody.AddForce(moveDir.normalized * moveSpeed * 5f, ForceMode.Force);
 
         if (justSwapped && !onRamp)
         {
@@ -365,6 +374,7 @@ public class TpMovement : MonoBehaviour
                 powerup.PlayerJumped();
 
                 coyoteTimer = 0f;
+                jumpTimer = 0f;
             }
         }
     }

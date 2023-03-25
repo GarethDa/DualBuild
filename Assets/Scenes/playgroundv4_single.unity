@@ -11388,6 +11388,18 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 936061127}
     m_Modifications:
+    - target: {fileID: -7639522432475266059, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0.028419102
+      objectReference: {fileID: 0}
+    - target: {fileID: -7639522432475266059, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7639522432475266059, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 0.9150943
+      objectReference: {fileID: 0}
     - target: {fileID: 2750228519858970950, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_Name
       value: Dodgeball (5)

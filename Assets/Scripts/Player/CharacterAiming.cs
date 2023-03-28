@@ -440,6 +440,13 @@ public class CharacterAiming : MonoBehaviour
         holdingProjectile = true;
         heldProjectile = projectile;
         onScreenTutorial.showButton("Hold ", "Player/Aim", " to aim");
+
+        //Tell the projectile that it isn't being held anymore
+        if (heldProjectile.GetComponent<BallBehaviour>() != null)
+        {
+            heldProjectile.GetComponent<BallBehaviour>().SetIsHeld(true);
+        }
+
         if (isAiming)
         {
             playerCam.cullingMask = playerCam.cullingMask & ~(1 << LayerMask.NameToLayer("Player" + (PlayerManager.instance.GetIndex(gameObject) + 1) + "Model"));

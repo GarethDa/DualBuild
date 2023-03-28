@@ -2181,6 +2181,7 @@ Transform:
   m_Children:
   - {fileID: 8411294830480965784}
   - {fileID: 1921731056999116858}
+  - {fileID: 8411294830836906980}
   - {fileID: 8411294830860781003}
   - {fileID: 8411294830836906980}
   - {fileID: 8411294830298292762}
@@ -2259,13 +2260,15 @@ MonoBehaviour:
   moveSpeed: 20
   jumpGravity: 32
   fallMultiplier: 1.5
-  groundDrag: 3
+  groundDrag: 3.5
   physMatFriction: {fileID: 13400000, guid: b0e81c5c8783b1b4dbf30f758236d8b7, type: 2}
   physMatFrictionless: {fileID: 13400000, guid: 54f83b1a6eaef7542a304b0d0ac95ff8, type: 2}
+  airControlDivisor: 3
   floorMask:
     serializedVersion: 2
     m_Bits: 576
   feetTransform: {fileID: 8411294830860781003}
+  coyoteTime: 0.3
   orientation: {fileID: 8411294830836906980}
   playerObj: {fileID: 8411294830480965784}
   playerCam: {fileID: 8411294830145179060}
@@ -2316,7 +2319,7 @@ MonoBehaviour:
   chargePerSec: 500
   maxChargeTime: 3
   maxChangeFOV: 10
-  punchForce: 20
+  punchForce: 30
   aimAssist: 2
 --- !u!114 &7003453695122746443
 MonoBehaviour:

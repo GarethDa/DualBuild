@@ -17,10 +17,12 @@ public class TpMovement : MonoBehaviour
     [SerializeField] [Range(0f, 10.0f)] private float groundDrag = 1.0f;
     [SerializeField] PhysicMaterial physMatFriction;
     [SerializeField] PhysicMaterial physMatFrictionless;
+    [SerializeField] [Range(1.0f, 5.0f)] float airControlDivisor = 2.0f;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask floorMask;
     [SerializeField] private Transform feetTransform;
+    [SerializeField] [Range(0f, 1f)] private float coyoteTime = 0.2f;
 
     [Header("Rotation")]
     [SerializeField] private Transform orientation;
@@ -28,6 +30,7 @@ public class TpMovement : MonoBehaviour
 
     [Header("Camera")]
 	[SerializeField] private Camera playerCam;
+    [SerializeField] private PauseMenu settingsMenu;
 
     Vector2 moveInput;
     float horizontalInput;
@@ -49,6 +52,9 @@ public class TpMovement : MonoBehaviour
     bool lastFrameGrounded = true;
     bool justSwapped = false;
 
+    float coyoteTimer = 0f;
+    float jumpTimer = 0f;
+
     RaycastHit rayHit;
 
     bool editing = false;
@@ -58,8 +64,6 @@ public class TpMovement : MonoBehaviour
     private Animator animator;
 
     private PowerUpScript powerup;
-
-    public PauseMenu settingsMenu;
 
 
     public onScreenTutorialText screenTutorial;
@@ -84,23 +88,7 @@ public class TpMovement : MonoBehaviour
 
         //settingsMenu = gameObject.transform.Find("P1_UI").GetComponent<PauseMenu>();
 
-        
-
-        /*
-        transform.parent = GameObject.Find("PlayerHolder").transform;
-
-        if (GameObject.Find("Player1") == null)
-            transform.name = "Player1";
-
-        else if (GameObject.Find("Player2") == null)
-            transform.name = "Player2";
-
-        else if (GameObject.Find("Player3") == null)
-            transform.name = "Player3";
-
-        else
-            transform.name = "Player4";
-        */
+        jumpTimer = coyoteTime;
     }
 
     // Update is called once per frame
@@ -111,31 +99,25 @@ public class TpMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if you control THAT character
-        /*
-        if (view.IsMine)
-        {
-        this is where photon stuff goes if put back in
-        }
-        
-        else
-        {
-            GetComponent<TpMovement>().enabled = false;
-        }
-        */
-
         isGrounded = Physics.CheckSphere(feetTransform.position, 0.1f, floorMask);
-        animator.SetBool("isGrounded", isGrounded);
+        animator.SetBool("isGrounded", coyoteTimer > 0f);
 
-        if (isGrounded)
+        jumpTimer += Time.deltaTime;
+
+        if (isGrounded && jumpTimer >= coyoteTime)
         {
             rBody.drag = groundDrag;
+
+            coyoteTimer = coyoteTime;
             //physMat.dynamicFriction = 3.5f;
         }
 
         else
         {
             rBody.drag = 0f;
+
+            coyoteTimer -= Time.deltaTime;
+
             //physMat.dynamicFriction = 0f;
         }
 
@@ -239,12 +221,16 @@ public class TpMovement : MonoBehaviour
             rBody.useGravity = true;
         }
 
-        rBody.AddForce(moveDir.normalized * moveSpeed * 5f, ForceMode.Force);
 
-        if (!isGrounded)
+        if (coyoteTimer <= 0)
         {
+            rBody.AddForce(moveDir.normalized * moveSpeed * 5f / airControlDivisor, ForceMode.Force);
+
             rBody.AddForce(new Vector3(0f, -jumpGravity, 0f), ForceMode.Force);
         }
+
+        else
+            rBody.AddForce(moveDir.normalized * moveSpeed * 5f, ForceMode.Force);
 
         if (justSwapped && !onRamp)
         {
@@ -376,15 +362,15 @@ public class TpMovement : MonoBehaviour
         {
             return;
         }
+
         if (!screenTutorial.hasShownTutorialType[(int)currentTutorialType.JUMP])
         {
-            
-
             screenTutorial.hideTutorial(currentTutorialType.JUMP);
         }
+
         if (cntxt.performed)
         {
-            if (isGrounded)
+            if (coyoteTimer > 0f)
             {
                 groundPos = gameObject.transform.position.y;
                 GetComponent<PlayerAudioController>().jumpSFX();
@@ -392,6 +378,9 @@ public class TpMovement : MonoBehaviour
                 //ParticleManager.instance.PlayEffect(transform.position, "WhiteParticles");
                 powerup.PlayerJumped();
                 StartCoroutine(CheckJump());
+
+                coyoteTimer = 0f;
+                jumpTimer = 0f;
             }
         }
     }
@@ -455,24 +444,4 @@ public class TpMovement : MonoBehaviour
     {
         return isGrounded;
     }
-
-    /*
-    void OnEnableUI()
-    {
-        GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled = !GameObject.Find("EditorCanvas").GetComponent<Canvas>().enabled;
-
-        editing = !editing;
-
-        playerCam.GetComponent<CinemachineBrain>().enabled = !playerCam.GetComponent<CinemachineBrain>().enabled;
-
-        Cursor.visible = !Cursor.visible;
-
-        if (editing) Cursor.lockState = CursorLockMode.None;
-
-        else Cursor.lockState = CursorLockMode.Locked;
-
-        //spawnerUI.enabled = !spawnerUI.enabled;
-    }
-    */
-
 }

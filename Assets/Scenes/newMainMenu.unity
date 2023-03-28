@@ -738,7 +738,6 @@ MonoBehaviour:
     actionButton: {fileID: 380977705}
   zoomedInSensitivity: {fileID: 1582325842}
   zoomedOutSensitivity: {fileID: 2139386590}
-  eventSystem: {fileID: 1281185862}
   mainMenuFirst: {fileID: 1496240415}
   settingsFirst: {fileID: 1187102761}
 --- !u!1 &582319189 stripped
@@ -1443,7 +1442,7 @@ MonoBehaviour:
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_PointAction: {fileID: -5025475530065589651, guid: 5fe38157de135d642b72399d3890c389, type: 3}
-  m_MoveAction: {fileID: -7966416736717197817, guid: 5fe38157de135d642b72399d3890c389, type: 3}
+  m_MoveAction: {fileID: 3710738434707379630, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_SubmitAction: {fileID: -2751017536976181064, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_CancelAction: {fileID: 1317435124264412450, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_LeftClickAction: {fileID: -5894864640792918621, guid: 5fe38157de135d642b72399d3890c389, type: 3}

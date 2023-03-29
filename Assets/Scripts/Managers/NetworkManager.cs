@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -13,7 +13,7 @@ using Unity.Jobs;
 
 public enum InstructionType
 {
-    LOCAL_GAMEOBJECT_ID,
+    PLAYER_DIED,
     POWERUP_USE,
     POSITION_CHANGE,
     ROTATION_CHANGE,
@@ -26,7 +26,8 @@ public enum InstructionType
     APPLY_PHYSICS,
     START_GAME,
     READY,
-    REQUEST_LEVEL
+    REQUEST_LEVEL,
+    ADD_SCORE
 }
 
 
@@ -34,7 +35,7 @@ public class NetworkManager : MonoBehaviour
 {
     
     //misc
-    List<string> InstructionTypeCodes = new List<string>{"@","!","#","^","$", "~", "*", "=","%","&","?", "<", ">", "`" };
+    List<string> InstructionTypeCodes = new List<string>{"@","!","#","^","$", "~", "*", "=","%","&","?", "<", ">", "`", "€", "£", "¥" , "¤" };
     public bool isHost = false;
     public float secondsBetweenUpdates = 0.5f;
     float secondsSinceLastUpdate = 0f;
@@ -140,18 +141,7 @@ public class NetworkManager : MonoBehaviour
         return returner;
     }
 
-    public int getModifiedGameobjectID(List<string> instructions)
-    {
-        
-        foreach(string s in instructions)
-        {
-            if(s[0].ToString() == InstructionTypeCodes[(int)InstructionType.LOCAL_GAMEOBJECT_ID])
-            {
-                return int.Parse(s.Substring(1, s.Length - 1));
-            }
-        }
-        return -1;
-    }
+   
 
 
 
@@ -262,10 +252,16 @@ public class NetworkManager : MonoBehaviour
         return o.GetInstanceID().ToString();
     }
 
+    public void ignoreAndSendTCPMessage(string message)
+    {
+        sendTCPMessage(message);
+    }
+    
+
 
     public void queueTCPInstruction(NetworkScript script, NetworkInstruction instruction, bool replace = true)
     {
-        Debug.Log("Queued instruction " + instruction.getString());
+        //Debug.Log("Queued instruction " + instruction.getString());
         if (!queuedTCPInstructions.ContainsKey(script))
         {
             queuedTCPInstructions.Add(script, new List<NetworkInstruction>());
@@ -381,9 +377,9 @@ public class NetworkManager : MonoBehaviour
             if (receivedTCPSize > 0)
             {
                 //parse message
-                string TCPMessage = Encoding.ASCII.GetString(receivedTCP,0,receivedTCPSize);
+                string TCPMessage = Encoding.UTF8.GetString(receivedTCP,0,receivedTCPSize);
                 incomingInstructions.Enqueue(TCPMessage);
-                Debug.Log("RECEIVED TCP MESSAGE: " + TCPMessage);
+                //Debug.Log("RECEIVED TCP MESSAGE: " + TCPMessage);
             }
         }
     }
@@ -402,7 +398,7 @@ public class NetworkManager : MonoBehaviour
             if (receivedUDPSize > 0)
             {
                 //parse message
-                string UDPMessage = Encoding.ASCII.GetString(receivedUDP, 0, receivedUDPSize);
+                string UDPMessage = Encoding.UTF8.GetString(receivedUDP, 0, receivedUDPSize);
                 incomingInstructions.Enqueue(UDPMessage);
                 Debug.Log("RECEIVED UDP MESSAGE: " + UDPMessage);
 
@@ -438,17 +434,23 @@ public class NetworkManager : MonoBehaviour
                 }
                
             }
-            if (code == getInstructionCode(InstructionType.LOCAL_GAMEOBJECT_ID))
-            {
-                affectedObject = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(data));
-            }
+            
             if (code == getInstructionCode(InstructionType.CHAT))
             {
                 Debug.Log("CHAT MESSAGE: " + instructionData[0]);
             }
+            if (code == getInstructionCode(InstructionType.PLAYER_DIED))
+            {
+                
+                int GOID = int.Parse(instructionData[0]);
+                GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
+                RoundManager.instance.addToDeath(toAffect);
+            }
+            
             if (code == getInstructionCode(InstructionType.START_GAME))
             {
                 requestGameObjectCreation("PlayerSingle");
+                RoundManager.instance.setGameStarted(true);
             }
             if (code == getInstructionCode(InstructionType.CREATE_ROOM))
             {
@@ -494,7 +496,7 @@ public class NetworkManager : MonoBehaviour
                     Debug.Log("DATA NULL");
                 }
                 toAffect.GetComponent<NetworkedPosition>().setData(dataPosition);
-                Debug.Log("Moved GO with ID " + instructionData[1] + " to position: " + dataPosition.ToString());
+                //Debug.Log("Moved GO with ID " + instructionData[1] + " to position: " + dataPosition.ToString());
             }
 
             if (code == getInstructionCode(InstructionType.VELOCITY_CHANGE))
@@ -502,14 +504,14 @@ public class NetworkManager : MonoBehaviour
                 Vector3 dataVel = JsonUtility.FromJson<Vector3>(instructionData[0]);
                 GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(instructionData[1]));
                 toAffect.GetComponent<NetworkedVelocity>().setData(dataVel);
-                Debug.Log("Changed velocity GO with ID " + instructionData[1] + " to velocity: " + dataVel.ToString());
+                //Debug.Log("Changed velocity GO with ID " + instructionData[1] + " to velocity: " + dataVel.ToString());
             }
             if (code == getInstructionCode(InstructionType.ROTATION_CHANGE))
             {//will be to create an object with a string prefab
                 Vector4 dataRot = JsonUtility.FromJson<Vector4>(instructionData[0]);
                 GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(int.Parse(instructionData[1]));
                 toAffect.GetComponent<NetworkedRotation>().setData(dataRot);
-                Debug.Log("Changed rotation GO with ID " + instructionData[1] + " to Rotation: " + dataRot.ToString());
+               // Debug.Log("Changed rotation GO with ID " + instructionData[1] + " to Rotation: " + dataRot.ToString());
             }
 
             if (code == getInstructionCode(InstructionType.REGISTER_GAMEOBJECT))
@@ -520,15 +522,56 @@ public class NetworkManager : MonoBehaviour
                 string prefab = instructionData[0];
                 
                 string index = instructionData[1];
+                bool createPlayerNetworked = false;
                 if(prefab=="PlayerSingle" && !isMyInstruction)
+                {
+                    createPlayerNetworked = true;
+                }
+                if (createPlayerNetworked)
                 {
                     prefab = "PlayerNetworked";
                 }
+                
                 affectedObject = Instantiate<GameObject>(Resources.Load<GameObject>(prefab));
+                if (!createPlayerNetworked)
+                {
+                    affectedObject.transform.SetParent(PlayerManager.instance.transform);
+                }
                 sendTCPMessage(getInstructionCode(InstructionType.CREATE_GAMEOBJECT) + index.ToString() + "|" + affectedObject.GetInstanceID().ToString());
 
             }
-            if(code == getInstructionCode(InstructionType.POWERUP_USE))
+            if (code == getInstructionCode(InstructionType.REQUEST_LEVEL))
+            {
+                Debug.Log(instructionData[0] + " " + data + " " + instructionData[1]);
+                int levelToLoad = int.Parse(instructionData[0]);
+                int offset = int.Parse(instructionData[1]);
+                RoundManager.instance.loadLevelExpress(levelToLoad);
+                RoundManager.instance.endRoundCleanup();
+                RoundManager.instance.startRound("netwroking");
+                Debug.Log("GOT LEVEL REQUEST " + levelToLoad + " WITH OFFSET " + offset);
+
+            }
+                if (code == getInstructionCode(InstructionType.READY))
+            {
+                int levelToLoad = int.Parse(instructionData[0]);
+                if (levelToLoad != -1)
+                {
+                    //everyone ready, so we send them in 5 seconds
+                    Debug.Log("SET READY");
+                    RoundManager.instance.setEveryoneReady();
+                    
+                }
+                else
+                {
+                    //stop ready timer
+                    Debug.Log("SET NOT READY");
+                    RoundManager.instance.setEveryoneNotReady();
+
+                }
+                
+            }
+
+                if (code == getInstructionCode(InstructionType.POWERUP_USE))
             {
                 List<float> list = JsonUtility.FromJson<List<float>>(instructionData[0]);
                 int GOID = int.Parse(instructionData[1]);
@@ -612,15 +655,15 @@ public class NetworkManager : MonoBehaviour
     private void sendTCPMessage(string message)
     {
         message += "|" + identifier;
-        TCPSocket.Send(Encoding.ASCII.GetBytes(message), 0, message.Length, SocketFlags.None);
-        Debug.Log("sent message TCP:" + message);
+        TCPSocket.Send(Encoding.UTF8.GetBytes(message), 0, message.Length, SocketFlags.None);
+        //Debug.Log("sent message TCP:" + message);
     }
 
     private void sendUDPMessage(string message)
     {
         //Debug.Log("sending message UDP:" + message);
         message += "|" + identifier;
-        UDPSocketSending.SendTo(Encoding.ASCII.GetBytes(message), sendingEndPointUDP);
+        UDPSocketSending.SendTo(Encoding.UTF8.GetBytes(message), sendingEndPointUDP);
         Debug.Log("sent message UDP:" + message);
     }
 

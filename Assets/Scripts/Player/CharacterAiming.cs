@@ -284,7 +284,7 @@ public class CharacterAiming : MonoBehaviour
 
             //normalModel.SetActive(true);
             //transparentModel.SetActive(false);
-            Debug.Log("Has ball: " + holdingProjectile);
+           // Debug.Log("Has ball: " + holdingProjectile);
         }
 	}
 

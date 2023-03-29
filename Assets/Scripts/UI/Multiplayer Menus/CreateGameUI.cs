@@ -8,6 +8,7 @@ public class CreateGameUI : SwappableUI
     {
         NetworkManager.instance.startGame();
         SwappableUIManager.instance.hideAll();
+        
     }
     
 }

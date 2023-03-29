@@ -36,7 +36,7 @@ public class PlayerAudioController : MonoBehaviour
         {
             audio1.Play();
             holding = false;
-            Debug.Log("BALLING");
+           // Debug.Log("BALLING");
         }
 
     }

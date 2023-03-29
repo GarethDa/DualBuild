@@ -19,14 +19,20 @@ public abstract class NetworkScript : MonoBehaviour
 
     }
 
-    public int framesToSkipSending = 0;
-
-    public void Start()
+    public virtual void onStart()
     {
         if (!GameManager.instance.isNetworked)
         {
             Destroy(this);
         }
+    }
+
+    public int framesToSkipSending = 0;
+
+    public void Start()
+    {
+        
+        onStart();
     }
     public void Update()
     {

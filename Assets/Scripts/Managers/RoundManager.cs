@@ -17,6 +17,7 @@ public class RoundManager : MonoBehaviour
     public Transform intermissionLocation; //where to spawn players for intermission
     public Transform levelLocation; //where to spawn players when a round starts
     public GameObject deathLocation; //where players go when they die (AKA purgatory)
+    public GameObject tempLocation; //where players go when they die (AKA purgatory)
 
     public List<GameObject> currentPlayers = new List<GameObject>();
 
@@ -45,9 +46,58 @@ public class RoundManager : MonoBehaviour
     public powerUpList givingPowerup;
     bool skipPreview = false;
     bool hasModifiedLevels = false;
+    int playerIndexOffset = 0;
+    bool gameHasStarted = false;
+    Dictionary<GameObject, int> scoreTable = new Dictionary<GameObject, int>();
+    List<GameObject> deadPlayerList = new List<GameObject>();
+
+    public bool hasPlayerDied(GameObject game)
+    {
+        return deadPlayerList.Contains(game);
+    }
+
 
     //public roundType roundOne = roundType.NONE;
     //public roundType roundTwo = roundType.NONE;
+
+    public Dictionary<GameObject, int> getScoreTable()
+    {
+        return scoreTable;
+    }
+
+    public void addScore(GameObject g, int i)
+    {
+        if (!scoreTable.ContainsKey(g))
+        {
+            scoreTable.Add(g, 0);
+        }
+        scoreTable[g] += i;
+    }
+
+    public int getScore(GameObject g)
+    {
+        return scoreTable[g];
+    }
+
+    public int getScore(int index)
+    {
+        int i = 0;
+        foreach(GameObject g in scoreTable.Keys)
+        {
+            if(index == i)
+            {
+                return scoreTable[g];
+            }
+            i++;
+        }
+        return -1;
+    }
+
+    public void setGameStarted(bool start)
+    {
+       
+        gameHasStarted = start;
+    }
 
     private void Awake() //singleton
     {
@@ -74,59 +124,21 @@ public class RoundManager : MonoBehaviour
         
     }
 
-    public void addPachinko(InputAction.CallbackContext cntxt)
+    public void loadLevelExpress(int levelNumber)
     {
-        if (cntxt.performed)
-        {
-            addRound(new PachinkoRound());
-            Debug.Log(getNextRoundNumber());
-            hasModifiedLevels = true;
-        }
-    }
-    public void addDodgeball(InputAction.CallbackContext cntxt)
-    {
-        if (cntxt.performed)
-        {
-            addRound(new DodgeballRound());
-            Debug.Log(getNextRoundNumber());
-            hasModifiedLevels = true;
-
-
-        }
-    }
-    public void addBumper(InputAction.CallbackContext cntxt)
-    {
-        if (cntxt.performed)
-        {
-            addRound(new BumperRound());
-            Debug.Log(getNextRoundNumber());
-            hasModifiedLevels = true;
-
-
-        }
-    }
-    public void addPlatform(InputAction.CallbackContext cntxt)
-    {
-        if (cntxt.performed)
-        {
-            addRound(new FallingPlatformRound());
-            Debug.Log(getNextRoundNumber());
-            hasModifiedLevels = true;
-
-
-        }
-    }
-
-    public void skipTutorial(InputAction.CallbackContext cntxt)
-    {
-        if (cntxt.performed)
-        {
-            skipPreview = !skipPreview;
-        }
+        nextRounds.Clear();
+        addRounds(getRoundsByInt(levelNumber));
+        
+       
     }
 
     public void onPlayerEnterReadyZone()
     {
+        if (GameManager.instance.isNetworked)
+        {
+            NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.READY) + 1.ToString());
+            return;
+        }
         playersReady++;
         if (currentRoundSeconds - currentRoundSecondsElapsed <= 10)
         {
@@ -141,9 +153,22 @@ public class RoundManager : MonoBehaviour
 
         }
     }
-    public void onPlayerExitReadyZone()
+
+    public void setEveryoneReady()
     {
-        playersReady--;
+        if (currentRoundSeconds - currentRoundSecondsElapsed <= 10)
+        {
+            return;
+        }
+        secondsToAddBack = (currentRoundSeconds - currentRoundSecondsElapsed);
+        setRoundTime(5);
+        EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
+        EventManager.onOnAirShowEvent?.Invoke(null, System.EventArgs.Empty);
+
+    }
+
+    public void setEveryoneNotReady()
+    {
         if (currentRoundSeconds - currentRoundSecondsElapsed <= 10 && secondsToAddBack == 0)
         {
             return;
@@ -154,12 +179,22 @@ public class RoundManager : MonoBehaviour
         }
         if (playersReady != totalPlayers && secondsToAddBack != 0)
         {
-           
+
             setRoundTime(secondsToAddBack);
             EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
             EventManager.onOnAirHideEvent?.Invoke(null, System.EventArgs.Empty);
             secondsToAddBack = 0;
         }
+    }
+    public void onPlayerExitReadyZone()
+    {
+        if (GameManager.instance.isNetworked)
+        {
+            NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.READY) + 0.ToString());
+            return;
+        }
+        playersReady--;
+        
     }
 
     public bool isInPreview()
@@ -167,14 +202,35 @@ public class RoundManager : MonoBehaviour
         return inPreview;
     }
 
+    public void addRounds(List<Round> r)
+    {
+        foreach(Round round in r)
+        {
+            addRound(round);
+        }
+    }
+
     public void addRound(Round r)
     {
         nextRounds.Add(r);
-        Debug.Log("ROUND ADDED");
+        Debug.Log("ROUND ADDED " + r.getType().ToString());
+    }
+
+    public void addToDeath(GameObject g)
+    {
+        deadPlayerList.Add(g);
+        int scoreToAdd = 5 - (5 - deadPlayerList.Count);
+        addScore(g, scoreToAdd);
     }
 
     public void onDeath(object sender, PlayerArgs e)
     {
+        addToDeath(e.player);
+        if (GameManager.instance.isNetworked)
+        {
+            NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.PLAYER_DIED) + e.player.GetInstanceID().ToString());
+            return;
+        }
         deadPlayers++;
         //Debug.log("$ONDEWATH" + deadPlayers.ToString() + " " + (totalPlayers - 1).ToString());
         if (deadPlayers >= totalPlayers - 1)
@@ -193,10 +249,33 @@ public class RoundManager : MonoBehaviour
         }
         return returner;
     }
+
+    public int getCurrentRoundNumber()
+    {
+        if (currentRoundsHaveIntermission())
+        {
+            return 2;
+        }
+        int returner = 0;
+        foreach (Round r in currentRounds)
+        {
+            returner += (int)r.getType();
+        }
+        if(returner == 0)
+        {
+            foreach (Round r in nextRounds)
+            {
+                returner += (int)r.getType();
+            }
+        }
+        Debug.Log("RETURNER " + returner);
+        return returner;
+    }
     public void startRound(string why)
     {
         Debug.Log(why);
-
+        deadPlayerList.Clear();
+        playerFallScript.instance.resetFallenPlayers();
         if (gameRoundsCompleted == roundsToPlay)
         {
             //switch scene
@@ -271,11 +350,16 @@ public class RoundManager : MonoBehaviour
             {
                 sendPlayersToLevel(placeToSend);
             }
+            else
+            {
+                //send players to purgatory to wait
+                sendPlayersToLocation(new List<Transform> { tempLocation.transform });
+            }
 
         }
 
         //reset lists for next round
-        Debug.Log(roundSeconds);
+       // Debug.Log(roundSeconds);
         currentRoundSeconds = roundSeconds;
         updateScreenClock();
         roundSeconds = 0;
@@ -289,16 +373,11 @@ public class RoundManager : MonoBehaviour
 
     }
 
-    public void endRound(string why)
+    public void endRoundCleanup()
     {
-
-        //Debug.log("$WHY: " + why);
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
         EventManager.onPlayerFell -= onDeath;
         EventManager.onRoundEnd?.Invoke(null, new RoundArgs(new roundType[] { roundType.NONE, roundType.NONE }));
-
-        //deadPlayers = 0;
-        //remove children from the levelManager (destroys the level that was spawned in)
         for (int i = 0; i < GameManager.instance.levelManager.transform.childCount; i++)
         {
             if (GameManager.instance.levelManager.transform.GetChild(i).gameObject.tag.Equals("LevelPersistent"))
@@ -308,42 +387,86 @@ public class RoundManager : MonoBehaviour
             Destroy(GameManager.instance.levelManager.transform.GetChild(i).gameObject);
 
         }
-
         //unload rounds
         foreach (Round r in currentRounds)
         {
             r.unload();
         }
+        if (!currentRoundsHaveIntermission())
+        {
+            gameRoundsCompleted++;
+            roundsSinceLastPowerup++;
+            setPowerUps();
+        }
+    }
+
+    public void endRound(string why)
+    {
+
+        Debug.Log("$WHY: " + why);
+        endRoundCleanup();
+        //deadPlayers = 0;
+        //remove children from the levelManager (destroys the level that was spawned in)
+        
+
+        
 
         //check if its intermission
-
+        
         if (currentRoundsHavePreview() && !skipPreview && !hasModifiedLevels)
         {
-            PreviewRound preview = (PreviewRound)currentRounds[0];
-            currentRounds.Clear();
-            addRound(preview.nextRounds[0]);
-            addRound(preview.nextRounds[1]);
+            
+            if (GameManager.instance.isNetworked)
+            {
+                requestNewLevelFromServer();
 
-            startRound("create preview");
+            }
+            else
+            {
+                PreviewRound preview = (PreviewRound)currentRounds[0];
+                currentRounds.Clear();
+                addRound(preview.nextRounds[0]);
+                addRound(preview.nextRounds[1]);
+                startRound("create preview");
+            }
+            
             inPreview = false;
         }
         else if (!currentRoundsHaveIntermission())
         {
-            roundsSinceLastPowerup++;
-            setPowerUps();
-            currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
-            Debug.Log("$END ROUND HAS NO INTERMISSION");
-            gameRoundsCompleted++;
-            addRound(new Intermission());
-            startRound("create intermission");
+           
+            if (GameManager.instance.isNetworked)
+            {
+                requestNewLevelFromServer();
+               
+            }
+            else
+            {
+                currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
+                Debug.Log("$END ROUND HAS NO INTERMISSION");
+                
+                addRound(new Intermission());
+                startRound("create intermission");
+            }
+            
             inPreview = false;
         }
         else
         {//start rounds
-            currentRounds.Clear();
-            Debug.Log("$END ROUND INTERMISSION");
-            generateNextRoundLevels();
-            startRound("load actual level");
+            
+            if (GameManager.instance.isNetworked)
+            {
+                requestNewLevelFromServer();
+
+            }
+            else
+            {
+                currentRounds.Clear();
+                Debug.Log("$END ROUND INTERMISSION");
+                generateNextRoundLevels();
+                startRound("load actual level");
+            }
+            
         }
         hasModifiedLevels = false;
     }
@@ -465,6 +588,7 @@ public class RoundManager : MonoBehaviour
 
     private void setPowerUps()
     {
+        //TODO: get from server and server sets it up the same way as the round chooser
         if (givingPowerup != powerUpList.None)
         {
             assignPowerUp(mainPowerupGiver, powerUpList.None, givingPowerup);
@@ -501,9 +625,51 @@ public class RoundManager : MonoBehaviour
         return new Intermission();
     }
 
+    public List<Round> getRoundsByInt(int i)
+    {
+        if(i == (int)roundType.INTERMISSION)
+        {
+            return new List<Round> { getRoundByRoundType(roundType.INTERMISSION) };
+        }
+        if(i == 12)
+        {
+            return new List<Round> { getRoundByRoundType(roundType.FALLING_PLATFORMS),
+            getRoundByRoundType(roundType.PACHINKO_BALL)};
+        }
+        if (i == 20)
+        {
+            return new List<Round> { getRoundByRoundType(roundType.FALLING_PLATFORMS),
+            getRoundByRoundType(roundType.BUMPER)};
+        }
+        if (i == 36)
+        {
+            return new List<Round> { getRoundByRoundType(roundType.FALLING_PLATFORMS),
+            getRoundByRoundType(roundType.DODGEBALL)};
+        }
+        if (i == 24)
+        {
+            return new List<Round> { getRoundByRoundType(roundType.PACHINKO_BALL),
+            getRoundByRoundType(roundType.BUMPER)};
+        }
+        if (i == 40)
+        {
+            return new List<Round> { getRoundByRoundType(roundType.PACHINKO_BALL),
+            getRoundByRoundType(roundType.DODGEBALL)};
+        }
+        if (i == 48)
+        {
+            return new List<Round> { getRoundByRoundType(roundType.BUMPER),
+            getRoundByRoundType(roundType.DODGEBALL)};
+        }
+
+        return new List<Round> {
+            getRoundByRoundType(roundType.ENDING) };
+            
+    }
+
     public List<Transform> loadLevel(int number)
     {//instantiate from resources/load
-        Debug.Log(number);
+        //Debug.Log(number);
         GameObject level = Instantiate(Resources.Load<GameObject>("Levels/" + number.ToString()));
         GameObject deathZone = Instantiate(Resources.Load<GameObject>("Levels/DeathZone"));
         List<Transform> spawnPoints = new List<Transform>();
@@ -582,18 +748,22 @@ public class RoundManager : MonoBehaviour
 
     protected void sendPlayersToLocation(List<Transform> t)
     {
-        int index = 0;
+        
         for (int i = 0; i < PlayerManager.instance.transform.childCount; i++)//for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
         {
             //Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
             //GameManager.instance.playerManager.transform.GetChild(i).transform.position = teleportLocation + offset;
-            PlayerManager.instance.transform.GetChild(i).transform.position = t[index % t.Count].position;// + offset;
+            PlayerManager.instance.transform.GetChild(i).transform.position = t[playerIndexOffset % t.Count].position;// + offset;
 
-            index++;
+            
         }
     }
     public void secondTick(object sender, System.EventArgs e)//called every second
     {
+        if (!gameHasStarted && GameManager.instance.isNetworked)
+        {
+            return;
+        }
         currentRoundSecondsElapsed++;
         if (secondsToAddBack > 0)
         {
@@ -606,11 +776,26 @@ public class RoundManager : MonoBehaviour
         {
             EventManager.onTenSecondsBeforeRoundEndEvent?.Invoke(null, System.EventArgs.Empty);
         }
+        if(currentRoundSeconds - currentRoundSecondsElapsed == 0)
+        {
+            if (GameManager.instance.isNetworked)
+            {
+                //request level to play
+                requestNewLevelFromServer();
+                //return;
+            }
+        }
         EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
-        if (currentRoundSecondsElapsed == currentRoundSeconds)
+        if (currentRoundSecondsElapsed == currentRoundSeconds && !GameManager.instance.isNetworked)
         {
             endRound("Time's up!");
         }
+
+    }
+
+    public void requestNewLevelFromServer()
+    {
+        NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.REQUEST_LEVEL) + getCurrentRoundNumber());
 
     }
 

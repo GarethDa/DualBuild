@@ -34,7 +34,7 @@ public class NetworkedPosition : NetworkScript
 
     protected override void sendData()
     {
-        Debug.Log("sending POSITION");
+        //Debug.Log("sending POSITION");
         if (Vector3.Distance(oldPosition,transform.position) > tolerance)
         {
             //update position

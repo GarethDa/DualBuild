@@ -3338,6 +3338,15 @@ MonoBehaviour:
   introText: {fileID: 1295661988}
   introCam: {fileID: 2073271490}
   eventsystem: {fileID: 1902540209}
+  roboMaterials:
+  - {fileID: 2100000, guid: f37814ab4c1fb1a47ab36fed4d896914, type: 2}
+  - {fileID: 2100000, guid: 6b2ccdca5f2ae0e45bc1a0bfefe9fe37, type: 2}
+  - {fileID: 2100000, guid: 6ec6471396f9d614aad181ba2c8f8d82, type: 2}
+  - {fileID: 2100000, guid: dc4f0bc532ca2fa44bda0441183dbbe3, type: 2}
+  - {fileID: 2100000, guid: 049b87522ebf9b340bfba0104f66ac81, type: 2}
+  - {fileID: 2100000, guid: da5f09d80df158e48a3c4797785f583e, type: 2}
+  - {fileID: 2100000, guid: cab90ee1e2528ae45ad1e81787b620c1, type: 2}
+  - {fileID: 2100000, guid: b8d5350f9af26584a9bd514c08110deb, type: 2}
 --- !u!4 &977526631
 Transform:
   m_ObjectHideFlags: 0

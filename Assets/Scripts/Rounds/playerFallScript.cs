@@ -36,6 +36,10 @@ public class playerFallScript : MonoBehaviour
             }
             EventManager.onPlayerFell?.Invoke(null, new PlayerArgs(collision.gameObject));
         }
+        else if (collision.gameObject.tag.Equals("Bullet"))
+        {
+            collision.gameObject.GetComponent<BallBehaviour>().ResetBall();
+        }
     }
 
     

@@ -7,6 +7,7 @@ public class BallBehaviour : MonoBehaviour
 
     private bool isHeld = false;
     private bool isThrown = false;
+    private Vector3 startPosition;
     private GameObject playerCam;
     private List<GameObject> playerObjects = new List<GameObject>();
     [SerializeField] int hitForce = 500;
@@ -31,6 +32,8 @@ public class BallBehaviour : MonoBehaviour
         origMat = gameObject.GetComponent<MeshRenderer>().material;
 
         gameObject.GetComponent<TrailRenderer>().startColor = notThrownColour + new Color(0, 0, 0, 1);
+
+        startPosition = transform.position;
 
         //gameObject.GetComponent<MeshRenderer>().material.color = notThrownColour;
     }
@@ -158,5 +161,11 @@ public class BallBehaviour : MonoBehaviour
     public bool GetIsThrown()
     {
         return isThrown;
+    }
+
+    public void ResetBall()
+    {
+        gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        transform.position = startPosition;
     }
 }

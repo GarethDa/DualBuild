@@ -131,8 +131,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreTag: Environment
-  _explosionForce: 60
-  _upwardForce: -1
+  _explosionForce: 3000
+  velocityFactor: 15
+  _upwardForce: -1.05
 --- !u!114 &-2513019330696666690
 MonoBehaviour:
   m_ObjectHideFlags: 0

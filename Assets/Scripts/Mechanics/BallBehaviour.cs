@@ -74,6 +74,7 @@ public class BallBehaviour : MonoBehaviour
         if (isThrown && collision.gameObject.tag == "Player")
         {
             collision.rigidbody.AddExplosionForce(hitForce, collision.contacts[0].point, 10, 50);
+            collision.gameObject.GetComponentInParent<TpMovement>().HitStun();
             //Debug.Log("Deez");
         }
         if (isThrown && collision.gameObject.tag == "NetworkedPlayer")

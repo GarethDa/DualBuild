@@ -1605,7 +1605,7 @@ GameObject:
   - component: {fileID: 5432788867137758119}
   m_Layer: 8
   m_Name: EGGROBOT
-  m_TagString: Player
+  m_TagString: NetworkedPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2699,7 +2699,7 @@ GameObject:
   - component: {fileID: 1233617177304506646}
   m_Layer: 8
   m_Name: PlayerObj
-  m_TagString: Player
+  m_TagString: NetworkedPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

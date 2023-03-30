@@ -325,7 +325,7 @@ public class NetworkManager : MonoBehaviour
         }
         while (incomingInstructions.Count > 0)
         {
-            Debug.Log("Received:" + incomingInstructions.Peek());
+            //Debug.Log("Received:" + incomingInstructions.Peek());
             executeInstructions(decodeInstruction(incomingInstructions.Dequeue()));
         }
 
@@ -444,6 +444,10 @@ public class NetworkManager : MonoBehaviour
                 
                 int GOID = int.Parse(instructionData[0]);
                 GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
+                if (!toAffect.tag.Contains("Player"))
+                {
+                    return;
+                }
                 RoundManager.instance.addToDeath(toAffect);
             }
             

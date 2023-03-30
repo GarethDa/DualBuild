@@ -39,6 +39,10 @@ public class inWorldTutorial : MonoBehaviour
         {
             return;
         }
+        if(placeToShow == null)
+        {
+            return;
+        }
         //Debug.Log(toLook.transform.position);
         transform.position = placeToShow.transform.position + (Vector3.up * 1.5f);
         gameObject.transform.forward = ( transform.position- toLook.transform.position);

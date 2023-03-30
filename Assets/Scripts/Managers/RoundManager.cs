@@ -136,6 +136,7 @@ public class RoundManager : MonoBehaviour
     {
         if (GameManager.instance.isNetworked)
         {
+            Debug.Log("SENT READY");
             NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.READY) + 1.ToString());
             return;
         }
@@ -188,6 +189,7 @@ public class RoundManager : MonoBehaviour
     }
     public void onPlayerExitReadyZone()
     {
+        Debug.Log("SENT NOT READY");
         if (GameManager.instance.isNetworked)
         {
             NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.READY) + 0.ToString());
@@ -407,68 +409,56 @@ public class RoundManager : MonoBehaviour
         endRoundCleanup();
         //deadPlayers = 0;
         //remove children from the levelManager (destroys the level that was spawned in)
-        
 
-        
+        hasModifiedLevels = false;
+        if (GameManager.instance.isNetworked)
+        {
+            requestNewLevelFromServer();
+            return;
+        }
 
         //check if its intermission
-        
+
         if (currentRoundsHavePreview() && !skipPreview && !hasModifiedLevels)
         {
             
-            if (GameManager.instance.isNetworked)
-            {
-                requestNewLevelFromServer();
-
-            }
-            else
-            {
+            
+            
                 PreviewRound preview = (PreviewRound)currentRounds[0];
                 currentRounds.Clear();
                 addRound(preview.nextRounds[0]);
                 addRound(preview.nextRounds[1]);
                 startRound("create preview");
-            }
+            
             
             inPreview = false;
         }
         else if (!currentRoundsHaveIntermission())
         {
            
-            if (GameManager.instance.isNetworked)
-            {
-                requestNewLevelFromServer();
-               
-            }
-            else
-            {
+            
+            
                 currentRounds.Clear();//to clear it before next rounds get loaded (but must be available to check for intermission above)
                 Debug.Log("$END ROUND HAS NO INTERMISSION");
                 
                 addRound(new Intermission());
                 startRound("create intermission");
-            }
+            
             
             inPreview = false;
         }
         else
         {//start rounds
             
-            if (GameManager.instance.isNetworked)
-            {
-                requestNewLevelFromServer();
-
-            }
-            else
-            {
+            
                 currentRounds.Clear();
                 Debug.Log("$END ROUND INTERMISSION");
                 generateNextRoundLevels();
                 startRound("load actual level");
-            }
+            
             
         }
-        hasModifiedLevels = false;
+        
     }
 
     private void generateNextRoundLevels(int offset = 0)
@@ -776,17 +766,9 @@ public class RoundManager : MonoBehaviour
         {
             EventManager.onTenSecondsBeforeRoundEndEvent?.Invoke(null, System.EventArgs.Empty);
         }
-        if(currentRoundSeconds - currentRoundSecondsElapsed == 0)
-        {
-            if (GameManager.instance.isNetworked)
-            {
-                //request level to play
-                requestNewLevelFromServer();
-                //return;
-            }
-        }
+       
         EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
-        if (currentRoundSecondsElapsed == currentRoundSeconds && !GameManager.instance.isNetworked)
+        if (currentRoundSecondsElapsed == currentRoundSeconds)
         {
             endRound("Time's up!");
         }

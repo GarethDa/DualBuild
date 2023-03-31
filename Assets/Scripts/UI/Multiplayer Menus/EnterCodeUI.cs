@@ -12,7 +12,7 @@ public class EnterCodeUI : SwappableUI
         string acceptableCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         string roomKey = "";
         bool isOK = true;
-        foreach(char c in field.text)
+        foreach(char c in field.text.ToUpper())
         {
             if(c.Equals(' '))
             {
@@ -23,7 +23,7 @@ public class EnterCodeUI : SwappableUI
                 isOK = false;
                 break;
             }
-            roomKey += c;
+            roomKey += c.ToString();
         }
         if (!isOK)
         {

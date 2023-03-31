@@ -8,6 +8,8 @@ public class DynamicUIComponent : MonoBehaviour
     Transform startingPos = null;
     float T = 0f;
     float secondsToMove = -1f;
+    public float delayedStart = 0f;
+    float timeUntilStart = 0f;
     [SerializeField] protected Transform UIOnScreen;
     [SerializeField] protected Transform UIOffScreen;
 
@@ -20,6 +22,11 @@ public class DynamicUIComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(delayedStart > timeUntilStart)
+        {
+            timeUntilStart += Time.deltaTime;
+            return;
+        }
         checkForMovement();   
     }
 

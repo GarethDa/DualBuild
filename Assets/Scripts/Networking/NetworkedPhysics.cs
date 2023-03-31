@@ -19,6 +19,8 @@ public class NetworkedPhysics : NetworkScript
 
     protected override void applyData()
     {
+        Debug.Log("Added FORCE");
+
         Rigidbody rb = GetComponent<Rigidbody>();
         if(currrentData.type == 4)//explosion force
         {
@@ -31,7 +33,7 @@ public class NetworkedPhysics : NetworkScript
     protected override void sendData()
     {
         string data = JsonUtility.ToJson(currrentData) + "|" + gameObject.GetInstanceID();
-        NetworkManager.instance.queueTCPInstruction(this, NetworkManager.instance.getInstruction(InstructionType.APPLY_PHYSICS, data));//.sendUDPMessage();
+        NetworkManager.instance.queueTCPInstruction(this, NetworkManager.instance.getInstruction(InstructionType.APPLY_PHYSICS, data),false);//.sendUDPMessage();
 
     }
 

@@ -2160,6 +2160,7 @@ GameObject:
   - component: {fileID: 1440305548908378847}
   - component: {fileID: 8378731708070569790}
   - component: {fileID: 7157691905037074219}
+  - component: {fileID: 3045274591979917786}
   m_Layer: 8
   m_Name: PlayerSingle
   m_TagString: Player
@@ -7839,6 +7840,23 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &3045274591979917786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164643919393318149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc2ca3699df736f42af713ce43e1eab0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHost: 0
+  tolerance: 1
+  sendAnyways: 0
+  sendDataPeriodically: 0
+  framesToSkipSending: 0
 --- !u!1 &6276606703702759537
 GameObject:
   m_ObjectHideFlags: 0

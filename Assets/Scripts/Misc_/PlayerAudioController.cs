@@ -40,7 +40,7 @@ public class PlayerAudioController : MonoBehaviour
             audioSource.volume = 1f;
             audioSource.Play();
             holding = false;
-            Debug.Log("BALLING");
+           // Debug.Log("BALLING");
         }
 
     }

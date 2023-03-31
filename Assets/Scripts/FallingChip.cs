@@ -12,10 +12,13 @@ public class FallingChip : MonoBehaviour
     [SerializeField] float _fallSpeed = 1f;
     [Tooltip("Can only the player trigger the platforms?")]
     [SerializeField] bool _onlyPlayer = false;
+    [Tooltip("Will the platform wobble when a player lands on it?")]
+    [SerializeField] bool _wobbleOnCollision = true;
 
     float _wobbleCounter; //How long the platform has wobbled for.
     bool _triggered; //Has the platform begun to wobble?
     bool _falling; //Has the platform begun to fall.
+
 
     float x, z; //The X and Z positions shouldn't chance, so store them here.
 
@@ -34,9 +37,24 @@ public class FallingChip : MonoBehaviour
         if (!_falling)
         {
             _triggered = true;
-            _animator.Play("PlatformWobble");
+            if (_wobbleOnCollision)
+            {
+                startWobbleAnimation();
+            }
         }
     }
+
+    public void setWobbleOnCollision(bool b)
+    {
+        _wobbleOnCollision = b;
+    }
+
+    public void startWobbleAnimation()
+    {
+        _animator.Play("PlatformWobble");
+    }
+
+    
 
     void Update()
     {

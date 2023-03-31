@@ -114,13 +114,23 @@ public int stopSpot = 0;
             //Debug.Log(comingFrom.getDistance());
             if (goingTo.getIndex() == table.getEntries().Count-1)
             {
-                //setTransform(edges[index].endTrans);
-                T = -1;
-                canMove = false;
-                index = 0;
-                secondsElapsed = -1f;
+                bool shouldEnd = true;
+               
+
+                if (shouldEnd)
+                {
+                    //setTransform(edges[index].endTrans);
+                    T = -1;
+                    canMove = false;
+                    Debug.Log("at the end");
+                    index = 0;
+                    secondsElapsed = -1f;
+
+                    return;
+                }
+                  
                 
-                return;
+                
             }
             comingFrom = goingTo;
             goingTo = table.getEntryUsingDistance(distance);
@@ -173,6 +183,7 @@ public int stopSpot = 0;
         }
         else
         {
+            //this is fucked up
             int indexAhead = (index + 1);
             
             if (indexAhead >= edges.Count)
@@ -235,6 +246,7 @@ public int stopSpot = 0;
                     setTransform(edges[index].transform);
                     T = -1;
                     canMove = false;
+                    Debug.Log("T>1");
                     index = 0;
                     secondsElapsed = -1f;
                     return;
@@ -267,6 +279,18 @@ public class movementLine
     [SerializeField] public Transform transform;
     [SerializeField] public float totalTime = 1f;
     [SerializeField] public float arrivalSpeed = -1f;
+
+    public movementLine()
+    {
+
+    }
+
+   public movementLine(Transform place, float timeToGetThere, float speedToChangeTo)
+    {
+        transform = place;
+        totalTime = timeToGetThere;
+        arrivalSpeed = speedToChangeTo;
+    }
 }
 public class MotionTable
 {
@@ -276,8 +300,10 @@ public class MotionTable
     Transform nextIndexedTransform;
     int lastTransformIndex = 0;
     int nextTransformIndex = 1;
+    public int initialEdgeCount = 0;
     public MotionTable(List<movementLine> edges, edgeType type)
 {
+        initialEdgeCount = edges.Count;
         List<Vector3> a = new List<Vector3>();
         movementLine lastLine = null;
         foreach (movementLine line in edges)

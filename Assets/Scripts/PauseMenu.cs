@@ -63,7 +63,7 @@ public class PauseMenu : MonoBehaviour
             rebindTextObjects.Add(inputInfoList[i].actionButton.transform.Find("ControlText").gameObject);
             waitingTextObjects.Add(inputInfoList[i].actionButton.transform.Find("InputText").gameObject);
 
-            Debug.Log("i: " + i);
+            //Debug.Log("i: " + i);
 
             int bindingIndex = inputInfoList[i].actionReference.GetBindingIndexForControl(inputInfoList[i].actionReference.controls[0]);
 

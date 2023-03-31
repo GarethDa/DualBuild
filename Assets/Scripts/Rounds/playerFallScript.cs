@@ -7,7 +7,7 @@ public class playerFallScript : MonoBehaviour
     [SerializeField] bool debugPrint;
     public static playerFallScript instance;
     public List<GameObject> fallenPlayers = new List<GameObject>();
-
+    public bool checkCollision = true;
    
 
     public void resetFallenPlayers()
@@ -24,6 +24,10 @@ public class playerFallScript : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        if (!checkCollision)
+        {
+            return;
+        }
         if(collision.gameObject.tag.Equals("Player"))
         {
             if (fallenPlayers.Contains(collision.gameObject))

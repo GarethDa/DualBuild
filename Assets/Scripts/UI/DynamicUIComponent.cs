@@ -22,11 +22,7 @@ public class DynamicUIComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(delayedStart > timeUntilStart)
-        {
-            timeUntilStart += Time.deltaTime;
-            return;
-        }
+        
         checkForMovement();   
     }
 
@@ -34,6 +30,11 @@ public class DynamicUIComponent : MonoBehaviour
     {
         if (movingPos != null && secondsToMove > 0)
         {
+            if (delayedStart > timeUntilStart)
+            {
+                timeUntilStart += Time.deltaTime;
+                return;
+            }
             if (T > 1)
             {
                 movingPos = null;
@@ -56,6 +57,16 @@ public class DynamicUIComponent : MonoBehaviour
     {
         //Debug.Log(gameObject.transform.parent.name);
         transform.position = UIOffScreen.position;
+    }
+
+    public void StartToEnd(float secondsLong)
+    {
+        easeIn(UIOnScreen, secondsLong, UIOffScreen);
+    }
+
+    public void EndToStart(float secondsLong)
+    {
+        easeIn(UIOffScreen, secondsLong, UIOnScreen);
     }
 
     public void easeIn(Transform t, float secondsLong, Transform starting = null)

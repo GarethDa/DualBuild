@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class EndingRound : Round
 {
@@ -122,7 +123,17 @@ public class EndingRound : Round
                 foreach(GameObject g in players)
                 {
                     int score = playerScores[index];
-
+                    int realScore = (RoundManager.instance.roundsToPlay * 5) - score;
+                    DynamicUIComponent DUIC = RoundManager.instance.UIScores[index];
+                    string scoreMessage = "";
+                    if(index == players.Count-1)
+                    {
+                        scoreMessage += "WINNER\n";
+                    }
+                    scoreMessage += RoundManager.instance.playerNames[index] + ":\n" + playerScores[index].ToString();
+                    DUIC.GetComponentInChildren<TMP_Text>().text = scoreMessage;
+                    DUIC.StartToEnd(1);
+                    Debug.Log("SHOWED UI");
                     index++;
                 }
             }
@@ -163,6 +174,7 @@ public class EndingRound : Round
         prev.startMove();
         if (index >= players.Count-1)
         {
+           // isDone = true;
             return;
         }
             Transform levelManager = RoundManager.instance.levelLocation;

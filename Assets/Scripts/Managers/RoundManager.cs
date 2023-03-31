@@ -47,11 +47,12 @@ public class RoundManager : MonoBehaviour
     public powerUpList givingPowerup;
     bool skipPreview = false;
     bool hasModifiedLevels = false;
-    int playerIndexOffset = 0;
+    public int playerIndexOffset = 0;
     bool gameHasStarted = false;
     Dictionary<GameObject, int> scoreTable = new Dictionary<GameObject, int>();
     List<GameObject> deadPlayerList = new List<GameObject>();
     public Camera levelEndCamera;
+    public List<DynamicUIComponent> UIScores;
 
     public bool hasPlayerDied(GameObject game)
     {
@@ -152,27 +153,45 @@ public class RoundManager : MonoBehaviour
         
     }
 
-    public void loadLevelExpress(int levelNumber)
+    public bool loadLevelExpress(int levelNumber)
     {
-        if(levelNumber != 2)
+        
+        //if (levelNumber != 2)
+        //{
+            
+        //}
+        
+        nextRounds.Clear();
+        if (levelNumber==2)
+        {
+            if (shouldEndTheGame())
+            {
+                NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.ADD_SCORE) + getScore(0).ToString());
+                Debug.Log("SENT SCORE TO END GAME");
+                //pu tthis in load level express so you can check there if your rounds are over cause the server cant do it and when you die, you automatically request a level from the server
+                //cant continue cause we need everyones score in first
+                //return false;
+                return false;
+            }
+            
+        }
+        else
         {
             gameRoundsCompleted++;
             roundsSinceLastPowerup++;
         }
-        if(levelNumber == 64)
-        {
-            //request scores and start the level when you get the scores from networkManager
-            NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.ADD_SCORE) + getScore(0));
-            return;
-        }
-        nextRounds.Clear();
         
-        if(levelNumber != 2 && levelNumber != 64)
+        if (levelNumber == 2 || levelNumber == 64)
+        {
+            addRounds(getRoundsByInt(levelNumber));//no preview
+            
+        }
+        else
         {
             addRounds(getRoundsByInt(levelNumber));
             //addRound(new PreviewRound(getRoundsByInt(levelNumber)));
         }
-
+        return true;
 
 
     }
@@ -275,6 +294,7 @@ public class RoundManager : MonoBehaviour
         addToDeath(e.player);
         if (GameManager.instance.isNetworked)
         {
+            
             NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.PLAYER_DIED) + e.player.GetInstanceID().ToString());
             return;
         }
@@ -418,6 +438,21 @@ public class RoundManager : MonoBehaviour
 
     }
 
+    public bool shouldEndTheGame()
+    {
+        int networkBias = 0;
+        if (GameManager.instance.isNetworked)
+        {
+            networkBias = roundsToPlay-1;
+        }
+        Debug.Log(gameRoundsCompleted + " " + (roundsToPlay + networkBias));
+        if (gameRoundsCompleted >= roundsToPlay + networkBias)
+        {
+            return true;
+        }
+        return false;   
+     }
+
     public bool endRoundCleanup()
     {
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
@@ -443,21 +478,12 @@ public class RoundManager : MonoBehaviour
             roundsSinceLastPowerup++;
             //setPowerUps();
         }
-        int networkBias = 0;
-        if (GameManager.instance.isNetworked)
-        {
-            networkBias = 1;
-        }
-        Debug.Log(gameRoundsCompleted + " " + roundsToPlay);
-        if (gameRoundsCompleted == roundsToPlay+networkBias)
+       
+        if (shouldEndTheGame() && !GameManager.instance.isNetworked)
         {
             //TODO fix this for networked, just request the level 64 from the server
 
-            if (GameManager.instance.isNetworked)
-            {
-                loadLevelExpress(64);
-                return false;
-            }
+            
 
             //switch scene
             gameRoundsCompleted = 0;
@@ -686,12 +712,16 @@ public class RoundManager : MonoBehaviour
         {
             return (new FallingPlatformRound());
         }
+        if (r == roundType.ENDING)
+        {
+            return (new EndingRound());
+        }
         return new Intermission();
     }
 
     public List<Round> getRoundsByInt(int i)
     {
-        if(i == (int)roundType.INTERMISSION)
+        if(i == 2)
         {
             return new List<Round> { getRoundByRoundType(roundType.INTERMISSION) };
         }
@@ -725,6 +755,10 @@ public class RoundManager : MonoBehaviour
             return new List<Round> { getRoundByRoundType(roundType.BUMPER),
             getRoundByRoundType(roundType.DODGEBALL)};
         }
+        if (i == 64)
+        {
+            return new List<Round> { getRoundByRoundType(roundType.ENDING) };
+        }
 
         return new List<Round> {
             getRoundByRoundType(roundType.ENDING) };
@@ -733,7 +767,7 @@ public class RoundManager : MonoBehaviour
 
     public List<Transform> loadLevel(int number)
     {//instantiate from resources/load
-        //Debug.Log(number);
+        Debug.Log(number);
         GameObject level = Instantiate(Resources.Load<GameObject>("Levels/" + number.ToString()));
         GameObject deathZone = Instantiate(Resources.Load<GameObject>("Levels/DeathZone"));
         List<Transform> spawnPoints = new List<Transform>();

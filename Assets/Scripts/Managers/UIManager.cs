@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
     public void roundEnd(object sender, RoundArgs e)
     {
 
-        Debug.Log("Count: " + onScreenPowerupIcon.Count);
+       // Debug.Log("Count: " + onScreenPowerupIcon.Count);
         if (e.getRound(0) == roundType.NONE)
         {
             for (int i = 0; i < onScreenPowerupIcon.Count; i++)

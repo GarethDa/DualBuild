@@ -35,7 +35,7 @@ public class NetworkManager : MonoBehaviour
 {
     
     //misc
-    List<string> InstructionTypeCodes = new List<string>{"@","!","#","^","$", "~", "*", "=","%","&","?", "<", ">", "`", "€", "£", "¥" , "¤" };
+    List<string> InstructionTypeCodes = new List<string>{"@","!","#","^","$", "~", "*", "=","%","&","?", "<", ">", "`", "/", ";", "¥" , "¤" };
     public bool isHost = false;
     public float secondsBetweenUpdates = 0.5f;
     float secondsSinceLastUpdate = 0f;
@@ -441,8 +441,30 @@ public class NetworkManager : MonoBehaviour
             }
             if (code == getInstructionCode(InstructionType.ADD_SCORE))
             {
-               //todo, add GO and score to round manager if args > 0
-               //else, start round 64
+                //todo, add GO and score to round manager if args > 0
+                //else, start round 64
+                Debug.Log(instructionData[0]);
+               if(!instructionData[0].Contains("X"))
+                {
+                    Debug.Log(instructionData[0]);
+                    Debug.Log(instructionData[1]);
+                    int GOID = int.Parse(instructionData[1]);
+                    int score = int.Parse(instructionData[0]);
+
+                    GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
+                    RoundManager.instance.addScore(toAffect, score);
+                    Debug.Log("ADDED SCORE");
+                }
+                else
+                {
+                    //end the game  
+                    
+                    RoundManager.instance.loadLevelExpress(64);
+                    RoundManager.instance.endRoundCleanup();
+                    RoundManager.instance.startRound("ending game networking");
+                    //RoundManager.instance.startRound("ending game networking");
+                    Debug.Log("END GAME");
+                }
             }
             if (code == getInstructionCode(InstructionType.PLAYER_DIED))
             {
@@ -474,7 +496,10 @@ public class NetworkManager : MonoBehaviour
                     continue;
                 }
                 EventManager.onNewPlayerJoined?.Invoke(null, new StringArgs(instructionData[0]));
-
+                if(instructionData.Count > 1)
+                {
+                    RoundManager.instance.playerIndexOffset = int.Parse(instructionData[1]);
+                }
             }
             if (code == getInstructionCode(InstructionType.APPLY_PHYSICS))
             {
@@ -483,6 +508,10 @@ public class NetworkManager : MonoBehaviour
                 int GOID = int.Parse(instructionData[1]);
                 Debug.Log(GOID);
                 GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
+                if(toAffect == null || dataPhysics == null)
+                {
+                    continue;
+                }
                 toAffect.GetComponent<NetworkedPhysics>().setData(dataPhysics);
 
             }
@@ -551,13 +580,19 @@ public class NetworkManager : MonoBehaviour
             }
             if (code == getInstructionCode(InstructionType.REQUEST_LEVEL))
             {
-                Debug.Log(instructionData[0] + " " + data + " " + instructionData[1]);
+                //Debug.Log(instructionData[0] + " " + data + " " + instructionData[1]);
+               
                 int levelToLoad = int.Parse(instructionData[0]);
                 int offset = int.Parse(instructionData[1]);
-                RoundManager.instance.loadLevelExpress(levelToLoad);
-                RoundManager.instance.endRoundCleanup();
-                RoundManager.instance.startRound("netwroking");
                 Debug.Log("GOT LEVEL REQUEST " + levelToLoad + " WITH OFFSET " + offset);
+
+                if (RoundManager.instance.loadLevelExpress(levelToLoad))
+                {
+                    RoundManager.instance.endRoundCleanup();
+                    RoundManager.instance.startRound("netwroking");
+                }
+                
+                
 
             }
                 if (code == getInstructionCode(InstructionType.READY))

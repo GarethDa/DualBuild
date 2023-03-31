@@ -439,9 +439,14 @@ public class NetworkManager : MonoBehaviour
             {
                 Debug.Log("CHAT MESSAGE: " + instructionData[0]);
             }
+            if (code == getInstructionCode(InstructionType.ADD_SCORE))
+            {
+               //todo, add GO and score to round manager if args > 0
+               //else, start round 64
+            }
             if (code == getInstructionCode(InstructionType.PLAYER_DIED))
             {
-                
+                //NOT for scoring
                 int GOID = int.Parse(instructionData[0]);
                 GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
                 if (!toAffect.tag.Contains("Player"))

@@ -28,6 +28,11 @@ public abstract class Round
         //players will get teleported to one area where all the levels will be played in. by loading the map, you modify the area around the teleportaion zone
     }
 
+    public void loadLate()
+    {
+        LoadLate();
+    }
+
     public roundType getType()
     {
         return type;
@@ -39,6 +44,10 @@ public abstract class Round
         return roundTime;
     }
     protected abstract void Load();//time running out will always be a win condition for all remaining players
+    protected virtual void LoadLate()
+    {
+
+    }//time running out will always be a win condition for all remaining players
 
     public abstract void unload();
 

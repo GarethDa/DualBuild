@@ -20,6 +20,7 @@ public class RoundManager : MonoBehaviour
     public GameObject tempLocation; //where players go when they die (AKA purgatory)
 
     public List<GameObject> currentPlayers = new List<GameObject>();
+    public List<string> playerNames = new List<string>();
 
     public int deadPlayers = 0;
     public int totalPlayers = 1;
@@ -50,6 +51,7 @@ public class RoundManager : MonoBehaviour
     bool gameHasStarted = false;
     Dictionary<GameObject, int> scoreTable = new Dictionary<GameObject, int>();
     List<GameObject> deadPlayerList = new List<GameObject>();
+    public Camera levelEndCamera;
 
     public bool hasPlayerDied(GameObject game)
     {
@@ -59,6 +61,15 @@ public class RoundManager : MonoBehaviour
 
     //public roundType roundOne = roundType.NONE;
     //public roundType roundTwo = roundType.NONE;
+
+    public void addPlayer(GameObject obj, string name)
+    {
+        currentPlayers.Add(obj);
+        playerNames.Add(name);
+        addScore(obj, 0);
+    }
+
+    
 
     public Dictionary<GameObject, int> getScoreTable()
     {
@@ -77,6 +88,20 @@ public class RoundManager : MonoBehaviour
     public int getScore(GameObject g)
     {
         return scoreTable[g];
+    }
+
+    public GameObject getPlayer(int index)
+    {
+        int i = 0;
+        foreach (GameObject g in scoreTable.Keys)
+        {
+            if (i == index)
+            {
+                return g;
+            }
+            i++;
+        }
+        return null;
     }
 
     public int getScore(int index)
@@ -108,16 +133,19 @@ public class RoundManager : MonoBehaviour
         totalPlayers = 0;
         instance = this;
         gameRoundsCompleted = 0;
+        
     }
 
     private void Start()
     {
         //temporarily starting with an intermission for testing purposes
+        playerFallScript.instance.checkCollision = true;
         levelCam.enabled = false;
         camToDisable.enabled = true;
+        levelEndCamera.enabled = false;
         levelCombinations = new List<roundPair>();
-        mainPowerupGiver.setPowerup(powerUpList.None);
-        lastPlacePowerupGiver.setPowerup(powerUpList.None);
+       // mainPowerupGiver.setPowerup(powerUpList.None);
+        //lastPlacePowerupGiver.setPowerup(powerUpList.None);
         addRound(new Intermission());
         startRound("Game starting");
         
@@ -126,10 +154,27 @@ public class RoundManager : MonoBehaviour
 
     public void loadLevelExpress(int levelNumber)
     {
+        if(levelNumber != 2)
+        {
+            gameRoundsCompleted++;
+            roundsSinceLastPowerup++;
+        }
+        if(levelNumber == 64)
+        {
+            //request scores and start the level when you get the scores from networkManager
+            NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.ADD_SCORE) + getScore(0));
+            return;
+        }
         nextRounds.Clear();
-        addRounds(getRoundsByInt(levelNumber));
         
-       
+        if(levelNumber != 2 && levelNumber != 64)
+        {
+            addRounds(getRoundsByInt(levelNumber));
+            //addRound(new PreviewRound(getRoundsByInt(levelNumber)));
+        }
+
+
+
     }
 
     public void onPlayerEnterReadyZone()
@@ -140,18 +185,17 @@ public class RoundManager : MonoBehaviour
             NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.READY) + 1.ToString());
             return;
         }
+        Debug.Log("a");
         playersReady++;
         if (currentRoundSeconds - currentRoundSecondsElapsed <= 10)
         {
+            Debug.Log("b");
             return;
         }
+        Debug.Log("c");
         if (playersReady == totalPlayers)
         {
-            secondsToAddBack = (currentRoundSeconds - currentRoundSecondsElapsed);
-            setRoundTime(5);
-            EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
-            EventManager.onOnAirShowEvent?.Invoke(null, System.EventArgs.Empty);
-
+            setEveryoneReady();
         }
     }
 
@@ -196,6 +240,7 @@ public class RoundManager : MonoBehaviour
             return;
         }
         playersReady--;
+        setEveryoneNotReady();
         
     }
 
@@ -278,13 +323,7 @@ public class RoundManager : MonoBehaviour
         Debug.Log(why);
         deadPlayerList.Clear();
         playerFallScript.instance.resetFallenPlayers();
-        if (gameRoundsCompleted == roundsToPlay)
-        {
-            //switch scene
-            gameRoundsCompleted = 0;
-            SceneManager.LoadScene(gameEndSceneName);
-            return;
-        }
+        
         /*
         if(roundOne != roundType.NONE)
         {
@@ -347,10 +386,14 @@ public class RoundManager : MonoBehaviour
             //Debug.log("$START HAS NO INTERMISSION");
             Debug.Log(toLoad);
             List<Transform> placeToSend = loadLevel(toLoad);
-
+            foreach(Round r in currentRounds)
+            {
+                r.loadLate();
+            }
             if (sendToLevel)
             {
                 sendPlayersToLevel(placeToSend);
+                Debug.Log("SENT TO LEVEL");
             }
             else
             {
@@ -367,7 +410,7 @@ public class RoundManager : MonoBehaviour
         roundSeconds = 0;
 
         nextRounds.Clear();
-        setPowerUps();
+        //setPowerUps();
         //subscribe to events
         EventManager.onPlayerFell += onDeath;
         EventManager.onSecondTickEvent += secondTick;//subscribe to the second ticking event
@@ -375,7 +418,7 @@ public class RoundManager : MonoBehaviour
 
     }
 
-    public void endRoundCleanup()
+    public bool endRoundCleanup()
     {
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
         EventManager.onPlayerFell -= onDeath;
@@ -394,19 +437,50 @@ public class RoundManager : MonoBehaviour
         {
             r.unload();
         }
-        if (!currentRoundsHaveIntermission())
+        if (!currentRoundsHaveIntermission() && !currentRoundsHavePreview() && !GameManager.instance.isNetworked)
         {
             gameRoundsCompleted++;
             roundsSinceLastPowerup++;
-            setPowerUps();
+            //setPowerUps();
         }
+        int networkBias = 0;
+        if (GameManager.instance.isNetworked)
+        {
+            networkBias = 1;
+        }
+        Debug.Log(gameRoundsCompleted + " " + roundsToPlay);
+        if (gameRoundsCompleted == roundsToPlay+networkBias)
+        {
+            //TODO fix this for networked, just request the level 64 from the server
+
+            if (GameManager.instance.isNetworked)
+            {
+                loadLevelExpress(64);
+                return false;
+            }
+
+            //switch scene
+            gameRoundsCompleted = 0;
+            nextRounds.Clear();
+            nextRounds.Add(new EndingRound());
+            startRound("ending");
+            return false;
+            //Debug.Log("ENDING");
+            //SceneManager.LoadScene(gameEndSceneName);
+            //return;
+        }
+        return true;
     }
 
     public void endRound(string why)
     {
 
         Debug.Log("$WHY: " + why);
-        endRoundCleanup();
+        if (!endRoundCleanup())
+        {
+            Debug.Log("no continuing end round");
+            return;
+        }
         //deadPlayers = 0;
         //remove children from the levelManager (destroys the level that was spawned in)
 
@@ -739,11 +813,20 @@ public class RoundManager : MonoBehaviour
     protected void sendPlayersToLocation(List<Transform> t)
     {
         
-        for (int i = 0; i < PlayerManager.instance.transform.childCount; i++)//for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
+        for (int i = 0; i < currentPlayers.Count; i++)//for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
         {
+            /*
+            if (GameManager.instance.isNetworked)
+            {
+                if (currentPlayers[i].gameObject.tag == "NetworkedPlayer")
+                {
+                    continue;
+                }
+            }
+            */
             //Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
             //GameManager.instance.playerManager.transform.GetChild(i).transform.position = teleportLocation + offset;
-            PlayerManager.instance.transform.GetChild(i).transform.position = t[playerIndexOffset % t.Count].position;// + offset;
+            currentPlayers[i].transform.position = t[(i+playerIndexOffset) % t.Count].position;// + offset;
 
             
         }

@@ -6,21 +6,22 @@ public class NetworkedScores : NetworkScript
 {
     int score = 0;
     int scoreToAdd = 0;
+    //string username;
     public override void setData(object d)
     {
         return;
-        if (!(d is int))
+        if (!(d is string))
         {
             return;
         }
-        int addingScore = (int)d;
-        scoreToAdd += addingScore;
-        applyData();
+
+        //username = (string)d;
     }
 
     public override void onStart()
     {
-        RoundManager.instance.currentPlayers.Add(gameObject);
+        RoundManager.instance.addPlayer(gameObject, NetworkManager.instance.username);
+        RoundManager.instance.addScore(gameObject, 0);
     }
 
     public void roundEnd(object sender, RoundArgs e)

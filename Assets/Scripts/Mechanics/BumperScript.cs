@@ -6,6 +6,7 @@ public class BumperScript : MonoBehaviour
 {
     [SerializeField] string ignoreTag = "Environment";
     [SerializeField] float _explosionForce = 50f;
+    [SerializeField] float velocityFactor = 100f;
     [SerializeField] float _upwardForce = 150f;
 
     private void OnCollisionEnter(Collision collision)
@@ -16,9 +17,16 @@ public class BumperScript : MonoBehaviour
             //Debug.Log("BOOM!");
             Rigidbody otherRB = collision.rigidbody;
 
-            Vector3 thisVelocity = gameObject.GetComponent<Rigidbody>().velocity;
-            //otherRB.AddForce(new Vector3(thisVelocity.x, 0f, this)
-            otherRB.AddExplosionForce(GetComponent<Rigidbody>().velocity.magnitude * _explosionForce, collision.contacts[0].point, 10, _upwardForce);
+            if (collision.gameObject.GetComponentInParent<TpMovement>() != null)
+            {
+                collision.gameObject.GetComponentInParent<TpMovement>().HitStun();
+            }
+            else
+            {
+                Debug.LogError("You fucked up something");
+            }
+
+            otherRB.AddExplosionForce(GetComponent<Rigidbody>().velocity.magnitude * velocityFactor + _explosionForce, transform.position, 1, _upwardForce);
         }
     }
 }

@@ -178,8 +178,9 @@ public class BumperBot : MonoBehaviour
         if (collision.transform.tag == "Player")
         {
             collision.rigidbody.AddExplosionForce(_speed * _explosionForce, collision.contacts[0].point, 10, _upwardForce);
+            collision.gameObject.GetComponentInParent<TpMovement>().HitStun();
         }
-        if(_state == BumperStates.RETURN)
+        if (_state == BumperStates.RETURN)
         {
             return;
         }

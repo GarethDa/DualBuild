@@ -65,6 +65,9 @@ public class TpMovement : MonoBehaviour
 
     private PowerUpScript powerup;
 
+    float initialSpeed;
+    bool enableHitTimer = false;
+    float hitTimer = 0;
 
     public onScreenTutorialText screenTutorial;
     //UserInput inputAction;
@@ -89,12 +92,25 @@ public class TpMovement : MonoBehaviour
         //settingsMenu = gameObject.transform.Find("P1_UI").GetComponent<PauseMenu>();
 
         jumpTimer = coyoteTime;
+
+        initialSpeed = GetSpeed();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (enableHitTimer)
+        {
+            hitTimer += Time.deltaTime;
+
+            if (hitTimer >= 2)
+            {
+                SetSpeed(initialSpeed);
+                Debug.Log("Reset speed to " + initialSpeed);
+                enableHitTimer = false;
+                hitTimer = 0;
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -443,5 +459,15 @@ public class TpMovement : MonoBehaviour
     public bool GetIsGrounded()
     {
         return isGrounded;
+    }
+
+    public void HitStun()
+    {
+        enableHitTimer = true;
+        GetComponent<ParticleSystem>().Play();
+        SetSpeed(10);
+        Debug.Log("Speed Set to 10");
+        hitTimer = 0;
+        Debug.Log("Hit Timer reset to 0");
     }
 }

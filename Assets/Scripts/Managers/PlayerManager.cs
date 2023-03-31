@@ -20,6 +20,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameObject introCam;
     [SerializeField] GameObject eventsystem;
 
+    [SerializeField] List<Material> roboMaterials = new List<Material>();
+
     private PlayerInputManager playerInManager;
 
     private GameObject p1Ui;
@@ -120,6 +122,15 @@ public class PlayerManager : MonoBehaviour
         UIManager.instance.onScreenPowerupIcon.Add(playerInput.transform.Find("PlayerUI").GetComponentInChildren<TransparencyUI>());
 
         playerInput.transform.Find("PlayerUI").GetComponentInChildren<TransparencyUI>().snapTransparency(0);
+
+        if (roboMaterials.Count != 0)
+        {
+            int matIndex = Random.Range(0, roboMaterials.Count - 1);
+
+            playerInput.gameObject.transform.Find("PlayerObj").GetComponentInChildren<Renderer>().material = roboMaterials[matIndex];
+
+            roboMaterials.RemoveAt(matIndex);
+        }
 
         if (playerInputs.Count == 1)
         {

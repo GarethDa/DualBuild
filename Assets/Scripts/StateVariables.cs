@@ -16,6 +16,7 @@ public class StateVariables : MonoBehaviour
     public static float p4zoomedOutSens = 400f;
     public static float p4zoomedInSens = 300f;
 
+    public static float musicVar = 100f;
     // Start is called before the first frame update
     void Start()
     {

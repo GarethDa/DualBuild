@@ -32,11 +32,16 @@ public class MainMenu : MonoBehaviour
     [Header("Sliders")]
     [SerializeField] private Slider zoomedInSensitivity;
     [SerializeField] private Slider zoomedOutSensitivity;
+    [SerializeField] private Slider musicVolume;
+    //Add SFX Slider if possible
 
     [Header("First highlighted buttons")]
     [SerializeField] GameObject mainMenuFirst;
     [SerializeField] GameObject settingsFirst;
-    
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+
     //[SerializeField] private PlayerInput pInput;
     //A list of texts which display the current binding of each action
     private List<TMP_Text> bindingTexts = new List<TMP_Text>();
@@ -68,6 +73,10 @@ public class MainMenu : MonoBehaviour
 
         zoomedInSensitivity.value = StateVariables.p1zoomedInSens;
         zoomedOutSensitivity.value = StateVariables.p1zoomedOutSens;
+        musicVolume.value = StateVariables.musicVar;
+
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
     }
 
     // Update is called once per frame
@@ -75,6 +84,9 @@ public class MainMenu : MonoBehaviour
     {
         StateVariables.p1zoomedInSens = zoomedInSensitivity.value;
         StateVariables.p1zoomedOutSens = zoomedOutSensitivity.value;
+        StateVariables.musicVar = musicVolume.value;
+
+        audioSource.volume = (musicVolume.value / 100);
 
         rebindTime += Time.deltaTime;
     }

@@ -69,6 +69,7 @@ public class ChatBoxBehaviour : MonoBehaviour
             GameObject clone = Instantiate(newMessagePrefab);
             clone.transform.SetParent(messageParentPanel);
             clone.transform.SetSiblingIndex(messageParentPanel.childCount - 2);
+            message = NetworkManager.instance.username + ": " + message;
             clone.GetComponent<MessageBehaviour>().ShowMessage(message);
 
             Vector3 msgPos = clone.GetComponent<RectTransform>().localPosition;
@@ -78,7 +79,7 @@ public class ChatBoxBehaviour : MonoBehaviour
             clone.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
 
             //userClient.SendMsg("msg: " + message + userClient.GetPlayerNum());
-            NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.CHAT) + NetworkManager.instance.username + ": " + message);
+            NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.CHAT) + message);
         }
 
         else
@@ -94,7 +95,14 @@ public class ChatBoxBehaviour : MonoBehaviour
             GameObject clone = Instantiate(newMessagePrefab);
             clone.transform.SetParent(messageParentPanel);
             clone.transform.SetSiblingIndex(messageParentPanel.childCount - 2);
+           // message = NetworkManager.instance.username + ": " + message;
             clone.GetComponent<MessageBehaviour>().ShowMessage(message);
+
+            Vector3 msgPos = clone.GetComponent<RectTransform>().localPosition;
+            msgPos.z = 0;
+            clone.GetComponent<RectTransform>().localPosition = msgPos;
+            clone.GetComponent<RectTransform>().localRotation = Quaternion.Euler(Vector3.zero);
+            clone.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
         }
 
         else

@@ -78,6 +78,7 @@ public class ChatBoxBehaviour : MonoBehaviour
             clone.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
 
             //userClient.SendMsg("msg: " + message + userClient.GetPlayerNum());
+            NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.CHAT) + NetworkManager.instance.username + ": " + message);
         }
 
         else

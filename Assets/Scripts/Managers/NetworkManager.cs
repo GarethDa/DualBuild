@@ -437,6 +437,7 @@ public class NetworkManager : MonoBehaviour
             
             if (code == getInstructionCode(InstructionType.CHAT))
             {
+                RoundManager.instance.currentPlayers[0].GetComponent<ChatBoxBehaviour>().QueueMessage(instructionData[0]);
                 Debug.Log("CHAT MESSAGE: " + instructionData[0]);
             }
             if (code == getInstructionCode(InstructionType.ADD_SCORE))

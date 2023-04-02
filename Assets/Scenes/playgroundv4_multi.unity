@@ -1034,6 +1034,7 @@ MonoBehaviour:
   deathLocation: {fileID: 0}
   tempLocation: {fileID: 428617308}
   currentPlayers: []
+  playerNames: []
   deadPlayers: 0
   totalPlayers: 1
   gameEndSceneName: EndGame
@@ -5690,6 +5691,7 @@ MonoBehaviour:
   introText: {fileID: 1295661988}
   introCam: {fileID: 2073271490}
   eventsystem: {fileID: 1902540209}
+  roboMaterials: []
 --- !u!4 &977526631
 Transform:
   m_ObjectHideFlags: 0
@@ -11628,7 +11630,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: newButton
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1904725594975941810, guid: 9d73df9120c1a0042b57a7a1ed038938, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d73df9120c1a0042b57a7a1ed038938, type: 3}
 --- !u!224 &1808247477 stripped
@@ -17106,7 +17109,7 @@ MonoBehaviour:
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_PointAction: {fileID: -5025475530065589651, guid: 5fe38157de135d642b72399d3890c389, type: 3}
-  m_MoveAction: {fileID: -2051495910281411983, guid: 5fe38157de135d642b72399d3890c389, type: 3}
+  m_MoveAction: {fileID: 3710738434707379630, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_SubmitAction: {fileID: -2751017536976181064, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_CancelAction: {fileID: 1317435124264412450, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_LeftClickAction: {fileID: -5894864640792918621, guid: 5fe38157de135d642b72399d3890c389, type: 3}

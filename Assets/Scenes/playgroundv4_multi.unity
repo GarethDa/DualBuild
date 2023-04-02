@@ -5920,7 +5920,7 @@ MonoBehaviour:
   TCPPort: 8888
   UDPPortSending: 8890
   UDPPortReceiving: 8889
-  serverIP: 10.0.0.67
+  serverIP: 99.238.72.97
   timeoutSeconds: 2
   roomKey: JOHN
   message: 
@@ -11455,7 +11455,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: newButton
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1904725594975941810, guid: 9d73df9120c1a0042b57a7a1ed038938, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d73df9120c1a0042b57a7a1ed038938, type: 3}
 --- !u!224 &1808247477 stripped
@@ -16911,7 +16912,7 @@ MonoBehaviour:
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_PointAction: {fileID: -5025475530065589651, guid: 5fe38157de135d642b72399d3890c389, type: 3}
-  m_MoveAction: {fileID: -2051495910281411983, guid: 5fe38157de135d642b72399d3890c389, type: 3}
+  m_MoveAction: {fileID: 3710738434707379630, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_SubmitAction: {fileID: -2751017536976181064, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_CancelAction: {fileID: 1317435124264412450, guid: 5fe38157de135d642b72399d3890c389, type: 3}
   m_LeftClickAction: {fileID: -5894864640792918621, guid: 5fe38157de135d642b72399d3890c389, type: 3}

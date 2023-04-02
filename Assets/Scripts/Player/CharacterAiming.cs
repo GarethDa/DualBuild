@@ -16,6 +16,7 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] GameObject normalModel;
     [SerializeField] GameObject transparentModel;
     [SerializeField] onScreenTutorialText onScreenTutorial;
+    [SerializeField] PauseMenu pauseMenu;
 
     [Header("Projectiles & Punching")]
     [SerializeField] [Range(1000.0f, 4000.0f)] float throwForce = 2000.0f;
@@ -234,10 +235,8 @@ public class CharacterAiming : MonoBehaviour
 	public void OnAim(InputAction.CallbackContext cntxt)
 	{
         //If the player is aiming, prioritize the zoomed in camera and enable to reticle
-        if (cntxt.performed)
+        if (cntxt.performed && !pauseMenu.GetIsPaused())
         {
-            
-
             zoomCam.Priority += 10;
 
             reticle.enabled = true;
@@ -263,7 +262,7 @@ public class CharacterAiming : MonoBehaviour
         }
 
         //If the player isn't aiming, prioritize the zoomed out camera and disable the reticle
-        else if (cntxt.canceled)
+        else if (cntxt.canceled && isAiming)
         {
             zoomCam.Priority -= 10;
 

@@ -435,6 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54079be00783f8c43a581b7913ad6369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delayedStart: 0
   UIOnScreen: {fileID: 2099867411}
   UIOffScreen: {fileID: 493541869}
 --- !u!114 &89819195
@@ -764,6 +765,7 @@ MonoBehaviour:
   deathLocation: {fileID: 0}
   tempLocation: {fileID: 905045574}
   currentPlayers: []
+  playerNames: []
   deadPlayers: 0
   totalPlayers: 0
   gameEndSceneName: EndGame
@@ -8227,6 +8229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54079be00783f8c43a581b7913ad6369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delayedStart: 0
   UIOnScreen: {fileID: 0}
   UIOffScreen: {fileID: 0}
 --- !u!114 &875317843
@@ -19399,6 +19402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54079be00783f8c43a581b7913ad6369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delayedStart: 0
   UIOnScreen: {fileID: 1797129260}
   UIOffScreen: {fileID: 2018720845}
 --- !u!114 &2142111038

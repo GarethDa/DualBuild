@@ -21,6 +21,10 @@ public class BallBehaviour : MonoBehaviour
 
     float currentThrowLife = 0f;
 
+    bool startResetTimer = false;
+    float resetTimer = 0;
+    [SerializeField] float timeToReset = 3;
+
     void Start()
     {
         //Find the player camera and player objects
@@ -64,6 +68,19 @@ public class BallBehaviour : MonoBehaviour
                 gameObject.GetComponent<MeshRenderer>().material = origMat;
                 isThrown = false;
                 currentThrowLife = 0f;
+            }
+        }
+
+        if (startResetTimer)
+        {
+            resetTimer += Time.deltaTime;
+
+            if (resetTimer >= timeToReset)
+            {
+                gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                transform.position = startPosition;
+                startResetTimer = false;
+                resetTimer = 0;
             }
         }
     }
@@ -166,7 +183,9 @@ public class BallBehaviour : MonoBehaviour
 
     public void ResetBall()
     {
-        gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        transform.position = startPosition;
+        startResetTimer = true;
+
+        //gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        //transform.position = startPosition;
     }
 }

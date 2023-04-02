@@ -5757,7 +5757,7 @@ MonoBehaviour:
   TCPPort: 8888
   UDPPortSending: 8890
   UDPPortReceiving: 8889
-  serverIP: 10.0.0.67
+  serverIP: 99.238.72.97
   timeoutSeconds: 2
   roomKey: JOHN
   message: 

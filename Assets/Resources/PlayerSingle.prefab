@@ -2314,6 +2314,7 @@ MonoBehaviour:
   normalModel: {fileID: 0}
   transparentModel: {fileID: 0}
   onScreenTutorial: {fileID: 3444362764882923777}
+  pauseMenu: {fileID: 1921731056999116860}
   throwForce: 1500
   throwUpModifier: 35
   chargePerSec: 500
@@ -9482,6 +9483,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -18
       objectReference: {fileID: 0}
+    - target: {fileID: 1154305991157236690, guid: d88b4ac5c6a7c1a4caedff3b8697461b, type: 3}
+      propertyPath: uiCam
+      value: 
+      objectReference: {fileID: 3796883099871533494}
+    - target: {fileID: 1154305991157236690, guid: d88b4ac5c6a7c1a4caedff3b8697461b, type: 3}
+      propertyPath: mainCam
+      value: 
+      objectReference: {fileID: 3796883099871533494}
     - target: {fileID: 2884622105330479800, guid: d88b4ac5c6a7c1a4caedff3b8697461b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -9617,6 +9626,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: d88b4ac5c6a7c1a4caedff3b8697461b, type: 3}
+--- !u!1 &6952950426126405973 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3762756976910806259, guid: d88b4ac5c6a7c1a4caedff3b8697461b, type: 3}
+  m_PrefabInstance: {fileID: 6073711147562728870}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7019185416471086803 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3828921604475386741, guid: d88b4ac5c6a7c1a4caedff3b8697461b, type: 3}
@@ -9785,6 +9799,10 @@ PrefabInstance:
       propertyPath: audio1
       value: 
       objectReference: {fileID: 727752823529165554}
+    - target: {fileID: 7072493935028317472, guid: 779d2e0238e495945aeeb31a0c779641, type: 3}
+      propertyPath: chatBox
+      value: 
+      objectReference: {fileID: 6952950426126405973}
     - target: {fileID: 7072493935028317472, guid: 779d2e0238e495945aeeb31a0c779641, type: 3}
       propertyPath: inputInfoList.Array.data[0].actionReference.m_Id
       value: 6adf5235-eab5-4dfb-9e8f-badbe24bb99f

@@ -71,6 +71,12 @@ public class ChatBoxBehaviour : MonoBehaviour
             clone.transform.SetSiblingIndex(messageParentPanel.childCount - 2);
             clone.GetComponent<MessageBehaviour>().ShowMessage(message);
 
+            Vector3 msgPos = clone.GetComponent<RectTransform>().localPosition;
+            msgPos.z = 0;
+            clone.GetComponent<RectTransform>().localPosition = msgPos;
+            clone.GetComponent<RectTransform>().localRotation = Quaternion.Euler(Vector3.zero);
+            clone.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+
             //userClient.SendMsg("msg: " + message + userClient.GetPlayerNum());
         }
 

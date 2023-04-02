@@ -53,6 +53,7 @@ public class RoundManager : MonoBehaviour
     List<GameObject> deadPlayerList = new List<GameObject>();
     public Camera levelEndCamera;
     public List<DynamicUIComponent> UIScores;
+    public bool readyZoneActivated = true;
 
     public bool hasPlayerDied(GameObject game)
     {
@@ -155,12 +156,12 @@ public class RoundManager : MonoBehaviour
 
     public bool loadLevelExpress(int levelNumber)
     {
-        
+
         //if (levelNumber != 2)
         //{
-            
+
         //}
-        
+       // readyZoneActivated = true;
         nextRounds.Clear();
         if (levelNumber==2)
         {
@@ -198,6 +199,10 @@ public class RoundManager : MonoBehaviour
 
     public void onPlayerEnterReadyZone()
     {
+        if (!readyZoneActivated)
+        {
+            return;
+        }
         if (GameManager.instance.isNetworked)
         {
             Debug.Log("SENT READY");
@@ -252,6 +257,10 @@ public class RoundManager : MonoBehaviour
     }
     public void onPlayerExitReadyZone()
     {
+        if (!readyZoneActivated)
+        {
+            return;
+        }
         Debug.Log("SENT NOT READY");
         if (GameManager.instance.isNetworked)
         {
@@ -343,7 +352,7 @@ public class RoundManager : MonoBehaviour
         Debug.Log(why);
         deadPlayerList.Clear();
         playerFallScript.instance.resetFallenPlayers();
-        
+
         /*
         if(roundOne != roundType.NONE)
         {
@@ -354,6 +363,7 @@ public class RoundManager : MonoBehaviour
         }
         */
         //Debug.log("$-------------");
+        //readyZoneActivated = false;
         currentRoundSeconds = 0;//reset time of rounds
         currentRoundSecondsElapsed = 0;
         secondsToAddBack = 0;
@@ -422,7 +432,7 @@ public class RoundManager : MonoBehaviour
             }
 
         }
-
+        
         //reset lists for next round
        // Debug.Log(roundSeconds);
         currentRoundSeconds = roundSeconds;
@@ -455,6 +465,7 @@ public class RoundManager : MonoBehaviour
 
     public bool endRoundCleanup()
     {
+        //readyZoneActivated = true;
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
         EventManager.onPlayerFell -= onDeath;
         EventManager.onRoundEnd?.Invoke(null, new RoundArgs(new roundType[] { roundType.NONE, roundType.NONE }));

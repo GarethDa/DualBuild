@@ -443,7 +443,7 @@ public class NetworkManager : MonoBehaviour
             {
                 //todo, add GO and score to round manager if args > 0
                 //else, start round 64
-                Debug.Log(instructionData[0]);
+                Debug.Log(data);
                if(!instructionData[0].Contains("X"))
                 {
                     Debug.Log(instructionData[0]);
@@ -496,7 +496,7 @@ public class NetworkManager : MonoBehaviour
                     continue;
                 }
                 EventManager.onNewPlayerJoined?.Invoke(null, new StringArgs(instructionData[0]));
-                if(instructionData.Count > 1)
+                if(instructionData.Count > 2)
                 {
                     RoundManager.instance.playerIndexOffset = int.Parse(instructionData[1]);
                 }

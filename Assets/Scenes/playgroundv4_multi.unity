@@ -1158,7 +1158,7 @@ MonoBehaviour:
   playerNames: []
   deadPlayers: 0
   totalPlayers: 1
-  gameEndSceneName: EndGame
+  gameEndSceneName: newMainMenu
   roundsToPlay: 1
   levelCam: {fileID: 637954489}
   camToDisable: {fileID: 336467785}
@@ -1178,12 +1178,14 @@ MonoBehaviour:
   lastPlacePowerupGiver: {fileID: 502713321}
   mainPowerupGiver: {fileID: 1716207587}
   givingPowerup: 0
+  playerIndexOffset: 0
   levelEndCamera: {fileID: 1616550281}
   UIScores:
   - {fileID: 53039499}
   - {fileID: 2129413069}
   - {fileID: 31052291}
   - {fileID: 1858371651}
+  readyZoneActivated: 1
 --- !u!114 &158365054
 MonoBehaviour:
   m_ObjectHideFlags: 0

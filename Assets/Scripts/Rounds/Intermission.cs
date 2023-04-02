@@ -15,6 +15,7 @@ public class Intermission : Round
     public override void unload()
     {
         //didnt load anything
+        RoundManager.instance.readyZoneActivated = false;
 
         EventManager.onOnAirHideEvent?.Invoke(null, System.EventArgs.Empty);
         EventManager.onTenSecondsBeforeRoundEndEvent -= onTenSecondsBefore;
@@ -31,6 +32,7 @@ public class Intermission : Round
     {
         //do nothing, wait for time to expire
         EventManager.onTenSecondsBeforeRoundEndEvent += onTenSecondsBefore;
+        RoundManager.instance.readyZoneActivated = true;   
 
     }
 }

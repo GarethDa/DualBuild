@@ -369,8 +369,8 @@ MonoBehaviour:
   _cooldownTargetting: 0
   _movementCooldownTime: 5
   _cooldownMovement: 0
-  _explosionForce: 150
-  _upwardForce: 30
+  _explosionForce: 200
+  _upwardForce: 25
   _returnSnapDistance: 0.1
   _avoidanceDistance: 5
   _maxAvoidanceForce: 1000

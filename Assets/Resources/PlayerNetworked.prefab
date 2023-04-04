@@ -1964,6 +1964,7 @@ GameObject:
   - component: {fileID: 3820082027862429319}
   - component: {fileID: 9020320187774852272}
   - component: {fileID: 7365931080819829535}
+  - component: {fileID: 6821497060427640328}
   m_Layer: 8
   m_Name: PlayerNetworked
   m_TagString: NetworkedPlayer
@@ -2095,6 +2096,7 @@ MonoBehaviour:
   sendAnyways: 0
   sendDataPeriodically: 1
   framesToSkipSending: 0
+  newVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &9020320187774852272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2130,6 +2132,22 @@ MonoBehaviour:
   sendDataPeriodically: 1
   framesToSkipSending: 0
   index: -1
+--- !u!114 &6821497060427640328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164643919393318149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8868cbc2ab3972a42a1284cde04d7e4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorMask:
+    serializedVersion: 2
+    m_Bits: 576
+  feet: {fileID: 8411294830860781000}
 --- !u!1 &6276606703702759537
 GameObject:
   m_ObjectHideFlags: 0

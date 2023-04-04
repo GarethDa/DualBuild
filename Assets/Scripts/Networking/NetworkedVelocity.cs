@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NetworkedVelocity : NetworkScript
 {
-    Vector3 newVelocity;//non normalized velocity
+    public Vector3 newVelocity;//non normalized velocity
     public override void setData(object d)
     {
         if(!(d is Vector3))

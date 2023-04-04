@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,7 +52,11 @@ public class TransparencyUI : MonoBehaviour
             setTransparency(starting);
         }
         
+        if(wanted == 0)
+        {
+            GetComponentInChildren<TMP_Text>().text = "";
 
+        }
         manager.wantedTransparency = wanted;
         manager.transparencyLength = secondsLong;
         queuedTransparencies.Enqueue(manager);

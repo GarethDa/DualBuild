@@ -110,6 +110,7 @@ public class PowerUpScript : MonoBehaviour
 
     public void addPowerUp(powerUpList t)
     {
+        //Destroy(playerObject.GetComponent<PowerUp>());
         if(t == powerUpList.Bomb)
         {
             playerObject.AddComponent<Bomb>().setup(bombPrefab, playerObject);

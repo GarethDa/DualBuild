@@ -712,8 +712,16 @@ PrefabInstance:
       value: Falling Chip (3)
       objectReference: {fileID: 0}
     - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
       propertyPath: _fallSpeed
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
+      propertyPath: _onlyPlayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
       propertyPath: _wobbleTime
@@ -788,8 +796,16 @@ PrefabInstance:
       value: Falling Chip (2)
       objectReference: {fileID: 0}
     - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
       propertyPath: _fallSpeed
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
+      propertyPath: _onlyPlayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
       propertyPath: _wobbleTime
@@ -864,8 +880,16 @@ PrefabInstance:
       value: Falling Chip (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
       propertyPath: _fallSpeed
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
+      propertyPath: _onlyPlayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
       propertyPath: _wobbleTime
@@ -940,8 +964,16 @@ PrefabInstance:
       value: Falling Chip
       objectReference: {fileID: 0}
     - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
       propertyPath: _fallSpeed
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
+      propertyPath: _onlyPlayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4477960170652412713, guid: ecc2fc0161428e74f9b3304e144803d8, type: 3}
       propertyPath: _wobbleTime

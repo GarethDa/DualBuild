@@ -15,8 +15,13 @@ public class UserNameUI : SwappableUI
             error.text = "Enter a valid username!";
             return;
         }
-        string requiredCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_";
-        string forbiddenCharacters = "`~!@#$%^&*()_+|-={}[];:<>?,.";
+        if (field.text.Length >= 27)
+        {
+            error.text = "Username must be between 1-26 characters!";
+            return;
+        }
+        string requiredCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        string forbiddenCharacters = "`~!@#$%^&*()_+|-={}[];:<>?,./";
         bool hasRequiredCharacter = false;
         bool hasForbiddenCharacter = false;
         foreach(char c in field.text)

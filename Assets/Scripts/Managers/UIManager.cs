@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
         EventManager.onRoundEnd += roundEnd;
         for (int i = 0; i < onScreenPowerupIcon.Count; i++)
             hideIOnScreenPowerUpIcon(i);
+
         clearText();
     }
 
@@ -37,6 +38,7 @@ public class UIManager : MonoBehaviour
     {
         //onScreenPowerupIcon.enabled = false;
         onScreenPowerupIcon[index].snapTransparency(0);
+        onScreenPowerupIcon[index].GetComponentInChildren<TMP_Text>().text = "";
     }
 
     public void showIOnScreenPowerUpIcon(int index)
@@ -54,6 +56,7 @@ public class UIManager : MonoBehaviour
 
     public void roundStart(object sender, RoundArgs e)
     {
+        return;
         if(e.getRound(0) == roundType.NONE)
         {
             for (int i = 0; i < onScreenPowerupIcon.Count; i++)
@@ -65,7 +68,7 @@ public class UIManager : MonoBehaviour
     public void roundEnd(object sender, RoundArgs e)
     {
 
-        Debug.Log("Count: " + onScreenPowerupIcon.Count);
+       // Debug.Log("Count: " + onScreenPowerupIcon.Count);
         if (e.getRound(0) == roundType.NONE)
         {
             for (int i = 0; i < onScreenPowerupIcon.Count; i++)
@@ -78,7 +81,7 @@ public class UIManager : MonoBehaviour
       
     }
 
-    public void setPowerUpIconImage(Texture image, float lengthOfPowerUp, int index)
+    public void setPowerUpIconImage(Texture image, int index)
     {
         if(image == null || GameManager.instance.powerupManager[index].getCurrentPowerUp() == powerUpList.None)
         {
@@ -88,11 +91,13 @@ public class UIManager : MonoBehaviour
         //showIOnScreenPowerUpIcon();
         onScreenPowerupIcon[index].queueFadeTransparency(1f, 0.5f);
         onScreenPowerupIcon[index].setTransparencyImage(image);
+        onScreenPowerupIcon[index].GetComponentInChildren<TMP_Text>().text = GameManager.instance.getActualButtonName( GameManager.instance.getButtonString("Player/PowerUp",RoundManager.instance.currentPlayers[index]));
+
     }
 
-    public void setPowerUpIconImageByPowerUpType(powerUpList type, float length, int index)
+    public void setPowerUpIconImageByPowerUpType(powerUpList type, int index)
     {
-        setPowerUpIconImage(getPowerUpIconByType(type),length, index);
+        setPowerUpIconImage(getPowerUpIconByType(type), index);
     }
 
     public Texture getPowerUpIconByType(powerUpList type)

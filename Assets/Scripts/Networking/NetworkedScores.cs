@@ -6,9 +6,18 @@ public class NetworkedScores : NetworkScript
 {
     int score = 0;
     int scoreToAdd = 0;
+    public int index = -1;
+    string userName = "";
     //string username;
     public override void setData(object d)
     {
+        if(!(d is int))
+        {
+            return;
+
+        }
+
+        index = (int)d;
         return;
         if (!(d is string))
         {
@@ -20,6 +29,12 @@ public class NetworkedScores : NetworkScript
 
     public override void onStart()
     {
+
+
+        if (!isHost)
+        {
+            return;
+        }
         RoundManager.instance.addPlayer(gameObject, NetworkManager.instance.username);
         RoundManager.instance.addScore(gameObject, 0);
     }
@@ -36,6 +51,8 @@ public class NetworkedScores : NetworkScript
         setData(addingScore);
     }
 
+    public int getIndex() { return index; }
+
     public int getScore()
     {
         return score;
@@ -43,14 +60,24 @@ public class NetworkedScores : NetworkScript
 
     public void resetScoreToAdd()
     {
-        return;
+        
         scoreToAdd = 0;
     }
 
-    public void addToScoreToAdd(int i)
+    public void setUserName(string s)
     {
-        return;
-        scoreToAdd += i;
+        userName = s;
+    }
+
+    public string getUserName()
+    {
+        return userName;
+    }
+
+    public void addScore(int i)
+    {
+        
+        score += i;
     }
 
     protected override void applyData()

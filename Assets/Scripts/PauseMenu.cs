@@ -28,6 +28,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Slider zoomedOutSensitivity;
 
     [SerializeField] GameObject settingsFirst;
+    [SerializeField] GameObject chatBox;
 
     //[SerializeField] private PlayerInput pInput;
     //A list of texts which display the current binding of each action
@@ -50,6 +51,11 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (GameObject.Find("GameManager").GetComponent<GameManager>().isNetworked)
+        {
+            chatBox.SetActive(true);
+        }
+
         playerNum = PlayerManager.instance.GetIndex(gameObject.transform.parent.gameObject) + 1;
 
         //Debug.Log("Player: " + PlayerManager.instance.GetIndex(gameObject.transform.parent.gameObject) + 1);
@@ -70,18 +76,8 @@ public class PauseMenu : MonoBehaviour
             bindingTexts[bindingTexts.Count - 1].text = InputControlPath.ToHumanReadableString(inputInfoList[i].actionReference.bindings[bindingIndex].effectivePath,
                 InputControlPath.HumanReadableStringOptions.OmitDevice);
         }
-        /*
-        for (int i = 1; i < 5; i++)
-        {
-            if (gameObject.name.Equals("P" + i + "_UI"))
-            {
-                playerNum = i;
-                break;
-            }
 
-            playerNum = -1;
-        }
-        */
+
 
         if (playerNum == 1)
         {

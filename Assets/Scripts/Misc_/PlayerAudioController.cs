@@ -12,6 +12,8 @@ public class PlayerAudioController : MonoBehaviour
     public AudioClip audio1; //Throw
     public AudioClip audio2; //Jump
     public AudioClip audio3; //Jump Land
+    public AudioClip audio4; //Slap air
+    public AudioClip audio5; //Slap hit
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -51,6 +53,7 @@ public class PlayerAudioController : MonoBehaviour
         {
             audioSource.clip = audio3;
             audioSource.volume = 0.75f;
+            audioSource.spatialBlend = 1f;
             audioSource.Play();
             GetComponent<TpMovement>().SetGroundPos(0f);
             GetComponent<TpMovement>().SetJumpPos(0f);
@@ -61,6 +64,23 @@ public class PlayerAudioController : MonoBehaviour
     {
         audioSource.clip = audio2;
         audioSource.volume = 1f;
+        audioSource.spatialBlend = 1f;
+        audioSource.Play();
+    }
+
+    public void slapSFX()
+    {
+        audioSource.clip = audio4;
+        audioSource.volume = 0.25f;
+        audioSource.spatialBlend = 0f;
+        audioSource.Play();
+    }
+
+    public void slaphitSFX()
+    {
+        audioSource.clip = audio5;
+        audioSource.volume = 0.25f;
+        audioSource.spatialBlend = 0f;
         audioSource.Play();
     }
 }

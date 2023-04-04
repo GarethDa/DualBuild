@@ -2390,6 +2390,8 @@ MonoBehaviour:
   audio1: {fileID: 8300000, guid: f191c2ca8d4d3b24ea831ea67d9c922c, type: 3}
   audio2: {fileID: 8300000, guid: cd40ddc4dacc02b449b81c450e479102, type: 3}
   audio3: {fileID: 8300000, guid: 0580f9f5981e50c478c8039ff50fefd1, type: 3}
+  audio4: {fileID: 8300000, guid: 058dd6673f578c547bbf17b9906e677b, type: 3}
+  audio5: {fileID: 8300000, guid: 0c496310e524f574eb67db913253fd51, type: 3}
 --- !u!114 &6164643919393318148
 MonoBehaviour:
   m_ObjectHideFlags: 0

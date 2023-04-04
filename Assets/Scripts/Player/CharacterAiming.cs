@@ -401,10 +401,10 @@ public class CharacterAiming : MonoBehaviour
         }
 
         else if (!isAiming && cntxt.performed)
-        {
+        {
 
             if (animator != null && !animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && !animator.GetCurrentAnimatorStateInfo(1).IsName("Punch"))
-            {
+            {                GetComponent<PlayerAudioController>().slapSFX();
                 animator.SetTrigger("Punch");
             }
 
@@ -421,7 +421,7 @@ public class CharacterAiming : MonoBehaviour
             {
                 //GameObject hitPlayer = hitInfo.collider.transform.Find("PlayerObj").gameObject;
                 hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3 (0f, punchForce / 2, 0f), ForceMode.Impulse);
-                Debug.Log("punch");
+                Debug.Log("punch");                GetComponent<PlayerAudioController>().slaphitSFX();
                 powerup.PlayerPunched();
             }
         }

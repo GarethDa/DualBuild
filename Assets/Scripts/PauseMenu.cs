@@ -61,7 +61,7 @@ public class PauseMenu : MonoBehaviour
         //Debug.Log("Player: " + PlayerManager.instance.GetIndex(gameObject.transform.parent.gameObject) + 1);
         SetRebindButtons(playerNum);
 
-        Debug.Log("Count:" + inputInfoList.Count);
+        //Debug.Log("Count:" + inputInfoList.Count);
 
         for (int i = 0; i < inputInfoList.Count; i++)
         {

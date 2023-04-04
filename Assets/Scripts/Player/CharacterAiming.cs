@@ -257,7 +257,7 @@ public class CharacterAiming : MonoBehaviour
                 onScreenTutorial.show("");
             }
             
-            Debug.Log("Has ball: " + holdingProjectile);
+            //Debug.Log("Has ball: " + holdingProjectile);
             //ParticleManager.instance.PlayEffect(transform.position, "RedParticles");
         }
 

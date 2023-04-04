@@ -21,12 +21,14 @@ public class BumperScript : MonoBehaviour
             {
                 collision.gameObject.GetComponentInParent<TpMovement>().HitStun();
             }
-            else
-            {
-                Debug.LogError("You fucked up something");
-            }
 
-            otherRB.AddExplosionForce(GetComponent<Rigidbody>().velocity.magnitude * velocityFactor + _explosionForce, transform.position, 1, _upwardForce);
+            Vector3 hitDirection = (otherRB.worldCenterOfMass - GetComponent<Rigidbody>().worldCenterOfMass).normalized;
+            hitDirection = new Vector3(hitDirection.x, 0, hitDirection.z);
+
+            otherRB.AddForce(Vector3.up * _upwardForce, ForceMode.Impulse);
+            otherRB.AddForce(hitDirection * (_explosionForce + GetComponent<Rigidbody>().velocity.magnitude * velocityFactor), ForceMode.Impulse);
+
+            //otherRB.AddExplosionForce(GetComponent<Rigidbody>().velocity.magnitude * velocityFactor + _explosionForce, transform.position, 1, _upwardForce);
         }
     }
 }

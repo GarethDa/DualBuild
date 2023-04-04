@@ -93,11 +93,13 @@ public class MainMenu : MonoBehaviour
 
     public void StartSingleplayer()
     {
+        Volume.volumeSet = audioSource.volume;
         SceneManager.LoadScene(singlePlayer);
     }
 
     public void StartMultiplayer()
     {
+        Volume.volumeSet = audioSource.volume;
         SceneManager.LoadScene(multiPlayer);
     }
 
@@ -154,4 +156,5 @@ public class MainMenu : MonoBehaviour
 
         rebindTime = 0f;
     }
+
 }

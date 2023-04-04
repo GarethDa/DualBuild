@@ -41,12 +41,13 @@ public class RoundManager : MonoBehaviour
 
     public int roundsBetweenPowerups = 3;
     int roundsSinceLastPowerup = 0;
-    bool inPreview = false;
+    public static bool inPreview = false;
     int secondsToAddBack = 0;
     public PowerupGiver lastPlacePowerupGiver;
     public PowerupGiver mainPowerupGiver;
    // public powerUpList givingPowerup;
     bool skipPreview = false;
+    public static bool inIntermission = true;
     bool hasModifiedLevels = false;
     public int playerIndexOffset = 0;
     bool gameHasStarted = false;
@@ -394,6 +395,7 @@ public class RoundManager : MonoBehaviour
         int toLoad = 0;
         int roundSeconds = 0;
         bool sendToLevel = true;
+        inIntermission = false;
         List<roundType> roundTypes = new List<roundType>();
         foreach (Round r in nextRounds)
         {
@@ -444,6 +446,8 @@ public class RoundManager : MonoBehaviour
             {
                 sendPlayersToLevel(placeToSend);
                 Debug.Log("SENT TO LEVEL");
+                GetComponent<AudioManager>().playDualMusic();
+                GetComponent<AudioManager>().playActionCue();
             }
             else
             {
@@ -901,6 +905,13 @@ public class RoundManager : MonoBehaviour
     {
         //Debug.log("$SEND TO INTERMISSION");
         sendPlayersToLocation(new List<Transform> { intermissionLocation });
+
+        inIntermission = true;
+    }
+
+    public bool isInIntermission()
+    {
+        return inIntermission;
     }
 
     protected void sendPlayersToLocation(List<Transform> t)

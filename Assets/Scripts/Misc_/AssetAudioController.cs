@@ -19,7 +19,6 @@ public class AssetAudioController : MonoBehaviour
             
         }
 
-        return;
         //Pachinko SFX
         if (gameObject.CompareTag("Pachinko") && GetComponent<Rigidbody>().velocity.magnitude > 5f)
         {

@@ -7,6 +7,7 @@ public class BombBehaviour : MonoBehaviour
 
    
     private bool isThrown = false;
+    public bool isCreatedByNetwork = false;
     GameObject player;
     private List<Rigidbody> affectedObjects = new List<Rigidbody>();
     [SerializeField] [Range(1f, 1000f)] int bombForce = 850;
@@ -46,23 +47,32 @@ public class BombBehaviour : MonoBehaviour
         //check for floor or player and explode
         if(collision.gameObject.tag == "Player" || collision.gameObject.layer == 6 || collision.gameObject.layer == 9)
         {
-            foreach (Rigidbody g in affectedObjects)
+            if (GameManager.instance.isNetworked && !isCreatedByNetwork)
             {
-                 Rigidbody rg = g.GetComponentInParent<Rigidbody>();
-                //Vector3 toMove = transform.position - g.gameObject.transform.position;
-                //Vector3 newForce = (radius - Vector3.Distance(transform.position, g.transform.position)) * toMove.normalized * bombForce;
-                // g.AddForce(newForce, ForceMode.Impulse);
-                rg.AddExplosionForce(bombForce, transform.position, bombRadius, 3.0F, ForceMode.Impulse);
-                Debug.Log(rg.gameObject.name);
-
+                NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.POWERUP_USE) + ((int)powerUpList.Bomb).ToString() + "|" + JsonUtility.ToJson(transform.position));              
             }
-            ParticleManager.instance.PlayEffect(transform.position, "ExplosionParticles");
-            GetComponentInChildren<AssetAudioController>().BombSFX();
-            gameObject.transform.DetachChildren();
-            Destroy(gameObject);
+            explode();
         }
         
        
+    }
+
+    public void explode()
+    {
+        foreach (Rigidbody g in affectedObjects)
+        {
+            Rigidbody rg = g.GetComponentInParent<Rigidbody>();
+            //Vector3 toMove = transform.position - g.gameObject.transform.position;
+            //Vector3 newForce = (radius - Vector3.Distance(transform.position, g.transform.position)) * toMove.normalized * bombForce;
+            // g.AddForce(newForce, ForceMode.Impulse);
+            rg.AddExplosionForce(bombForce, transform.position, bombRadius, 3.0F, ForceMode.Impulse);
+            Debug.Log(rg.gameObject.name);
+
+        }
+        ParticleManager.instance.PlayEffect(transform.position, "ExplosionParticles");
+        GetComponentInChildren<AssetAudioController>().BombSFX();
+        gameObject.transform.DetachChildren();
+        Destroy(gameObject);
     }
 
     public void OnTriggerEnter(Collider other)

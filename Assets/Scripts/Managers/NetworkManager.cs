@@ -528,9 +528,26 @@ public class NetworkManager : MonoBehaviour
                 GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
                 if(toAffect == null || dataPhysics == null)
                 {
+                    Debug.Log("CONTINUED");
+
                     continue;
                 }
                 toAffect.GetComponent<NetworkedPhysics>().setData(dataPhysics);
+
+            }
+            if (code == getInstructionCode(InstructionType.POWERUP_USE))
+            {
+                Debug.Log("POWERUP USE");
+                Vector3 dataPosition = JsonUtility.FromJson<Vector3>(instructionData[1]);
+                int powerupType = int.Parse(instructionData[0]);
+                if(powerupType == (int)powerUpList.Bomb)
+                {
+                    //make a bomb
+                    GameObject newBomb = Instantiate<GameObject>(Resources.Load<GameObject>("Element Prefabs/Projectiles/Bomb"));
+                    newBomb.transform.position = dataPosition + Vector3.up;//up so that it can collide again with the floor to get the players it should affect
+                    newBomb.GetComponent<BombBehaviour>().setThrown(true);
+                    newBomb.GetComponent<BombBehaviour>().isCreatedByNetwork = true;
+                }
 
             }
             if (code == getInstructionCode(InstructionType.POSITION_CHANGE))

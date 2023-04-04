@@ -174,7 +174,7 @@ public class EndingRound : Round
                     {
                         name = g.GetComponent<NetworkedScores>().getUserName();//RoundManager.instance.playerNames[playerIndex];
                     }
-                    scoreMessage +=  name + ":\n" + realScore.ToString();
+                    scoreMessage +=  name + ":\n" + realScore.ToString() + " points";
                     DUIC.GetComponentInChildren<TMP_Text>().text = scoreMessage;
                     DUIC.StartToEnd(1);
                     Debug.Log("SHOWED UI");

@@ -15,7 +15,7 @@ public class CharacterAiming : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera zoomCam;
     [SerializeField] GameObject normalModel;
     [SerializeField] GameObject transparentModel;
-    [SerializeField] onScreenTutorialText onScreenTutorial;
+    public onScreenTutorialText onScreenTutorial;
     [SerializeField] PauseMenu pauseMenu;
 
     [Header("Projectiles & Punching")]

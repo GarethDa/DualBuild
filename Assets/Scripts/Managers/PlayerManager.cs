@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
+
+    public Transform networkedPlayerTransform;
     protected int playersDied = 0;
 
     private List<PlayerInput> playerInputs = new List<PlayerInput>();
@@ -56,6 +58,11 @@ public class PlayerManager : MonoBehaviour
         //playerInManager = FindObjectOfType<PlayerInputManager>();
     }
 
+
+    public Material getRoboMat(int index)
+    {
+        return roboMaterials[index];
+    }
     private void OnEnable()
     {
         //playerInManager.onPlayerJoined += AddPlayer;

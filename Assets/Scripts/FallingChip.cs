@@ -30,10 +30,11 @@ public class FallingChip : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (_onlyPlayer && !collision.gameObject.CompareTag("Player"))
+        if (_onlyPlayer && !collision.gameObject.tag.Contains("Player"))
         {
             return;
         }
+        
         if (!_falling)
         {
             _triggered = true;

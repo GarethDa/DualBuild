@@ -10,6 +10,10 @@ public class DynamicUIComponent : MonoBehaviour
     float secondsToMove = -1f;
     public float delayedStart = 0f;
     float timeUntilStart = 0f;
+    bool hasEnded = false;
+    bool shouldRetract = false;
+    float timeOn = -1f;
+    public float timeUntilEnding = -1;
     [SerializeField] protected Transform UIOnScreen;
     [SerializeField] protected Transform UIOffScreen;
 
@@ -37,6 +41,29 @@ public class DynamicUIComponent : MonoBehaviour
             }
             if (T > 1)
             {
+                /*
+                if (!hasEnded)
+                {
+                    if(timeUntilEnding >= 0)
+                    {
+                        timeOn += Time.deltaTime;
+                        if(timeOn < timeUntilEnding)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            shouldRetract = true;
+                        }
+                    }
+                    if (shouldRetract)
+                    {
+                        hasEnded = true;
+                        EndToStart(secondsToMove);
+                        return;
+                    }
+                }
+                */
                 movingPos = null;
                 startingPos = null;
                 T = 0;

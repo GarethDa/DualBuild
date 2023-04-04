@@ -36,35 +36,61 @@ public class EndingRound : Round
         //SceneManager.LoadScene("newMainMenu");
         RoundManager.instance.levelEndCamera.enabled = false;
         RoundManager.instance.levelEndCamera.GetComponentInChildren<ParticleSystem>().Stop();
-        playerFallScript.instance.checkCollision = false;
-        SceneManager.LoadScene(RoundManager.instance.gameEndSceneName);
+        playerFallScript.instance.gameObject.SetActive(true);
+        playerFallScript.instance.checkCollision = true;
+        //SceneManager.LoadScene(RoundManager.instance.gameEndSceneName);
 
     }
     protected override void Load()
     {
         RoundManager.instance.levelEndCamera.enabled = true;
     }
-    protected override void LoadLate()
+    protected override void LoadLate()//maybe this is why networked is not working? we dont load late?
     {
-        playerFallScript.instance.checkCollision = false;
+        playerFallScript.instance.gameObject.SetActive(false);//.instance.checkCollision = false;
         GameObject level = RoundManager.instance.levelLocation.Find("64(Clone)").gameObject;
         EventManager.onRoundSecondTickEvent += tick;
-        players = RoundManager.instance.currentPlayers;
+        players = new List<GameObject>();
+        foreach(GameObject g in RoundManager.instance.currentPlayers)
+        {
+            players.Add(g);
+        }
         playerScores = new List<int>();
-        for(int i = 0;i < players.Count; i++)
+        for (int i = 0; i < players.Count; i++)
         {
             playerScores.Add(RoundManager.instance.getScore(i));
         }
+
+        if (GameManager.instance.isNetworked)
+        {
+            for (int i = 0; i < PlayerManager.instance.networkedPlayerTransform.childCount; i++)
+            {
+                GameObject child = PlayerManager.instance.networkedPlayerTransform.GetChild(i).gameObject;
+                players.Add(child);
+                playerScores.Add(child.GetComponent<NetworkedScores>().getScore());
+            }
+                //nake new list for scores for both and change this to be the one from the networkde scores
+                //and add in teh players from the networked version
+
+
+            foreach(GameObject g in players)
+            {
+                g.GetComponent<NetworkedPosition>().enabled = false;
+                g.GetComponent<NetworkedVelocity>().enabled = false;
+                g.GetComponent<NetworkedRotation>().enabled = false;
+            }
+            }
+        
         sortedScores = new Dictionary<GameObject, int>();
         float zCamera = 0;
         for(int i = 0; i < players.Count-1; i++)
         {
             for (int u= 0; u < players.Count-1; u++)
             {
-                if(RoundManager.instance.getScore(u+1) > RoundManager.instance.getScore(u))
+                if(playerScores[u+1] > playerScores[u])
                 {
-                    GameObject tempGO = RoundManager.instance.currentPlayers[u];
-                    int tempScore = RoundManager.instance.getScore(u);
+                    GameObject tempGO = players[u];
+                    int tempScore = playerScores[u];
 
                     players[u] = players[u+1];
                     playerScores[u] = playerScores[u+1];
@@ -77,6 +103,7 @@ public class EndingRound : Round
         
         for(int i = 0; i < players.Count; i++)
         {
+            Debug.Log("ADDED TO DIC: " + players[i].gameObject.name + " " + playerScores[i]);
             sortedScores.Add(players[i], playerScores[i]);
         }
         //Debug.Log(sortedScores.Count + " " + players.Count);
@@ -98,6 +125,8 @@ public class EndingRound : Round
             chipParent.GetChild(i).GetComponent<FallingChip>().enabled = false;
             players[i].GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ |
                 RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+            players[i].transform.position = spawnPointParent.GetChild(i).position;
+            players[i].transform.rotation = spawnPointParent.GetChild(i).rotation;
             Debug.Log("PHYSICS STOPPED");
         }
         zCamera /= 4;
@@ -117,20 +146,35 @@ public class EndingRound : Round
         if (isDone)
         {
             secondsSinceDone++;
-            if(secondsSinceDone == 3)
+            if (secondsSinceDone == 1)
             {
+                RoundManager.instance.levelEndCamera.GetComponentInChildren<ParticleSystem>().Play();
+
+            }
+            if (secondsSinceDone == 3)
+            {
+                players.Reverse();//reverse so person whos first is actually at the front (needed at hte end so they fall last)
                 int index = 0;
                 foreach(GameObject g in players)
                 {
-                    int score = playerScores[index];
+                    int score = sortedScores[g];
                     int realScore = (RoundManager.instance.roundsToPlay * 5) - score;
                     DynamicUIComponent DUIC = RoundManager.instance.UIScores[index];
                     string scoreMessage = "";
-                    if(index == players.Count-1)
+                    int playerIndex = RoundManager.instance.getPlayerIndex(g);
+                    if (index == 0)
                     {
                         scoreMessage += "WINNER\n";
                     }
-                    scoreMessage += RoundManager.instance.playerNames[index] + ":\n" + playerScores[index].ToString();
+                    
+                    string name = "Player " + (playerIndex + 1).ToString();
+
+                    
+                    if (GameManager.instance.isNetworked)
+                    {
+                        name = g.GetComponent<NetworkedScores>().getUserName();//RoundManager.instance.playerNames[playerIndex];
+                    }
+                    scoreMessage +=  name + ":\n" + realScore.ToString();
                     DUIC.GetComponentInChildren<TMP_Text>().text = scoreMessage;
                     DUIC.StartToEnd(1);
                     Debug.Log("SHOWED UI");
@@ -160,12 +204,11 @@ public class EndingRound : Round
        
         if (index >= players.Count)
         {
-            RoundManager.instance.levelEndCamera.GetComponentInChildren<ParticleSystem>().Play();
             isDone = true;
             return;
         }
         int sortedScoresElement = index;
-        int playerIndex = players.IndexOf(sortedScores.ElementAt(index).Key);
+        int playerIndex = index;//players.IndexOf(sortedScores.ElementAt(index).Key);
 
         prev.edges.Clear();
         prev.edges.Add(new movementLine(RoundManager.instance.levelEndCamera.transform, 0.3f, 30f));

@@ -7853,11 +7853,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2ca3699df736f42af713ce43e1eab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHost: 0
+  isHost: 1
   tolerance: 1
   sendAnyways: 0
   sendDataPeriodically: 0
   framesToSkipSending: 0
+  index: -1
 --- !u!1 &6276606703702759537
 GameObject:
   m_ObjectHideFlags: 0

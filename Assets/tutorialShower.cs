@@ -40,8 +40,14 @@ public class tutorialShower : MonoBehaviour
     {
         GameObject closest = null;
         float minDist = float.MaxValue;
+        List<GameObject> toRemove = new List<GameObject>();
         foreach(GameObject g in closestObjects)
         {
+            if(g == null)
+            {
+                toRemove.Add(g);
+                continue;
+            }
             float dist = Vector3.Distance(transform.position, g.transform.position);
             if (dist < minDist)
             {
@@ -49,6 +55,10 @@ public class tutorialShower : MonoBehaviour
                 closest = g;
                
             }
+        }
+        foreach(GameObject g in toRemove)
+        {
+            closestObjects.Remove(g);
         }
         if(closest == null)
         {

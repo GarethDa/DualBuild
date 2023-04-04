@@ -449,11 +449,22 @@ public class NetworkManager : MonoBehaviour
                 {
                     Debug.Log(instructionData[0]);
                     Debug.Log(instructionData[1]);
-                    int GOID = int.Parse(instructionData[1]);
+                    int index = int.Parse(instructionData[1]);
                     int score = int.Parse(instructionData[0]);
 
-                    GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
-                    RoundManager.instance.addScore(toAffect, score);
+                    
+                    for(int i = 0; i < PlayerManager.instance.networkedPlayerTransform.childCount; i++)
+                    {
+                        GameObject child = PlayerManager.instance.networkedPlayerTransform.GetChild(i).gameObject;
+                        if(child.GetComponent<NetworkedScores>().getIndex() == index)
+                        {
+                            child.GetComponent<NetworkedScores>().addScore(score);
+                            RoundManager.instance.addScore(child, score);
+                            break;
+                        }
+                    }
+                   
+                   // RoundManager.instance.addScore(toAffect, score);
                     Debug.Log("ADDED SCORE");
                 }
                 else
@@ -471,7 +482,12 @@ public class NetworkManager : MonoBehaviour
             {
                 //NOT for scoring
                 int GOID = int.Parse(instructionData[0]);
+                Debug.Log(instructionData[0]);
                 GameObject toAffect = (GameObject)EditorUtility.InstanceIDToObject(GOID);
+                if (toAffect == null)
+                {
+                    return;
+                }
                 if (!toAffect.tag.Contains("Player"))
                 {
                     return;
@@ -487,6 +503,10 @@ public class NetworkManager : MonoBehaviour
             if (code == getInstructionCode(InstructionType.CREATE_ROOM))
             {
                 EventManager.onGetRoomKey?.Invoke(null,new StringArgs(instructionData[0]));
+                if (instructionData.Count > 2)
+                {
+                    RoundManager.instance.playerIndexOffset = int.Parse(instructionData[1]);
+                }
             }
             if (code == getInstructionCode(InstructionType.JOIN_ROOM))
             {
@@ -497,10 +517,7 @@ public class NetworkManager : MonoBehaviour
                     continue;
                 }
                 EventManager.onNewPlayerJoined?.Invoke(null, new StringArgs(instructionData[0]));
-                if(instructionData.Count > 2)
-                {
-                    RoundManager.instance.playerIndexOffset = int.Parse(instructionData[1]);
-                }
+                
             }
             if (code == getInstructionCode(InstructionType.APPLY_PHYSICS))
             {
@@ -561,22 +578,46 @@ public class NetworkManager : MonoBehaviour
                 string prefab = instructionData[0];
                 
                 string index = instructionData[1];
+                string playerIndex = instructionData[2];
+                string objectName = instructionData[3];
                 bool createPlayerNetworked = false;
+                bool createdPlayerType = false;
                 if(prefab=="PlayerSingle" && !isMyInstruction)
                 {
                     createPlayerNetworked = true;
+                    
+                }
+                if(prefab.Contains("Player"))
+                {
+                    createdPlayerType = true;
                 }
                 if (createPlayerNetworked)
                 {
                     prefab = "PlayerNetworked";
+                    Debug.Log("PLAYER NETWORKED ID:");
+                }
+                else
+                {
+                    Debug.Log("PLAYER ID:");
                 }
                 
                 affectedObject = Instantiate<GameObject>(Resources.Load<GameObject>(prefab));
+                if (createdPlayerType)
+                {
+                    affectedObject.GetComponent<NetworkedScores>().setData(int.Parse(playerIndex));
+                    affectedObject.GetComponent<NetworkedScores>().setUserName(objectName);
+                    affectedObject.transform.Find("PlayerObj").GetComponentInChildren<Renderer>().material = PlayerManager.instance.getRoboMat(int.Parse(playerIndex));
+                }
                 if (!createPlayerNetworked)
                 {
                     affectedObject.transform.SetParent(PlayerManager.instance.transform);
                 }
-                sendTCPMessage(getInstructionCode(InstructionType.CREATE_GAMEOBJECT) + index.ToString() + "|" + affectedObject.GetInstanceID().ToString());
+                else
+                {
+                    affectedObject.transform.SetParent(PlayerManager.instance.networkedPlayerTransform);
+                }
+                Debug.Log(affectedObject.GetInstanceID());
+                sendTCPMessage(getInstructionCode(InstructionType.CREATE_GAMEOBJECT) + index.ToString() + "|" + affectedObject.GetInstanceID().ToString() + "|" + prefab);
 
             }
             if (code == getInstructionCode(InstructionType.REQUEST_LEVEL))
@@ -739,7 +780,7 @@ public class NetworkManager : MonoBehaviour
 
     public void requestGameObjectCreation(string prefab)
     {
-        sendTCPMessage(getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + prefab);
+        sendTCPMessage(getInstructionCode(InstructionType.REGISTER_GAMEOBJECT) + prefab + "|" + username);
     }
 
     public void startGame()

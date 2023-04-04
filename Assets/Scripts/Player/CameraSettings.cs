@@ -107,7 +107,6 @@ public class CameraSettings : MonoBehaviour
     public void TeleportCam(Vector3 originalPos, Vector3 newPos)
     {
         Vector3 offset = newPos - originalPos;
-        Debug.Log("Offset: " + offset.magnitude);
 
         zoomOutCam.OnTargetObjectWarped(gameObject.transform.Find("Follow Target"), offset);
         zoomInCam.OnTargetObjectWarped(gameObject.transform.Find("Follow Target"), offset);

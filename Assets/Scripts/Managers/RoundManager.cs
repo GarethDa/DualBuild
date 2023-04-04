@@ -955,7 +955,6 @@ public class RoundManager : MonoBehaviour
             currentPlayers[i].transform.position = t[(i+playerIndexOffset) % t.Count].position;// + offset;
 
             currentPlayers[i].GetComponent<CameraSettings>().TeleportCam(currentPos, t[(i + playerIndexOffset) % t.Count].position);
-            Debug.Log("Finished teleporting.");
         }
 
         justTeleported = true;

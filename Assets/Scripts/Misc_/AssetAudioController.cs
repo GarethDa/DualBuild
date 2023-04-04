@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class AssetAudioController : MonoBehaviour
 {
+    public AudioSource audioSource; 
+
+    public void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     private void OnCollisionEnter(Collision collision)
     {
         //Dodgeball SFX
@@ -28,6 +34,11 @@ public class AssetAudioController : MonoBehaviour
             }
         }
 
+    }
+
+    public void YippeeSFX()
+    {
+        audioSource.Play();
     }
 
     public void BombSFX()

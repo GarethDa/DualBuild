@@ -17,9 +17,18 @@ public class ScoreTVScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        int i = 1;
         foreach (GameObject obj in RoundManager.instance.currentPlayers)
         {
-            text += RoundManager.instance.playerNames[RoundManager.instance.getPlayerIndex(obj)] + " Score: " + RoundManager.instance.getScore(obj);
+            if (GameManager.instance.isNetworked)
+            {
+                text += RoundManager.instance.playerNames[RoundManager.instance.getPlayerIndex(obj)] + " Score: " + RoundManager.instance.getScore(obj);
+            }
+            else
+            {
+                text += "Player " + i + " Score: " + RoundManager.instance.getScore(obj);
+                ++i;
+            }
         }
         textMesh.SetText(text);
 

@@ -177,7 +177,14 @@ public class BumperBot : MonoBehaviour
     {
         if (collision.transform.tag == "Player")
         {
-            collision.rigidbody.AddExplosionForce(_speed * _explosionForce, collision.contacts[0].point, 10, _upwardForce);
+            Rigidbody otherRB = collision.rigidbody;
+            //collision.rigidbody.AddExplosionForce(_speed * _explosionForce, collision.contacts[0].point, 10, _upwardForce);
+            Vector3 hitDirection = (otherRB.worldCenterOfMass - GetComponent<Rigidbody>().worldCenterOfMass).normalized;
+            hitDirection = new Vector3(hitDirection.x, 0, hitDirection.z);
+
+            otherRB.AddForce(Vector3.up * _upwardForce, ForceMode.Impulse);
+            otherRB.AddForce(hitDirection * (_explosionForce + GetComponent<Rigidbody>().velocity.magnitude * 5), ForceMode.Impulse);
+
             collision.gameObject.GetComponentInParent<TpMovement>().HitStun();
         }
         if (_state == BumperStates.RETURN)

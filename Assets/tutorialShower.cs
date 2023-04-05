@@ -6,6 +6,7 @@ public class tutorialShower : MonoBehaviour
 {
     public inWorldTutorial tutorial;
     List<GameObject> closestObjects = new List<GameObject>();
+    int timesShownPlayer = 0;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,12 +24,35 @@ public class tutorialShower : MonoBehaviour
                 return;
             }
             BallBehaviour ball = other.GetComponent<BallBehaviour>();
-            if(!ball.GetIsHeld() && !ball.GetIsThrown())
+            bool isParentPlayer = false;
+
+            if(other.transform.parent.gameObject.layer== 9 || other.transform.parent.gameObject.layer == 8)
+            {
+                isParentPlayer = true;
+            }
+            if (isParentPlayer)
+            {
+                hideTutorial();
+                return;
+            }
+            if(!ball.GetIsHeld() && !ball.GetIsThrown() )
             {
                 closestObjects.Add(other.gameObject);
                 updateClosest();
             }
+            else
+            {
+                hideTutorial();
+                return;
+            }
             
+            
+        }
+
+        if (other.gameObject.tag.Contains("Player"))
+        {
+            closestObjects.Add(other.gameObject);
+            updateClosest();
         }
     }
 
@@ -36,7 +60,7 @@ public class tutorialShower : MonoBehaviour
     {
         tutorial.hide();
     }
-    private void updateClosest()
+    public void updateClosest()
     {
         GameObject closest = null;
         float minDist = float.MaxValue;
@@ -65,7 +89,49 @@ public class tutorialShower : MonoBehaviour
             return;
         }
         //do check to change what gets shown
-        tutorial.show(closest.transform, "Pickup dodgeball");
+        if (closest.tag.Contains("Player") )
+        {
+            if(timesShownPlayer < 2)
+            {
+                tutorial.height = 4.5f;
+                tutorial.show(closest.transform, "Press " + GameManager.instance.getButtonString("Player/Fire", transform.parent.gameObject) + " to punch");
+                timesShownPlayer++;
+            }
+            
+        }
+        else if (closest.tag.Contains("Bullet"))
+        {
+            bool isParentPlayer = false;
+            if(closest.transform.parent != null)
+            {
+                if (closest.transform.parent.gameObject.layer == 9 || closest.transform.parent.gameObject.layer == 8)
+                {
+                    isParentPlayer = true;
+                }
+            }
+            
+            if (isParentPlayer)
+            {
+                hideTutorial();
+                return;
+            }
+            if (!closest.GetComponent<BallBehaviour>().GetIsHeld() && !closest.GetComponent<BallBehaviour>().GetIsThrown())
+            {
+                tutorial.height = 1.5f;
+                tutorial.show(closest.transform, "Pickup dodgeball");
+            }
+            else
+            {
+                hideTutorial();
+                return;
+            }
+            
+
+        }
+        else
+        {
+            hideTutorial();
+        }
     }
 
     private void OnTriggerExit(Collider other)

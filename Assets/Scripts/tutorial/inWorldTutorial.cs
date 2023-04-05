@@ -11,6 +11,7 @@ public class inWorldTutorial : MonoBehaviour
     Transform placeToShow;
     public TMP_Text textObject;
     public Camera toLook;
+    public float height = 1.5f;
     public void show(Transform location, string tutorialText)
     {
        
@@ -44,7 +45,7 @@ public class inWorldTutorial : MonoBehaviour
             return;
         }
         //Debug.Log(toLook.transform.position);
-        transform.position = placeToShow.transform.position + (Vector3.up * 1.5f);
+        transform.position = placeToShow.transform.position + (Vector3.up * height);
         gameObject.transform.forward = ( transform.position- toLook.transform.position);
 
 

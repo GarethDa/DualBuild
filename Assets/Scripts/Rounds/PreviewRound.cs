@@ -65,7 +65,7 @@ public class PreviewRound : Round
 
         TransformInterpolator levelCam = RoundManager.instance.levelCam.GetComponent<TransformInterpolator>();
         levelCam.setTransform(levelCam.edges[0].transform);
-        
+        ClipCanvas.instance.clip();
     }
 
     
@@ -78,5 +78,6 @@ public class PreviewRound : Round
         RoundManager.instance.levelCam.enabled = false;
         //EventManager.onTenSecondsBeforeRoundEndEvent -= onTenSecondsBefore;
 
+        ClipCanvas.instance.clip();
     }
 }

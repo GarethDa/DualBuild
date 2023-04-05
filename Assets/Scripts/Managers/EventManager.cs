@@ -21,6 +21,7 @@ public static class EventManager
     public static EventHandler onPlayerUsePowerup;
     public static EventHandler<StringArgs> onGetRoomKey;
     public static EventHandler<StringArgs> onNewPlayerJoined;
+    public static EventHandler<StringArgs> onLeaderboardScore;
 
     
 }
@@ -32,6 +33,14 @@ public class StringArgs : EventArgs
     public StringArgs(string s)
     {
         str = s;
+    }
+}
+public class IntArgs : EventArgs
+{
+    public int i;
+    public IntArgs(int inte)
+    {
+        i = inte;
     }
 }
 public class RoundArgs : EventArgs

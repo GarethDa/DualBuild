@@ -622,7 +622,7 @@ MonoBehaviour:
   totalPlayers: 0
   gameRoundsCompleted: 0
   gameEndSceneName: newMainMenu
-  roundsToPlay: 4
+  roundsToPlay: 1
   levelCam: {fileID: 637954489}
   camToDisable: {fileID: 336467785}
   overlayCamera: {fileID: 0}

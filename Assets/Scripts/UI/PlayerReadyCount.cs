@@ -9,7 +9,6 @@ public class PlayerReadyCount : MonoBehaviour
     void Start()
     {
         EventManager.onPlayerReady += onReady;
-
     }
 
 

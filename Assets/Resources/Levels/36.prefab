@@ -560,6 +560,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dodgeball (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2750228519858970952, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
+      propertyPath: addToDeletion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2750228519858970954, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1875,6 +1879,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dodgeball
       objectReference: {fileID: 0}
+    - target: {fileID: 2750228519858970952, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
+      propertyPath: addToDeletion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2750228519858970954, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2614,6 +2622,10 @@ PrefabInstance:
     - target: {fileID: 2750228519858970950, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_Name
       value: Dodgeball (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2750228519858970952, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
+      propertyPath: addToDeletion
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2750228519858970954, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_RootOrder
@@ -7404,6 +7416,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dodgeball (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 2750228519858970952, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
+      propertyPath: addToDeletion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2750228519858970954, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -7667,6 +7683,10 @@ PrefabInstance:
     - target: {fileID: 2750228519858970950, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_Name
       value: Dodgeball (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2750228519858970952, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
+      propertyPath: addToDeletion
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2750228519858970954, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_RootOrder
@@ -8339,6 +8359,10 @@ PrefabInstance:
     - target: {fileID: 2750228519858970950, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_Name
       value: Dodgeball (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2750228519858970952, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
+      propertyPath: addToDeletion
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2750228519858970954, guid: 198e4c61f0f43dd4fa50095c79d7d538, type: 3}
       propertyPath: m_RootOrder

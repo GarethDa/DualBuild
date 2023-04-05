@@ -25,6 +25,8 @@ public class BallBehaviour : MonoBehaviour
     float resetTimer = 0;
     [SerializeField] float timeToReset = 3;
 
+    public bool addToDeletion = false;
+
     void Start()
     {
         //Find the player camera and player objects
@@ -38,6 +40,11 @@ public class BallBehaviour : MonoBehaviour
         gameObject.GetComponent<TrailRenderer>().startColor = notThrownColour + new Color(0, 0, 0, 1);
 
         startPosition = transform.position;
+
+        if (addToDeletion)
+        {
+            RoundManager.instance.otherDeletedObjects.Add(gameObject);
+        }
 
         //gameObject.GetComponent<MeshRenderer>().material.color = notThrownColour;
     }

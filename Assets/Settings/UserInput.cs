@@ -311,6 +311,17 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e350cab8-4492-45bd-9fa4-db1d7f27e4f7"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PowerUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""ef8f2346-3556-4bb1-9943-ee3a6c7890d5"",
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",

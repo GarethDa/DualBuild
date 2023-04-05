@@ -5,14 +5,14 @@ using UnityEngine;
 public class TransformInterpolator : MonoBehaviour
 {
     public List<movementLine> edges = new List<movementLine>();
-    protected int index = 0;
-    protected float T = -1f;
+    [SerializeField] protected int index = 0;
+    [SerializeField] protected float T = -1f;
     public float delayedStart = 0f;
-    protected float secondsElapsed = 0f;
+    [SerializeField] protected float secondsElapsed = 0f;
     public movementType movement;
     public edgeType interpolationType;
     public bool canMove = false;
-    float distance = 0f;
+    [SerializeField] float distance = 0f;
 
     public float speed = -1f;
     MotionTable table;

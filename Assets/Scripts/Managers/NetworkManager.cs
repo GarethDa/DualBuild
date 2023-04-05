@@ -27,7 +27,8 @@ public enum InstructionType
     START_GAME,
     READY,
     REQUEST_LEVEL,
-    ADD_SCORE
+    ADD_SCORE,
+    LEADERBOARD
 }
 
 
@@ -35,7 +36,7 @@ public class NetworkManager : MonoBehaviour
 {
     
     //misc
-    List<string> InstructionTypeCodes = new List<string>{"@","!","#","^","$", "~", "*", "=","%","&","?", "<", ">", "`", "/", ";", "¥" , "¤" };
+    List<string> InstructionTypeCodes = new List<string>{"@","!","#","^","$", "~", "*", "=","%","&","?", "<", ">", "`", "/", ";", "_" , "¤" };
     public bool isHost = false;
     public float secondsBetweenUpdates = 0.5f;
     float secondsSinceLastUpdate = 0f;
@@ -325,7 +326,7 @@ public class NetworkManager : MonoBehaviour
         }
         while (incomingInstructions.Count > 0)
         {
-            //Debug.Log("Received:" + incomingInstructions.Peek());
+            Debug.Log("Received:" + incomingInstructions.Peek());
             executeInstructions(decodeInstruction(incomingInstructions.Dequeue()));
         }
 
@@ -439,6 +440,11 @@ public class NetworkManager : MonoBehaviour
             {
                 RoundManager.instance.currentPlayers[0].GetComponentInChildren<ChatBoxBehaviour>().QueueMessage(instructionData[0]);
                 Debug.Log("CHAT MESSAGE: " + instructionData[0]);
+            }
+            if (code == getInstructionCode(InstructionType.LEADERBOARD))
+            {
+                Debug.Log("LEADERBOARD");
+                EventManager.onLeaderboardScore?.Invoke(null,new StringArgs(instructionData[0]));
             }
             if (code == getInstructionCode(InstructionType.ADD_SCORE))
             {
@@ -621,6 +627,7 @@ public class NetworkManager : MonoBehaviour
                 affectedObject = Instantiate<GameObject>(Resources.Load<GameObject>(prefab));
                 if (createdPlayerType)
                 {
+                    Debug.Log("PLAYER INDEX: " + playerIndex);
                     affectedObject.GetComponent<NetworkedScores>().setData(int.Parse(playerIndex));
                     affectedObject.GetComponent<NetworkedScores>().setUserName(objectName);
                     affectedObject.transform.Find("PlayerObj").GetComponentInChildren<Renderer>().material = PlayerManager.instance.getRoboMat(int.Parse(playerIndex));

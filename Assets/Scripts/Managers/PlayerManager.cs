@@ -132,11 +132,15 @@ public class PlayerManager : MonoBehaviour
 
         if (roboMaterials.Count != 0)
         {
-            int matIndex = Random.Range(0, roboMaterials.Count - 1);
+            if (!GameManager.instance.isNetworked) {
+                int matIndex = Random.Range(0, roboMaterials.Count - 1);
 
-            playerInput.gameObject.transform.Find("PlayerObj").GetComponentInChildren<Renderer>().material = roboMaterials[matIndex];
+                playerInput.gameObject.transform.Find("PlayerObj").GetComponentInChildren<Renderer>().material = roboMaterials[matIndex];
 
-            roboMaterials.RemoveAt(matIndex);
+                roboMaterials.RemoveAt(matIndex);
+            }
+            
+        
         }
 
         if (playerInputs.Count == 1)

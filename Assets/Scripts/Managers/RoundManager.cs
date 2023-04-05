@@ -31,6 +31,7 @@ public class RoundManager : MonoBehaviour
     public int roundsToPlay = 6;
     public Camera levelCam;
     public Camera camToDisable;
+    public Camera overlayCamera;
 
     List<roundPair> levelCombinations = new List<roundPair>();
 
@@ -470,7 +471,7 @@ public class RoundManager : MonoBehaviour
                 sendPlayersToLevel(placeToSend);
                 Debug.Log("SENT TO LEVEL");
                 GetComponent<AudioManager>().playDualMusic();
-                GetComponent<AudioManager>().playActionCue();
+                
             }
             else
             {
@@ -534,13 +535,21 @@ public class RoundManager : MonoBehaviour
         {
             r.unload();
         }
-        if (!currentRoundsHaveIntermission() && !currentRoundsHavePreview() && !GameManager.instance.isNetworked)
+
+        if (!currentRoundsHaveIntermission() && !currentRoundsHavePreview() )
         {
-            gameRoundsCompleted++;
-            roundsSinceLastPowerup++;
-            //setPowerUps();
+            if (!GameManager.instance.isNetworked)
+            {
+                gameRoundsCompleted++;
+                roundsSinceLastPowerup++;
+                //setPowerUps();
+            }
+
+
+            ClipCanvas.instance.clip();
+
         }
-       
+
         if (shouldEndTheGame() && !GameManager.instance.isNetworked)
         {
             //TODO fix this for networked, just request the level 64 from the server
@@ -557,6 +566,10 @@ public class RoundManager : MonoBehaviour
             //SceneManager.LoadScene(gameEndSceneName);
             //return;
         }
+
+
+       // ClipCanvas.instance.GetComponent<Canvas>().worldCamera = Camera.main;
+
         return true;
     }
 
@@ -751,6 +764,7 @@ public class RoundManager : MonoBehaviour
             // givenPowerUp = assignPowerUp(mainPowerupGiver, givenPowerUp, powerUpList.None);
             int powerupIndex = (powerupSeed % 5) + 1;
             powerUpList givingPowerUp = (powerUpList)powerupIndex;
+            powerupedPlayers.Clear();
             foreach(GameObject g in currentPlayers)
             {
                 if(g.GetComponent<PowerUp>() != null)
@@ -1002,7 +1016,7 @@ public class RoundManager : MonoBehaviour
                 foreach (GameObject g in powerupedPlayers)
                 {
                     //g.GetComponent<PowerUpScript>().setSelectedPowerUp(givingPowerUp);
-                    
+                   
 
                     GameObject PowerupUI = g.transform.GetChild(1).GetChild(4).gameObject;
                    // PowerupUI.GetComponent<DynamicUIComponent>().EndToStart(0.5f);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,11 +12,16 @@ public class DynamicUIComponent : MonoBehaviour
     public float delayedStart = 0f;
     float timeUntilStart = 0f;
     bool hasEnded = false;
-    bool shouldRetract = false;
+   // bool shouldRetract = false;
     float timeOn = -1f;
     public float timeUntilEnding = -1;
     [SerializeField] protected Transform UIOnScreen;
     [SerializeField] protected Transform UIOffScreen;
+    public bool doRotations = false;
+    public bool repeatEnd = false;
+    int timesCompleted = 0;
+    float totalRunTime = 0;
+    public EventHandler<EventArgs> onEnd;
 
     // Start is called before the first frame update
     void Start()
@@ -34,11 +40,14 @@ public class DynamicUIComponent : MonoBehaviour
     {
         if (movingPos != null && secondsToMove > 0)
         {
+            totalRunTime += Time.deltaTime;
             if (delayedStart > timeUntilStart)
             {
                 timeUntilStart += Time.deltaTime;
                 return;
             }
+            
+            
             if (T > 1)
             {
                 /*
@@ -64,14 +73,39 @@ public class DynamicUIComponent : MonoBehaviour
                     }
                 }
                 */
+                
+                
+                
+                
+                
+                    if (repeatEnd)
+                    {
+                    if(timeUntilEnding != -1)
+                    {
+                        if (totalRunTime >= timeUntilEnding)
+                        {
+                            onEnd?.Invoke(null, System.EventArgs.Empty);
+                            repeatEnd = false;
+                            EndToStart(secondsToMove);
+                           
+                        }
+                    }
+
+                    return;
+                    }
+                
+                T = 0;
                 movingPos = null;
                 startingPos = null;
-                T = 0;
                 secondsToMove = -1;
                 return;
             }
             T += Time.deltaTime / secondsToMove;
             transform.position = Vector3.Lerp(startingPos.position, movingPos.position, ease(T));
+            if (doRotations)
+            {
+                transform.rotation = Quaternion.Lerp(startingPos.rotation, movingPos.rotation, ease(T));
+            }
         }
     }
 
@@ -104,6 +138,7 @@ public class DynamicUIComponent : MonoBehaviour
         }
         startingPos = transform;
         secondsToMove = secondsLong;
+        T = 0;
         movingPos = t;
     }
 }

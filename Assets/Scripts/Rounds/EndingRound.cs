@@ -39,6 +39,7 @@ public class EndingRound : Round
         playerFallScript.instance.gameObject.SetActive(true);
         playerFallScript.instance.checkCollision = true;
         SceneManager.LoadScene(RoundManager.instance.gameEndSceneName);
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
 
     }
     protected override void Load()

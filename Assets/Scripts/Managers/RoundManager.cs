@@ -227,7 +227,7 @@ public class RoundManager : MonoBehaviour
         {
             gameRoundsCompleted++;
             roundsSinceLastPowerup++;
-            powerupSeed += levelNumber;
+            //powerupSeed += levelNumber;
         }
         
         if (levelNumber == 2 || levelNumber == 64)
@@ -274,6 +274,7 @@ public class RoundManager : MonoBehaviour
 
     public void setEveryoneReady()
     {
+        powerupSeed += 1;
         if (currentRoundSeconds - currentRoundSecondsElapsed <= 10)
         {
             return;
@@ -655,7 +656,7 @@ public class RoundManager : MonoBehaviour
                 Debug.Log("$END ROUND INTERMISSION");
                 generateNextRoundLevels();
 
-            powerupSeed += getNextRoundNumber(); ;
+           // powerupSeed += getNextRoundNumber(); ;
             startRound("load actual level");
             
             

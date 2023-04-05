@@ -545,8 +545,11 @@ public class CharacterAiming : MonoBehaviour
 
     void RemoveProjectile(object sender, RoundArgs e)
     {
-        holdingProjectile = false;
-        animator.SetBool("hasBall", holdingProjectile);
-        heldProjectile.transform.SetParent(null);
+        if (holdingProjectile)
+        {
+            holdingProjectile = false;
+            animator.SetBool("hasBall", holdingProjectile);
+            heldProjectile.transform.SetParent(null);
+        }
     }
 }

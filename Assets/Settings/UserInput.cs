@@ -1065,6 +1065,56 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Intro"",
+            ""id"": ""e59f5fad-b3c4-47bb-af8c-cfb9f4289063"",
+            ""actions"": [
+                {
+                    ""name"": ""Skip"",
+                    ""type"": ""Button"",
+                    ""id"": ""80519315-50dc-4c74-b4cf-e4e7ad06db12"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""adc5da25-0195-4e35-961a-6276aca919ca"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82732932-8415-4191-902c-674b92f5762e"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""282bc06d-24fa-4421-80fb-7706dd6ba6cf"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1171,6 +1221,9 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         m_Editor_AddDodgeball = m_Editor.FindAction("AddDodgeball", throwIfNotFound: true);
         m_Editor_AddBumper = m_Editor.FindAction("AddBumper", throwIfNotFound: true);
         m_Editor_AddFallingPlatfom = m_Editor.FindAction("AddFallingPlatfom", throwIfNotFound: true);
+        // Intro
+        m_Intro = asset.FindActionMap("Intro", throwIfNotFound: true);
+        m_Intro_Skip = m_Intro.FindAction("Skip", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1581,6 +1634,39 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         }
     }
     public EditorActions @Editor => new EditorActions(this);
+
+    // Intro
+    private readonly InputActionMap m_Intro;
+    private IIntroActions m_IntroActionsCallbackInterface;
+    private readonly InputAction m_Intro_Skip;
+    public struct IntroActions
+    {
+        private @UserInput m_Wrapper;
+        public IntroActions(@UserInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Skip => m_Wrapper.m_Intro_Skip;
+        public InputActionMap Get() { return m_Wrapper.m_Intro; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(IntroActions set) { return set.Get(); }
+        public void SetCallbacks(IIntroActions instance)
+        {
+            if (m_Wrapper.m_IntroActionsCallbackInterface != null)
+            {
+                @Skip.started -= m_Wrapper.m_IntroActionsCallbackInterface.OnSkip;
+                @Skip.performed -= m_Wrapper.m_IntroActionsCallbackInterface.OnSkip;
+                @Skip.canceled -= m_Wrapper.m_IntroActionsCallbackInterface.OnSkip;
+            }
+            m_Wrapper.m_IntroActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Skip.started += instance.OnSkip;
+                @Skip.performed += instance.OnSkip;
+                @Skip.canceled += instance.OnSkip;
+            }
+        }
+    }
+    public IntroActions @Intro => new IntroActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1669,5 +1755,9 @@ public partial class @UserInput : IInputActionCollection2, IDisposable
         void OnAddDodgeball(InputAction.CallbackContext context);
         void OnAddBumper(InputAction.CallbackContext context);
         void OnAddFallingPlatfom(InputAction.CallbackContext context);
+    }
+    public interface IIntroActions
+    {
+        void OnSkip(InputAction.CallbackContext context);
     }
 }

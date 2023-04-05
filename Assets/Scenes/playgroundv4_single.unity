@@ -14152,6 +14152,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaitingArea
       objectReference: {fileID: 0}
+    - target: {fileID: 3624728500164307720, guid: 5879634b4b91c5848a9bf1d7e0af14a3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 4088177487507056995, guid: 5879634b4b91c5848a9bf1d7e0af14a3, type: 3}
       propertyPath: m_Layer
       value: 11

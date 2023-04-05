@@ -10,6 +10,7 @@ public abstract class PowerUp : MonoBehaviour
     public virtual void onPickup()//when the player picks it up (add to inv and set transparency)
     {
         Debug.Log("Player number: " + PlayerManager.instance.GetIndex(gameObject));
+        Debug.Log("INDEX " + PlayerManager.instance.GetIndex(gameObject));
         UIManager.instance.setPowerUpIconImageByPowerUpType(type, PlayerManager.instance.GetIndex(gameObject));
 
     }

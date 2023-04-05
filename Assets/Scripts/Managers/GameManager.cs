@@ -29,8 +29,17 @@ public class GameManager : MonoBehaviour
     {
         
             InputAction inputA = player.GetComponent<PlayerInput>().actions.FindAction(buttonName);//"Player/Fire"
-            int bindingIndex = inputA.GetBindingIndexForControl(inputA.controls[0]);
-
+            if(player.GetComponent<PlayerInput>() == null)
+        {
+            Debug.Log("NO PLAYERINPUT IS ATTACHED");
+        }
+            if(inputA == null)
+        {
+            Debug.Log("IPUT A IS NUL");
+        }
+        int bindingIndex = inputA.GetBindingIndexForControl(inputA.controls[0]);
+        Debug.Log("BINDING INDEX " + bindingIndex);
+        Debug.Log("INPUTA BINDINGS LENGTH " + inputA.bindings.Count);
             string button = InputControlPath.ToHumanReadableString(inputA.bindings[bindingIndex].effectivePath,
                     InputControlPath.HumanReadableStringOptions.OmitDevice);
 
@@ -59,26 +68,51 @@ public class GameManager : MonoBehaviour
         return buttonName;
     }
 
-    public string getActualButtonName(string buttonName)
+    public string getActualButtonName(string buttonName, bool uppercaseFirst = false, bool standAloneButton = false)
     {
-
+        if (standAloneButton)
+        {
+            if (buttonName.ToLower().Contains("north"))
+            {
+                buttonName = "Y";
+            }
+            if (buttonName.ToLower().Contains("south"))
+            {
+                buttonName = "A";
+            }
+            if (buttonName.ToLower().Contains("east"))
+            {
+                buttonName = "B";
+            }
+            if (buttonName.ToLower().Contains("west"))
+            {
+                buttonName = "X";
+            }
+            Debug.Log(buttonName);
+            return buttonName;
+        }
         if (buttonName.ToLower().Contains("north"))
         {
-            return "the Y button";
+            buttonName =  "the Y button";
         }
         if (buttonName.ToLower().Contains("south"))
         {
-            return "the A button";
+            buttonName = "the A button";
         }
         if (buttonName.ToLower().Contains("east"))
         {
-            return "the B button";
+            buttonName = "the B button";
         }
         if (buttonName.ToLower().Contains("west"))
         {
-            return "the X button";
+            buttonName = "the X button";
+            Debug.Log("X " + buttonName);
         }
-
+        if (uppercaseFirst)
+        {
+            buttonName = buttonName[0].ToString().ToUpper() + buttonName.Substring(1, buttonName.Length - 1);
+        }
+        Debug.Log(buttonName);
         return buttonName;
     }
 

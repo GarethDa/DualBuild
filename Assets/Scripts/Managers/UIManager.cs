@@ -89,9 +89,14 @@ public class UIManager : MonoBehaviour
             return;
         }
         //showIOnScreenPowerUpIcon();
+        Debug.Log("OTHER INDEX " + index);
+        if(RoundManager.instance.currentPlayers[index] == null)
+        {
+            Debug.Log("GO IS NULL");
+        }
         onScreenPowerupIcon[index].queueFadeTransparency(1f, 0.5f);
         onScreenPowerupIcon[index].setTransparencyImage(image);
-        onScreenPowerupIcon[index].GetComponentInChildren<TMP_Text>().text = GameManager.instance.getActualButtonName( GameManager.instance.getButtonString("Player/PowerUp",RoundManager.instance.currentPlayers[index]));
+        onScreenPowerupIcon[index].GetComponentInChildren<TMP_Text>().text = GameManager.instance.getActualButtonName( GameManager.instance.getButtonString("Player/PowerUp",RoundManager.instance.currentPlayers[index]), false, true);
 
     }
 

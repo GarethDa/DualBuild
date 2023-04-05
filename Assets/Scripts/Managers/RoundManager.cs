@@ -65,6 +65,8 @@ public class RoundManager : MonoBehaviour
     bool justTeleported = false;
     float teleportTimer = 0f;
 
+    public List<GameObject> otherDeletedObjects = new List<GameObject>();
+
     private void Update()
     {
         if (justTeleported)
@@ -460,6 +462,7 @@ public class RoundManager : MonoBehaviour
             r.load();
 
             currentRounds.Add(r);
+           
         }
 
         //Camera.main.enabled = false;
@@ -471,6 +474,7 @@ public class RoundManager : MonoBehaviour
             GetComponent<AudioManager>().playLobbyMusic();
             //inIntermission = true;
             setPowerUps();
+            
         }
         else
         {
@@ -534,6 +538,8 @@ public class RoundManager : MonoBehaviour
         //readyZoneActivated = true;
         EventManager.onSecondTickEvent -= secondTick;//unsubscribe from the second tick event (so the clock stops)
         EventManager.onPlayerFell -= onDeath;
+        
+        //should be fixed but fuck it
         EventManager.onRoundEnd?.Invoke(null, new RoundArgs(new roundType[] { roundType.NONE, roundType.NONE }));
         for (int i = 0; i < GameManager.instance.levelManager.transform.childCount; i++)
         {
@@ -541,8 +547,13 @@ public class RoundManager : MonoBehaviour
             {
                 continue;
             }
+            
             Destroy(GameManager.instance.levelManager.transform.GetChild(i).gameObject);
 
+        }
+        foreach(GameObject g in otherDeletedObjects)
+        {
+            Destroy(g);
         }
         //unload rounds
         foreach (Round r in currentRounds)
@@ -798,7 +809,8 @@ public class RoundManager : MonoBehaviour
                 PowerupUI.transform.GetChild(2).GetComponent<TMP_Text>().text = rawName;
                 if (!hasSaidPowerupTextBefore)
                 {
-                    g.GetComponent<CharacterAiming>().onScreenTutorial.showButton("Press ", g.GetComponent<CharacterAiming>().onScreenTutorial.getActualButtonName("Player/PowerUp"), " to use your powerup");
+                    string buttonName = GameManager.instance.getActualButtonName(GameManager.instance.getButtonString("Player/PowerUp",g));
+                    g.GetComponent<CharacterAiming>().onScreenTutorial.show("Press " + buttonName + " to use your powerup");
 
                 }
                 powerupedPlayers.Add(g);

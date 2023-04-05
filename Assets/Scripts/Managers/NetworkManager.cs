@@ -218,7 +218,7 @@ public class NetworkManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError(e.Message);
+               // Debug.LogError(e.Message);
             }
             return false;
         }
@@ -489,6 +489,10 @@ public class NetworkManager : MonoBehaviour
                 //NOT for scoring
                 int GOID = int.Parse(instructionData[0]);
                 Debug.Log(instructionData[0]);
+                if (!table.ContainsKey(GOID))
+                {
+                    return;
+                }
                 GameObject toAffect = table[GOID]; //(GameObject)EditorUtility.InstanceIDToObject(GOID);
                 if (toAffect == null)
                 {
@@ -531,6 +535,10 @@ public class NetworkManager : MonoBehaviour
                 NetworkPhysicsData dataPhysics = JsonUtility.FromJson<NetworkPhysicsData>(instructionData[0]);
                 int GOID = int.Parse(instructionData[1]);
                 Debug.Log(GOID);
+                if (!table.ContainsKey(GOID))
+                {
+                    return;
+                }
                 GameObject toAffect = table[GOID]; //(GameObject)EditorUtility.InstanceIDToObject(GOID);
                 if (toAffect == null || dataPhysics == null)
                 {
@@ -561,6 +569,10 @@ public class NetworkManager : MonoBehaviour
                 Vector3 dataPosition = JsonUtility.FromJson<Vector3>(instructionData[0]);
                 int GOID = int.Parse(instructionData[1]);
                 Debug.Log(GOID);
+                if (!table.ContainsKey(GOID))
+                {
+                    return;
+                }
                 GameObject toAffect = table[GOID]; //(GameObject)EditorUtility.InstanceIDToObject(GOID);
                 if (toAffect == null)
                 {
@@ -581,6 +593,10 @@ public class NetworkManager : MonoBehaviour
             if (code == getInstructionCode(InstructionType.VELOCITY_CHANGE))
             {//will be to create an object with a string prefab
                 Vector3 dataVel = JsonUtility.FromJson<Vector3>(instructionData[0]);
+                if (!table.ContainsKey(int.Parse(instructionData[1])))
+                {
+                    return;
+                }
                 GameObject toAffect = table[int.Parse(instructionData[1])]; //(GameObject)EditorUtility.InstanceIDToObject(int.Parse(instructionData[1]));
                 toAffect.GetComponent<NetworkedVelocity>().setData(dataVel);
                 //Debug.Log("Changed velocity GO with ID " + instructionData[1] + " to velocity: " + dataVel.ToString());
@@ -588,6 +604,10 @@ public class NetworkManager : MonoBehaviour
             if (code == getInstructionCode(InstructionType.ROTATION_CHANGE))
             {//will be to create an object with a string prefab
                 Vector4 dataRot = JsonUtility.FromJson<Vector4>(instructionData[0]);
+                if (!table.ContainsKey(int.Parse(instructionData[1])))
+                {
+                    return;
+                }
                 GameObject toAffect = table[int.Parse(instructionData[1])]; //(GameObject)EditorUtility.InstanceIDToObject(int.Parse(instructionData[1]));
                 toAffect.GetComponent<NetworkedRotation>().setData(dataRot);
                // Debug.Log("Changed rotation GO with ID " + instructionData[1] + " to Rotation: " + dataRot.ToString());
@@ -686,6 +706,11 @@ public class NetworkManager : MonoBehaviour
             {
                 List<float> list = JsonUtility.FromJson<List<float>>(instructionData[0]);
                 int GOID = int.Parse(instructionData[1]);
+                if (!table.ContainsKey(GOID))
+                {
+                    return;
+                }
+
                 GameObject toAffect = table[GOID];//(GameObject)EditorUtility.InstanceIDToObject(GOID);
                 powerUpList type = (powerUpList)list[0];
                 //STATUSES: 0 - pickup 1- use 2- effect 3- end

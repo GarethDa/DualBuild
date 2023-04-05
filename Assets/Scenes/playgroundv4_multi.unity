@@ -1387,6 +1387,7 @@ MonoBehaviour:
   playerNames: []
   deadPlayers: 0
   totalPlayers: 1
+  gameRoundsCompleted: 0
   gameEndSceneName: newMainMenu
   roundsToPlay: 6
   levelCam: {fileID: 637954489}
@@ -1865,6 +1866,18 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
       propertyPath: m_RootOrder
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 143.73418
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 143.73418
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 287.46835
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5429,6 +5442,18 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
       propertyPath: m_RootOrder
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 143.73418
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 143.73418
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 287.46835
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9995,6 +10020,18 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
       propertyPath: m_RootOrder
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 143.73418
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 143.73418
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 287.46835
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a5fc9c8b8be719541813f63be4c39b56, type: 3}
       propertyPath: m_LocalPosition.x

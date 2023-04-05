@@ -35,6 +35,9 @@ public class PlayerManager : MonoBehaviour
 
     int numPlayers = 0;
 
+    bool thirdPlayerJoined = false;
+    float timer = 0f;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -58,6 +61,21 @@ public class PlayerManager : MonoBehaviour
         //playerInManager = FindObjectOfType<PlayerInputManager>();
     }
 
+    private void Update()
+    {
+        if (thirdPlayerJoined)
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= 0.04f)
+            {
+                introCam.SetActive(false);
+                introText.SetActive(false);
+                thirdPlayerJoined = false;
+                timer = 0f;
+            }
+        }
+    }
 
     public Material getRoboMat(int index)
     {
@@ -137,12 +155,12 @@ public class PlayerManager : MonoBehaviour
             if (!GameManager.instance.isNetworked) {
                 int matIndex = Random.Range(0, roboMaterials.Count - 1);
 
-                playerInput.gameObject.transform.Find("PlayerObj").GetComponentInChildren<Renderer>().material = roboMaterials[matIndex];
+                Debug.Log(matIndex);
+
+                playerInput.gameObject.transform.Find("PlayerObj").Find("EGGROBOT").Find("Character").GetComponent<Renderer>().material = roboMaterials[matIndex];
 
                 roboMaterials.RemoveAt(matIndex);
             }
-            
-        
         }
 
         if (playerInputs.Count == 1)
@@ -204,6 +222,10 @@ public class PlayerManager : MonoBehaviour
 
         else if (playerInputs.Count == 3)
         {
+            introCam.SetActive(true);
+            introText.SetActive(true);
+            thirdPlayerJoined = true;
+
             playerInput.gameObject.name = "Player3";
             playerInput.gameObject.transform.GetComponentInChildren<AudioListener>().enabled = false;
 

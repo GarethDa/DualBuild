@@ -38,7 +38,7 @@ public class EndingRound : Round
         RoundManager.instance.levelEndCamera.GetComponentInChildren<ParticleSystem>().Stop();
         playerFallScript.instance.gameObject.SetActive(true);
         playerFallScript.instance.checkCollision = true;
-        //SceneManager.LoadScene(RoundManager.instance.gameEndSceneName);
+        SceneManager.LoadScene(RoundManager.instance.gameEndSceneName);
 
     }
     protected override void Load()

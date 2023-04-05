@@ -8,7 +8,7 @@ public class ClipCanvas : MonoBehaviour
     public DynamicUIComponent top;
     public static ClipCanvas instance;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
        if(instance == null)
         {

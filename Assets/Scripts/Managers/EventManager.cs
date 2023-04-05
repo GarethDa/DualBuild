@@ -22,6 +22,7 @@ public static class EventManager
     public static EventHandler<StringArgs> onGetRoomKey;
     public static EventHandler<StringArgs> onNewPlayerJoined;
     public static EventHandler<StringArgs> onLeaderboardScore;
+    public static EventHandler<IntArgs> onPlayerReady;
 
     
 }

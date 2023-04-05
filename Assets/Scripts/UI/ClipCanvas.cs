@@ -36,5 +36,6 @@ public class ClipCanvas : MonoBehaviour
         GetComponent<DynamicUIComponent>().repeatEnd = true;
         //RoundManager.instance.GetComponent<AudioManager>().playActionCue();
         top.StartToEnd(0.15f);
+        RoundManager.instance.updateScreenClock();
     }
 }

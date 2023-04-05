@@ -266,6 +266,7 @@ public class RoundManager : MonoBehaviour
         {
             setEveryoneReady();
         }
+        EventManager.onPlayerReady?.Invoke(null, new IntArgs(playersReady));
     }
 
     public void setEveryoneReady()
@@ -314,7 +315,8 @@ public class RoundManager : MonoBehaviour
         }
         playersReady--;
         setEveryoneNotReady();
-        
+        EventManager.onPlayerReady?.Invoke(null, new IntArgs(playersReady));
+
     }
 
     public bool isInPreview()
@@ -397,7 +399,16 @@ public class RoundManager : MonoBehaviour
         //Debug.Log(why);
         deadPlayerList.Clear();
         playerFallScript.instance.resetFallenPlayers();
+        if (GameManager.instance.isNetworked)
+        {
+            EventManager.onPlayerReady?.Invoke(null, new IntArgs(-1));
 
+        }
+        else
+        {
+            EventManager.onPlayerReady?.Invoke(null, new IntArgs(0));
+
+        }
         /*
         if(roundOne != roundType.NONE)
         {
@@ -1051,7 +1062,7 @@ public class RoundManager : MonoBehaviour
     }
 
 
-    void updateScreenClock()//function to update the clock
+    public void updateScreenClock()//function to update the clock
     {
         int counter = currentRoundSeconds - currentRoundSecondsElapsed;
         int minutes = 0;

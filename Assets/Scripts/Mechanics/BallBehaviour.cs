@@ -102,6 +102,10 @@ public class BallBehaviour : MonoBehaviour
             
             //Debug.Log("Deez");
         }
+        if (collision.gameObject.tag.Contains("Player"))
+        {
+            collision.gameObject.GetComponentInChildren<tutorialShower>().updateClosest();
+        }
         /*
         //if the ball hits the ground while not being held
         if (!isHeld && collision.gameObject.layer == LayerMask.NameToLayer("FloorLayer"))

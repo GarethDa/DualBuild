@@ -130,6 +130,8 @@ public class PlayerManager : MonoBehaviour
 
         playerInput.transform.Find("PlayerUI").GetComponentInChildren<TransparencyUI>().snapTransparency(0);
 
+        Camera playerCam = playerInput.gameObject.transform.Find("Main Camera").GetComponent<Camera>();
+
         if (roboMaterials.Count != 0)
         {
             if (!GameManager.instance.isNetworked) {
@@ -166,6 +168,10 @@ public class PlayerManager : MonoBehaviour
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player1Model");
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player1Transparent");
             playerInput.gameObject.transform.Find("PlayerObj").gameObject.layer = LayerMask.NameToLayer("Player1");
+
+            playerInput.gameObject.transform.Find("TutorialObject").GetChild(0).gameObject.layer = LayerMask.NameToLayer("Player1Tutorial");
+
+            playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player1Tutorial"));
         }
 
         else if (playerInputs.Count == 2)
@@ -190,6 +196,10 @@ public class PlayerManager : MonoBehaviour
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player2Model");
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player2Transparent");
             playerInput.gameObject.transform.Find("PlayerObj").gameObject.layer = LayerMask.NameToLayer("Player2");
+
+            playerInput.gameObject.transform.Find("TutorialObject").GetChild(0).gameObject.layer = LayerMask.NameToLayer("Player2Tutorial");
+
+            playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player2Tutorial"));
         }
 
         else if (playerInputs.Count == 3)
@@ -214,6 +224,10 @@ public class PlayerManager : MonoBehaviour
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player3Model");
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player3Transparent");
             playerInput.gameObject.transform.Find("PlayerObj").gameObject.layer = LayerMask.NameToLayer("Player3");
+
+            playerInput.gameObject.transform.Find("TutorialObject").GetChild(0).gameObject.layer = LayerMask.NameToLayer("Player3Tutorial");
+
+            playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player3Tutorial"));
         }
 
         else if (playerInputs.Count == 4)
@@ -237,6 +251,10 @@ public class PlayerManager : MonoBehaviour
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/Character").gameObject.layer = LayerMask.NameToLayer("Player4Model");
             playerInput.gameObject.transform.Find("PlayerObj/EGGROBOT/CharacterTransparent").gameObject.layer = LayerMask.NameToLayer("Player4Transparent");
             playerInput.gameObject.transform.Find("PlayerObj").gameObject.layer = LayerMask.NameToLayer("Player4");
+
+            playerInput.gameObject.transform.Find("TutorialObject").GetChild(0).gameObject.layer = LayerMask.NameToLayer("Player4Tutorial");
+
+            playerCam.cullingMask = playerCam.cullingMask | (1 << LayerMask.NameToLayer("Player4Tutorial"));
         }
     }
 

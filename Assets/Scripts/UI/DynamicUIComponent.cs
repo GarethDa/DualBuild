@@ -18,10 +18,12 @@ public class DynamicUIComponent : MonoBehaviour
     [SerializeField] protected Transform UIOnScreen;
     [SerializeField] protected Transform UIOffScreen;
     public bool doRotations = false;
+    public bool doPositions = true;
     public bool repeatEnd = false;
     int timesCompleted = 0;
     float totalRunTime = 0;
     public EventHandler<EventArgs> onEnd;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -101,7 +103,10 @@ public class DynamicUIComponent : MonoBehaviour
                 return;
             }
             T += Time.deltaTime / secondsToMove;
-            transform.position = Vector3.Lerp(startingPos.position, movingPos.position, ease(T));
+            if (doPositions)
+            {
+                transform.position = Vector3.Lerp(startingPos.position, movingPos.position, ease(T));
+            }
             if (doRotations)
             {
                 transform.rotation = Quaternion.Lerp(startingPos.rotation, movingPos.rotation, ease(T));

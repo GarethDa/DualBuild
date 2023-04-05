@@ -26,7 +26,7 @@ public class ScoreTVScript : MonoBehaviour
             }
             else
             {
-                text += "Player " + i + " Score: " + RoundManager.instance.getScore(obj);
+                text += "Player " + i + " Score: " + RoundManager.instance.getScore(obj) + "\n";
                 ++i;
             }
         }

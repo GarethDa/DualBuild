@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bullet
   - LevelPersistent
+  - Pachinko
   layers:
   - Default
   - TransparentFX
@@ -34,10 +35,10 @@ TagManager:
   - Player2Model
   - Player3Model
   - Player4Model
-  - 
-  - 
-  - 
-  - 
+  - Player1Tutorial
+  - Player2Tutorial
+  - Player3Tutorial
+  - Player4Tutorial
   - 
   m_SortingLayers:
   - name: Default

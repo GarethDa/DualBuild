@@ -26,7 +26,7 @@ public class tutorialShower : MonoBehaviour
             BallBehaviour ball = other.GetComponent<BallBehaviour>();
             bool isParentPlayer = false;
 
-            if(other.transform.parent.gameObject.layer== 9 || other.transform.parent.gameObject.layer == 8)
+            if(other.transform.parent != null && (other.transform.parent.gameObject.layer== 9 || other.transform.parent.gameObject.layer == 8))
             {
                 isParentPlayer = true;
             }

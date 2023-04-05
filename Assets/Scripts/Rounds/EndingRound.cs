@@ -149,7 +149,7 @@ public class EndingRound : Round
             if (secondsSinceDone == 1)
             {
                 RoundManager.instance.levelEndCamera.GetComponentInChildren<ParticleSystem>().Play();
-
+                RoundManager.instance.levelEndCamera.GetComponent<AssetAudioController>().YippeeSFX();
             }
             if (secondsSinceDone == 3)
             {

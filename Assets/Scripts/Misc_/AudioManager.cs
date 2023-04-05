@@ -35,6 +35,7 @@ public class AudioManager : MonoBehaviour
             startDual = true;
         }
         */
+        /*
         if (RoundManager.inIntermission == true)
         {
             if (startLobby == false)
@@ -43,7 +44,7 @@ public class AudioManager : MonoBehaviour
             }
             startLobby = true;
         }
-        
+        */
     }
 
     public void playLobbyMusic()

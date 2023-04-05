@@ -434,6 +434,8 @@ public class RoundManager : MonoBehaviour
         {
             //Debug.log("$START HAS INTERMISSION");
             sendPlayersToIntermission();
+            GetComponent<AudioManager>().playLobbyMusic();
+            //inIntermission = true;
             setPowerUps();
         }
         else
@@ -906,7 +908,7 @@ public class RoundManager : MonoBehaviour
         //Debug.log("$SEND TO INTERMISSION");
         sendPlayersToLocation(new List<Transform> { intermissionLocation });
 
-        inIntermission = true;
+        
     }
 
     public bool isInIntermission()

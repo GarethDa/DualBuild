@@ -26,7 +26,7 @@ public class RoundManager : MonoBehaviour
     public int deadPlayers = 0;
     public int totalPlayers = 1;
     int playersReady = 0;
-    int gameRoundsCompleted = 0;
+    public int gameRoundsCompleted = 0;
     public string gameEndSceneName;
     public int roundsToPlay = 6;
     public Camera levelCam;

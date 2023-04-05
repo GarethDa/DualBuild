@@ -59,15 +59,11 @@ public class CharacterAiming : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        EventManager.onRoundStart += RemoveProjectile;
+
         playerNum = PlayerManager.instance.GetIndex(gameObject) + 1;
         aimAssistSphere = GameObject.Find("P" + playerNum + "AssistSphere");
         aimAssistSphere.SetActive(false);
-        //inputAction = InputController.controller.inputAction;
-
-        //inputAction.Player.Aim.performed += cntxt => OnAim();
-        //inputAction.Player.Aim.canceled += cntxt => OnAim();
-
-        //inputAction.Player.Fire.performed += cntxt => OnFire();
 
         //Lock the cursor, make it invisible
         Cursor.lockState = CursorLockMode.Locked;
@@ -359,7 +355,7 @@ public class CharacterAiming : MonoBehaviour
                 //If the player isn't aiming, move the ball forward a bit.
                 //This is to stop the ball from hitting the player the moment it is thrown
                 if (!isAiming)
-                    heldProjectile.transform.position += new Vector3(2 * playerCam.transform.forward.x, 0f, 2 * playerCam.transform.forward.z);
+                    heldProjectile.transform.position += new Vector3(2.5f * throwDir.x, 0f, 2.5f * throwDir.z);
 
                 //Throw the ball forward, multiplied by the throwing force
                 heldProjectile.GetComponent<Rigidbody>().AddForce(throwDir * (throwForce + chargedForce) + Vector3.up * (throwUpModifier));
@@ -375,7 +371,7 @@ public class CharacterAiming : MonoBehaviour
                 //The player is no longer holding a projectile
                 holdingProjectile = false;
                 animator.SetBool("hasBall", holdingProjectile);
-                Debug.Log("Has ball: " + holdingProjectile);
+                //Debug.Log("Has ball: " + holdingProjectile);
 
                 //The ball shouldn't be a child of the player model anymore
                 heldProjectile.transform.SetParent(null);
@@ -394,7 +390,7 @@ public class CharacterAiming : MonoBehaviour
                 else if (heldProjectile.GetComponent<BombBehaviour>() != null)
                 {
                     heldProjectile.GetComponent<BombBehaviour>().setThrown(true);
-                    Debug.Log("thrown");
+                    //Debug.Log("thrown");
                 }
             }
         }
@@ -545,5 +541,12 @@ public class CharacterAiming : MonoBehaviour
             return false;
         }
 
+    }
+
+    void RemoveProjectile(object sender, RoundArgs e)
+    {
+        holdingProjectile = false;
+        animator.SetBool("hasBall", holdingProjectile);
+        heldProjectile.transform.SetParent(null);
     }
 }

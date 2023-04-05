@@ -419,9 +419,13 @@ public class CharacterAiming : MonoBehaviour
             if (hitInfo.collider != null && hitInfo.collider.gameObject.tag == "Player")
             {
                 //GameObject hitPlayer = hitInfo.collider.transform.Find("PlayerObj").gameObject;
-                hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3 (0f, punchForce / 2, 0f), ForceMode.Impulse);
+                hitInfo.collider.gameObject.transform.parent.GetComponent<Rigidbody>().AddForce(playerObj.transform.forward * punchForce + new Vector3 (0f, punchForce / 2, 0f), ForceMode.Impulse);                
                 Debug.Log("punch");                GetComponent<PlayerAudioController>().slaphitSFX();
                 powerup.PlayerPunched();
+            }            if (hitInfo.collider != null && hitInfo.collider.gameObject.tag == "NetworkedPlayer")            {
+                Vector3 offset = hitInfo.point - hitInfo.collider.gameObject.transform.position;
+                hitInfo.collider.gameObject.transform.parent.gameObject.GetComponent<NetworkedPhysics>().sendCurrentDataNormal(offset, playerObj.transform.forward * punchForce + new Vector3(0f, punchForce / 2, 0f),1,ForceMode.Impulse);// (offset, hitForce, 50, 10);
+
             }
         }
     }

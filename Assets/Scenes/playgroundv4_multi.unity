@@ -344,6 +344,9 @@ MonoBehaviour:
   timeUntilEnding: -1
   UIOnScreen: {fileID: 1038761947}
   UIOffScreen: {fileID: 1272288691}
+  doRotations: 0
+  doPositions: 1
+  repeatEnd: 0
 --- !u!114 &31052292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,7 +504,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 70987b23619462d4a82ce9dc0969c5d5, type: 3}
+  m_Texture: {fileID: 2800000, guid: 9a5f46affd110864fa0a473038690a49, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -631,6 +634,9 @@ MonoBehaviour:
   timeUntilEnding: -1
   UIOnScreen: {fileID: 1440517862}
   UIOffScreen: {fileID: 853602782}
+  doRotations: 0
+  doPositions: 1
+  repeatEnd: 0
 --- !u!114 &53039500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,7 +1165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f417a32ca2a7434f92462ac763b1701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  top: {fileID: 642353742}
+  top: {fileID: 0}
 --- !u!114 &151900341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1176,6 +1182,9 @@ MonoBehaviour:
   timeUntilEnding: 1
   UIOnScreen: {fileID: 443384804}
   UIOffScreen: {fileID: 315073923}
+  doRotations: 0
+  doPositions: 1
+  repeatEnd: 0
 --- !u!4 &153175072 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 90b16c5a15d59a648b897fc1103b4dc7, type: 3}
@@ -3058,6 +3067,9 @@ MonoBehaviour:
   timeUntilEnding: -1
   UIOnScreen: {fileID: 360256420}
   UIOffScreen: {fileID: 1296324998}
+  doRotations: 0
+  doPositions: 1
+  repeatEnd: 0
 --- !u!114 &503624674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3823,10 +3835,14 @@ MonoBehaviour:
   - transform: {fileID: 1909848876}
     totalTime: 1
     arrivalSpeed: 0
+  index: 0
+  T: -1
   delayedStart: 1
+  secondsElapsed: 0
   movement: 3
   interpolationType: 1
   canMove: 0
+  distance: 0
   speed: 32.22
   stopSpot: 0
 --- !u!1001 &640660088
@@ -3949,10 +3965,14 @@ MonoBehaviour:
   - transform: {fileID: 2063542637}
     totalTime: 0.2
     arrivalSpeed: 5
+  index: 0
+  T: -1
   delayedStart: 0.5
+  secondsElapsed: 0
   movement: 0
   interpolationType: 1
   canMove: 0
+  distance: 0
   speed: 5
   stopSpot: 0
 --- !u!114 &642353743
@@ -9975,10 +9995,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   edges: []
+  index: 0
+  T: -1
   delayedStart: 0
+  secondsElapsed: 0
   movement: 2
   interpolationType: 1
   canMove: 0
+  distance: 0
   speed: 30
   stopSpot: 0
 --- !u!114 &1616550280
@@ -17322,6 +17346,9 @@ MonoBehaviour:
   timeUntilEnding: -1
   UIOnScreen: {fileID: 57185705}
   UIOffScreen: {fileID: 891841586}
+  doRotations: 0
+  doPositions: 1
+  repeatEnd: 0
 --- !u!114 &1858371652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18305,6 +18332,9 @@ MonoBehaviour:
   timeUntilEnding: -1
   UIOnScreen: {fileID: 1388845134}
   UIOffScreen: {fileID: 744140341}
+  doRotations: 0
+  doPositions: 1
+  repeatEnd: 0
 --- !u!114 &1976495774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19281,6 +19311,9 @@ MonoBehaviour:
   timeUntilEnding: -1
   UIOnScreen: {fileID: 1450553685}
   UIOffScreen: {fileID: 837469742}
+  doRotations: 0
+  doPositions: 1
+  repeatEnd: 0
 --- !u!114 &2129413070
 MonoBehaviour:
   m_ObjectHideFlags: 0

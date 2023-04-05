@@ -6,6 +6,7 @@ using UnityEngine;
 public class UserNameUI : SwappableUI
 {
     public TMP_InputField field;
+    public TMP_InputField IPInput;
     public TMP_Text error;
     
     public void buttonClick()
@@ -46,6 +47,25 @@ public class UserNameUI : SwappableUI
             error.text = "Please use alphanumeric characters for your username!";
             return;
         }
+        string validCharactersIP = "0123456789.";
+        if (IPInput.text.Length == 0)
+        {
+            error.text = "Please enter a valid IP!";
+            return;
+        }
+        foreach (char c in IPInput.text)
+        {
+            if (!validCharactersIP.Contains(c))
+            {
+                error.text = "Please enter a valid IP!";
+                return;
+            }
+        }
+
+
+
+        NetworkManager.instance.serverIP = IPInput.text;
+
         setUserName();
         SwappableUIManager.instance.showUI(UIMenuType.HOME);
         

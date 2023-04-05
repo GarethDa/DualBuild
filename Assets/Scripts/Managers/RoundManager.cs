@@ -185,8 +185,9 @@ public class RoundManager : MonoBehaviour
         //temporarily starting with an intermission for testing purposes
         playerFallScript.instance.checkCollision = true;
         levelCam.enabled = false;
-        camToDisable.enabled = true;
         levelEndCamera.enabled = false;
+        camToDisable.enabled = true;
+        
         levelCombinations = new List<roundPair>();
        // mainPowerupGiver.setPowerup(powerUpList.None);
         //lastPlacePowerupGiver.setPowerup(powerUpList.None);
@@ -500,6 +501,8 @@ public class RoundManager : MonoBehaviour
        // Debug.Log(roundSeconds);
         currentRoundSeconds = roundSeconds;
         updateScreenClock();
+        EventManager.onRoundSecondTickEvent?.Invoke(null, new RoundTickArgs(currentRoundSecondsElapsed, currentRoundSeconds - currentRoundSecondsElapsed, currentRoundSeconds));
+
         roundSeconds = 0;
 
         nextRounds.Clear();

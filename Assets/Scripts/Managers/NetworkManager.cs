@@ -205,7 +205,7 @@ public class NetworkManager : MonoBehaviour
 
             hasSetupEndpoint = true;
            
-            Debug.Log("Setup endpoint");
+            //Debug.Log("Setup endpoint");
             return true;
         }
         catch (Exception e)
@@ -311,7 +311,7 @@ public class NetworkManager : MonoBehaviour
         }
         // gameobjectIDs.Add(new List<int>());//reserve list of gameobjects at index
         identifier = Guid.NewGuid().ToString();
-        Debug.Log(identifier);
+        //Debug.Log(identifier);
         setupNetworking();
         
     }

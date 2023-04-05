@@ -2236,6 +2236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoomOutCam: {fileID: 8411294830900885187}
   zoomInCam: {fileID: 8411294830436386869}
+  cMachineBrain: {fileID: 8411294830145179063}
   zoomedOutSensitivity: 250
   zoomedInSensitivity: 150
   verticalSensitivityDivisor: 2
@@ -2243,6 +2244,7 @@ MonoBehaviour:
   zoomedOutYInvert: 1
   zoomedInXInvert: 0
   zoomedInYInvert: 1
+  blendTime: 0.1
 --- !u!114 &6164643919393318172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8510,7 +8512,7 @@ MonoBehaviour:
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
   m_UpdateMethod: 2
-  m_BlendUpdateMethod: 1
+  m_BlendUpdateMethod: 0
   m_DefaultBlend:
     m_Style: 1
     m_Time: 0.1

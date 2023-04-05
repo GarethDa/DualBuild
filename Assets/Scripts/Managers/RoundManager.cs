@@ -61,6 +61,27 @@ public class RoundManager : MonoBehaviour
     bool hasSaidPowerupTextBefore = false;
     List<GameObject> powerupedPlayers = new List<GameObject>();
 
+    bool justTeleported = false;
+    float teleportTimer = 0f;
+
+    private void Update()
+    {
+        if (justTeleported)
+        {
+            teleportTimer += Time.deltaTime;
+
+            if (teleportTimer >= 2f)
+            {
+                for (int i = 0; i < currentPlayers.Count; i++)
+                {
+                    currentPlayers[i].GetComponent<CameraSettings>().SetBlendTime(0.1f);
+                }
+                justTeleported = false;
+                teleportTimer = 0f;
+            }
+        }
+    }
+
     public bool hasPlayerDied(GameObject game)
     {
         return deadPlayerList.Contains(game);
@@ -232,14 +253,14 @@ public class RoundManager : MonoBehaviour
             NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.READY) + 1.ToString());
             return;
         }
-        Debug.Log("a");
+        ///Debug.Log("a");
         playersReady++;
         if (currentRoundSeconds - currentRoundSecondsElapsed <= 10)
         {
-            Debug.Log("b");
+            //Debug.Log("b");
             return;
         }
-        Debug.Log("c");
+        //Debug.Log("c");
         if (playersReady == totalPlayers)
         {
             setEveryoneReady();
@@ -284,7 +305,7 @@ public class RoundManager : MonoBehaviour
         {
             return;
         }
-        Debug.Log("SENT NOT READY");
+        //Debug.Log("SENT NOT READY");
         if (GameManager.instance.isNetworked)
         {
             NetworkManager.instance.ignoreAndSendTCPMessage(NetworkManager.instance.getInstructionCode(InstructionType.READY) + 0.ToString());
@@ -311,7 +332,7 @@ public class RoundManager : MonoBehaviour
     public void addRound(Round r)
     {
         nextRounds.Add(r);
-        Debug.Log("ROUND ADDED " + r.getType().ToString());
+        //Debug.Log("ROUND ADDED " + r.getType().ToString());
     }
 
     public void addToDeath(GameObject g)
@@ -372,7 +393,7 @@ public class RoundManager : MonoBehaviour
     }
     public void startRound(string why)
     {
-        Debug.Log(why);
+        //Debug.Log(why);
         deadPlayerList.Clear();
         playerFallScript.instance.resetFallenPlayers();
 
@@ -485,7 +506,7 @@ public class RoundManager : MonoBehaviour
         {
             networkBias = roundsToPlay-1;
         }
-        Debug.Log(gameRoundsCompleted + " " + (roundsToPlay + networkBias));
+        //Debug.Log(gameRoundsCompleted + " " + (roundsToPlay + networkBias));
         if (gameRoundsCompleted >= roundsToPlay + networkBias)
         {
             return true;
@@ -542,7 +563,7 @@ public class RoundManager : MonoBehaviour
     public void endRound(string why)
     {
 
-        Debug.Log("$WHY: " + why);
+        //Debug.Log("$WHY: " + why);
         if (!endRoundCleanup())
         {
             Debug.Log("no continuing end round");
@@ -832,7 +853,7 @@ public class RoundManager : MonoBehaviour
 
     public List<Transform> loadLevel(int number)
     {//instantiate from resources/load
-        Debug.Log(number);
+        //Debug.Log(number);
         GameObject level = Instantiate(Resources.Load<GameObject>("Levels/" + number.ToString()));
         GameObject deathZone = Instantiate(Resources.Load<GameObject>("Levels/DeathZone"));
         List<Transform> spawnPoints = new List<Transform>();
@@ -921,6 +942,7 @@ public class RoundManager : MonoBehaviour
         
         for (int i = 0; i < currentPlayers.Count; i++)//for (int i = 0; i < GameManager.instance.playerManager.transform.childCount; i++)
         {
+            Vector3 currentPos = currentPlayers[i].transform.position;
             /*
             if (GameManager.instance.isNetworked)
             {
@@ -934,8 +956,10 @@ public class RoundManager : MonoBehaviour
             //GameManager.instance.playerManager.transform.GetChild(i).transform.position = teleportLocation + offset;
             currentPlayers[i].transform.position = t[(i+playerIndexOffset) % t.Count].position;// + offset;
 
-            
+            currentPlayers[i].GetComponent<CameraSettings>().TeleportCam(currentPos, t[(i + playerIndexOffset) % t.Count].position);
         }
+
+        justTeleported = true;
     }
     public void secondTick(object sender, System.EventArgs e)//called every second
     {

@@ -8,6 +8,7 @@ public class CameraSettings : MonoBehaviour
     [Header("Cameras")]
     [SerializeField] CinemachineVirtualCamera zoomOutCam;
     [SerializeField] CinemachineVirtualCamera zoomInCam;
+    [SerializeField] CinemachineBrain cMachineBrain;
 
     [Header("Sensitivities")]
     [SerializeField] [Range(10f, 1000f)] float zoomedOutSensitivity = 250f;
@@ -20,11 +21,15 @@ public class CameraSettings : MonoBehaviour
     [SerializeField] bool zoomedInXInvert = false;
     [SerializeField] bool zoomedInYInvert = true;
 
+    [SerializeField] private float blendTime = 0.1f;
+
     CinemachineTransposer transposer;
 
     CinemachinePOV pov;
 
     int playerNum;
+
+    bool teleported = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +38,10 @@ public class CameraSettings : MonoBehaviour
     }
 
         // Update is called once per frame
-        void FixedUpdate()
+    void FixedUpdate()
     {
+        cMachineBrain.m_DefaultBlend.m_Time = blendTime;
+
         if (playerNum == 1)
         {
             zoomedInSensitivity = StateVariables.p1zoomedInSens;
@@ -90,5 +97,18 @@ public class CameraSettings : MonoBehaviour
     {
         zoomedInXInvert = x;
         zoomedInYInvert = y;
+    }
+
+    public void SetBlendTime(float time)
+    {
+        blendTime = time;
+    }
+
+    public void TeleportCam(Vector3 originalPos, Vector3 newPos)
+    {
+        Vector3 offset = newPos - originalPos;
+
+        zoomOutCam.OnTargetObjectWarped(gameObject.transform.Find("Follow Target"), offset);
+        zoomInCam.OnTargetObjectWarped(gameObject.transform.Find("Follow Target"), offset);
     }
 }

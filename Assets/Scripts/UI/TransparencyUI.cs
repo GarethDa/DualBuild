@@ -74,7 +74,7 @@ public class TransparencyUI : MonoBehaviour
 
     public void snapTransparency(float wanted)
     {
-        Debug.Log("SNAPPED WANTED" + wanted.ToString()); ;
+        //Debug.Log("SNAPPED WANTED" + wanted.ToString()); ;
         currentTransparency = wanted;
         setTransparency(currentTransparency);
     }

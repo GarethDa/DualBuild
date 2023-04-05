@@ -124,7 +124,7 @@ public class PlayerManager : MonoBehaviour
         playerInput.transform.GetComponentsInChildren<CMachineInput>()[0].horizontal = playerInput.actions.FindAction("Look");
         playerInput.transform.GetComponentsInChildren<CMachineInput>()[1].horizontal = playerInput.actions.FindAction("Look");
 
-        Debug.Log(playerInputs.Count);
+        //Debug.Log(playerInputs.Count);
 
         UIManager.instance.onScreenPowerupIcon.Add(playerInput.transform.Find("PlayerUI").GetComponentInChildren<TransparencyUI>());
 

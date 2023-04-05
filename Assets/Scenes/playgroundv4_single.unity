@@ -3862,6 +3862,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TV (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8160553350791548886, guid: 1fdf89c52406c4d4ca6a72f6243524ba, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 8794347709201749356, guid: 1fdf89c52406c4d4ca6a72f6243524ba, type: 3}
       propertyPath: m_RootOrder
       value: 18
@@ -13906,6 +13910,14 @@ PrefabInstance:
     - target: {fileID: 1726286423724827967, guid: 5879634b4b91c5848a9bf1d7e0af14a3, type: 3}
       propertyPath: m_Name
       value: WaitingArea
+      objectReference: {fileID: 0}
+    - target: {fileID: 4088177487507056995, guid: 5879634b4b91c5848a9bf1d7e0af14a3, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989260626713284575, guid: 5879634b4b91c5848a9bf1d7e0af14a3, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

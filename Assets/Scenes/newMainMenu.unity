@@ -359,6 +359,14 @@ PrefabInstance:
       propertyPath: m_Colors.m_HighlightedColor.g
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5194675869725133844, guid: 9d73df9120c1a0042b57a7a1ed038938, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 569924029}
+    - target: {fileID: 5194675869725133844, guid: 9d73df9120c1a0042b57a7a1ed038938, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartMultiplayer
+      objectReference: {fileID: 0}
     - target: {fileID: 5631096268913545046, guid: 9d73df9120c1a0042b57a7a1ed038938, type: 3}
       propertyPath: m_text
       value: 'Play Online
@@ -3950,7 +3958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1777544954931242816, guid: 83e26d7cb81ec184ca166a4224ece0fc, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.0004272461
+      value: 0.00048828125
       objectReference: {fileID: 0}
     - target: {fileID: 1777544954931242816, guid: 83e26d7cb81ec184ca166a4224ece0fc, type: 3}
       propertyPath: m_AnchoredPosition.y

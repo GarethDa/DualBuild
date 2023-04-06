@@ -118,8 +118,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textures:
-  - {fileID: 2800000, guid: 799269988f457ea4a8ae591eaeca7d0b, type: 3}
-  - {fileID: 2800000, guid: 65adca81d206de44d8e04eb98659730c, type: 3}
+  - {fileID: 2800000, guid: 570e6b77f9b4ccb4cb8dcf205bebe76a, type: 3}
+  - {fileID: 2800000, guid: bf8d7a9066f52314e9a3ee509fec4880, type: 3}
+  - {fileID: 2800000, guid: 2a5b4634abc9cb84f8cbcd37b2428a34, type: 3}
+  - {fileID: 2800000, guid: 7d69503e741c3e1439ebbd7f66cb0074, type: 3}
+  rareBoys:
+  - {fileID: 2800000, guid: b214766518c439f47aa01d9111f19ef2, type: 3}
+  - {fileID: 2800000, guid: 5acd95d641586284eab4a256b793bcbd, type: 3}
+  - {fileID: 2800000, guid: 6708c705358c3d24ea87b71fe69c0ca9, type: 3}
+  - {fileID: 2800000, guid: e4123dbd26a86c449967053fbe556b5b, type: 3}
+  - {fileID: 2800000, guid: b4b16c4236f01ba4ab82a292a623b4b3, type: 3}
+  - {fileID: 2800000, guid: 4e262dff60b7f514bb884ede97763257, type: 3}
+  - {fileID: 2800000, guid: 2f3a5c9f2fa67914b8a16f5c5b684491, type: 3}
 --- !u!1 &3761230691531363675
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,5 +160,5 @@ Transform:
   m_Children:
   - {fileID: 3761230690353300266}
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

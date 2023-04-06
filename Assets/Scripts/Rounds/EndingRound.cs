@@ -87,7 +87,7 @@ public class EndingRound : Round
         {
             for (int u= 0; u < players.Count-1; u++)
             {
-                if(playerScores[u+1] > playerScores[u])
+                if(playerScores[u+1] < playerScores[u])
                 {
                     GameObject tempGO = players[u];
                     int tempScore = playerScores[u];
@@ -158,7 +158,7 @@ public class EndingRound : Round
                 foreach(GameObject g in players)
                 {
                     int score = sortedScores[g];
-                    int realScore = ((RoundManager.instance.roundsToPlay * 5) - ((RoundManager.instance.roundsToPlay - RoundManager.instance.gameRoundsCompleted) * 5) - score);
+                    int realScore = sortedScores[g];//((RoundManager.instance.roundsToPlay * 5) - ((RoundManager.instance.roundsToPlay - RoundManager.instance.gameRoundsCompleted) * 5) - score);
                     DynamicUIComponent DUIC = RoundManager.instance.UIScores[index];
                     string scoreMessage = "";
                     int playerIndex = RoundManager.instance.getPlayerIndex(g);

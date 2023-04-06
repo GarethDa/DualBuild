@@ -350,7 +350,11 @@ public class RoundManager : MonoBehaviour
     public void addToDeath(GameObject g)
     {
         deadPlayerList.Add(g);
-        int scoreToAdd = 5 - (5 - deadPlayerList.Count);
+        if (!GameManager.instance.isNetworked)
+        {
+            return;
+        }
+        int scoreToAdd = deadPlayerList.Count;
         addScore(g, scoreToAdd);
     }
 
@@ -367,6 +371,13 @@ public class RoundManager : MonoBehaviour
         //Debug.log("$ONDEWATH" + deadPlayers.ToString() + " " + (totalPlayers - 1).ToString());
         if (deadPlayers >= totalPlayers - 1)
         {
+            foreach(GameObject g in currentPlayers)
+            {
+                if (!deadPlayerList.Contains(g))
+                {
+                    addScore(g, 5);
+                }
+            }
             endRound("All players died");
             deadPlayers = 0;
         }

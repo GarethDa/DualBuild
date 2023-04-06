@@ -350,7 +350,7 @@ public class RoundManager : MonoBehaviour
     public void addToDeath(GameObject g)
     {
         deadPlayerList.Add(g);
-        if (!GameManager.instance.isNetworked)
+        if (GameManager.instance.isNetworked)
         {
             return;
         }

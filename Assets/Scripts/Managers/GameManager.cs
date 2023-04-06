@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public bool isNetworked = false;
     void Awake()
     {
-        if(instance == null)
+        //if(instance == null)
         {
             instance = this;
 

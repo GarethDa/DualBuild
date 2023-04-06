@@ -67,6 +67,10 @@ public class RoundManager : MonoBehaviour
 
     public List<GameObject> otherDeletedObjects = new List<GameObject>();
 
+    public bool gameIsEnding = false;
+
+    [SerializeField] GameObject destructor;
+
     private void Update()
     {
         if (justTeleported)
@@ -172,9 +176,9 @@ public class RoundManager : MonoBehaviour
 
     private void Awake() //singleton
     {
-        if (instance != null)
+        //if (instance != null)
         {
-            return;
+            //return;
         }
         totalPlayers = 0;
         instance = this;
@@ -184,6 +188,7 @@ public class RoundManager : MonoBehaviour
 
     private void Start()
     {
+        gameRoundsCompleted = 0;
         //temporarily starting with an intermission for testing purposes
         playerFallScript.instance.checkCollision = true;
         levelCam.enabled = false;
@@ -576,6 +581,13 @@ public class RoundManager : MonoBehaviour
 
         }
 
+        if (gameIsEnding)
+        {
+            gameIsEnding = false;
+            destructor.GetComponent<DestructorBehaviour>().DestroyAll();
+            return false;
+        }
+
         if (shouldEndTheGame() && !GameManager.instance.isNetworked)
         {
             //TODO fix this for networked, just request the level 64 from the server
@@ -595,6 +607,8 @@ public class RoundManager : MonoBehaviour
 
 
        // ClipCanvas.instance.GetComponent<Canvas>().worldCamera = Camera.main;
+
+       
 
         return true;
     }

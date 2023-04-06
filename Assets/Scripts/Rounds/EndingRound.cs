@@ -18,7 +18,7 @@ public class EndingRound : Round
     public EndingRound()
     {
         hasMap = false;
-        roundTime = 20;
+        roundTime = 15;
         mapPrefabName = "Spinner";
         tutorialText = "THE END";
 
@@ -39,9 +39,7 @@ public class EndingRound : Round
         playerFallScript.instance.gameObject.SetActive(true);
         playerFallScript.instance.checkCollision = true;
 
-        SceneManager.LoadScene(RoundManager.instance.gameEndSceneName);
-        EventManager.unsubscribeAll();
-
+        RoundManager.instance.gameIsEnding = true;
     }
     protected override void Load()
     {
@@ -160,7 +158,7 @@ public class EndingRound : Round
                 foreach(GameObject g in players)
                 {
                     int score = sortedScores[g];
-                    int realScore = (RoundManager.instance.roundsToPlay * 5) - score;
+                    int realScore = ((RoundManager.instance.roundsToPlay * 5) - ((RoundManager.instance.roundsToPlay - RoundManager.instance.gameRoundsCompleted) * 5) - score);
                     DynamicUIComponent DUIC = RoundManager.instance.UIScores[index];
                     string scoreMessage = "";
                     int playerIndex = RoundManager.instance.getPlayerIndex(g);
@@ -183,13 +181,13 @@ public class EndingRound : Round
                     index++;
                 }
             }
-            if (secondsSinceDone >= 15)
+            //if (secondsSinceDone >= 15)
             {
-                unload();
+                //unload();
             }
             return;
         }
-        if (secondsElapsed%2 == 0)
+        if (secondsElapsed%2 == 0 && !isDone)
         {
             
             makeAnotherPlatformFall();
@@ -199,16 +197,16 @@ public class EndingRound : Round
 
     void makeAnotherPlatformFall()
     {
-
-        Transform cameraPointParent = RoundManager.instance.levelLocation.Find("64(Clone)").Find("CameraPoints");
-        PreviewCameraScript prev = RoundManager.instance.levelEndCamera.GetComponent<PreviewCameraScript>();
-       // prev.canMove = true;
-       
         if (index >= players.Count)
         {
             isDone = true;
             return;
         }
+
+        Transform cameraPointParent = RoundManager.instance.levelLocation.Find("64(Clone)").Find("CameraPoints");
+        PreviewCameraScript prev = RoundManager.instance.levelEndCamera.GetComponent<PreviewCameraScript>();
+        // prev.canMove = true;
+       
         int sortedScoresElement = index;
         int playerIndex = index;//players.IndexOf(sortedScores.ElementAt(index).Key);
 

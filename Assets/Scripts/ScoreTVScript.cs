@@ -22,7 +22,7 @@ public class ScoreTVScript : MonoBehaviour
         {
             if (GameManager.instance.isNetworked)
             {
-                text += RoundManager.instance.playerNames[RoundManager.instance.getPlayerIndex(obj)] + " Score: " + RoundManager.instance.getScore(obj) + "\n");
+                text += RoundManager.instance.playerNames[RoundManager.instance.getPlayerIndex(obj)] + " Score: " + RoundManager.instance.getScore(obj) + "\n";
             }
             else
             {

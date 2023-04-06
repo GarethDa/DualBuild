@@ -71,6 +71,8 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField] GameObject destructor;
 
+    public List<Transform> spawningLocations = new List<Transform>();
+
     private void Update()
     {
         if (justTeleported)
@@ -993,7 +995,7 @@ public class RoundManager : MonoBehaviour
     public void sendPlayersToIntermission()
     {
         //Debug.log("$SEND TO INTERMISSION");
-        sendPlayersToLocation(new List<Transform> { intermissionLocation });
+        sendPlayersToLocation(spawningLocations);
 
         
     }

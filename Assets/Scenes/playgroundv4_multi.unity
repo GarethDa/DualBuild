@@ -1419,6 +1419,11 @@ MonoBehaviour:
   otherDeletedObjects: []
   gameIsEnding: 0
   destructor: {fileID: 2094347352}
+  spawningLocations:
+  - {fileID: 1501932548}
+  - {fileID: 2110191853}
+  - {fileID: 1513208359}
+  - {fileID: 1130210511}
 --- !u!114 &158365054
 MonoBehaviour:
   m_ObjectHideFlags: 0

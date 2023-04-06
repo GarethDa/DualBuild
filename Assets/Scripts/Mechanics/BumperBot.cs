@@ -177,6 +177,7 @@ public class BumperBot : MonoBehaviour
     {
         if (collision.transform.tag == "Player")
         {
+            GetComponent<AssetAudioController>().YippeeSFX(); //not actually yippee but same thing
             Rigidbody otherRB = collision.rigidbody;
             //collision.rigidbody.AddExplosionForce(_speed * _explosionForce, collision.contacts[0].point, 10, _upwardForce);
             Vector3 hitDirection = (otherRB.worldCenterOfMass - GetComponent<Rigidbody>().worldCenterOfMass).normalized;
